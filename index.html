@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JMS Sales Floor — Live Stats</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; background:#080c18; color:#fff; width:100vw; height:100vh; overflow:hidden; }
+
+/* ── PASSWORD GATE ── */
+#gate {
+  position:fixed; inset:0; background:#080c18; z-index:9999;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;
+}
+.gate-brand {
+  font-size:2.8rem; font-weight:900; letter-spacing:.14em;
+  background:linear-gradient(90deg,#00d4ff,#7b2ff7);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.gate-sub { font-size:.95rem; color:#444; letter-spacing:.08em; margin-top:-14px; }
+.gate-box {
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);
+  border-radius:18px; padding:36px 44px; display:flex; flex-direction:column;
+  align-items:center; gap:18px; width:340px;
+}
+.gate-label { font-size:.75rem; color:#555; letter-spacing:.1em; text-transform:uppercase; align-self:flex-start; }
+.gate-input {
+  width:100%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+  border-radius:10px; padding:14px 18px; color:#fff; font-size:1.1rem;
+  font-family:'Inter',sans-serif; letter-spacing:.12em; outline:none;
+  transition:border-color .2s;
+}
+.gate-input:focus { border-color:rgba(0,212,255,.4); }
+.gate-btn {
+  width:100%; background:linear-gradient(90deg,#00d4ff,#7b2ff7);
+  border:none; border-radius:10px; padding:14px; color:#fff;
+  font-size:1rem; font-weight:700; letter-spacing:.06em; cursor:pointer;
+  transition:opacity .2s;
+}
+.gate-btn:hover { opacity:.85; }
+.gate-error { font-size:.82rem; color:#ff5252; display:none; }
+.gate-error.show { display:block; }
+
+/* ── SLIDESHOW ── */
+.slideshow { width:100%; height:100%; position:relative; }
+.slide { position:absolute; inset:0; display:flex; flex-direction:column; opacity:0; transition:opacity .8s ease; pointer-events:none; }
+.slide.active { opacity:1; pointer-events:all; }
+
+/* ── PROGRESS BAR ── */
+.progress-bar { position:fixed; bottom:0; left:0; height:4px; background:linear-gradient(90deg,#00d4ff,#7b2ff7); width:0%; z-index:100; }
+
+/* ── INDICATORS ── */
+.indicators { position:fixed; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:100; }
+.dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.25); transition:background .4s,transform .4s; cursor:pointer; }
+.dot.active { background:#00d4ff; transform:scale(1.5); }
+
+/* ── TICKER ── */
+.ticker { position:fixed; top:0; left:0; right:0; height:40px; background:rgba(8,12,24,.85); border-bottom:1px solid rgba(255,255,255,.07); backdrop-filter:blur(10px); display:flex; align-items:center; overflow:hidden; z-index:50; }
+.ticker-inner { display:flex; gap:70px; white-space:nowrap; animation:tick 50s linear infinite; padding-left:100%; }
+@keyframes tick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.ticker-item { font-size:.74rem; letter-spacing:.05em; color:#777; }
+.ticker-item strong { color:#bbb; }
+.ti-up { color:#00e676; } .ti-dn { color:#ff5252; }
+
+/* ── SHARED HEADER ── */
+.slide-header { margin-top:40px; padding:22px 56px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.06); flex-shrink:0; }
+.brand { font-size:1.9rem; font-weight:900; letter-spacing:.14em; background:linear-gradient(90deg,#00d4ff,#7b2ff7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.brand-sm { font-size:.95rem; font-weight:700; letter-spacing:.14em; color:#444; }
+.hdr-center { font-size:1rem; color:#555; letter-spacing:.05em; }
+.hdr-badge { background:rgba(0,212,255,.08); border:1px solid rgba(0,212,255,.2); border-radius:40px; padding:8px 22px; font-size:.9rem; color:#00d4ff; font-weight:600; letter-spacing:.04em; }
+
+/* ════════════════════════════════════
+   SLIDE: LEADERBOARD
+════════════════════════════════════ */
+.slide-lb { background:linear-gradient(135deg,#080c18 0%,#0d1f3c 55%,#080c18 100%); }
+.lb-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:16px 56px 50px; gap:10px; }
+.lb-row { display:grid; grid-template-columns:52px 1fr 60px 60px 180px 180px 130px; align-items:center; gap:16px; background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.05); border-radius:14px; padding:16px 24px; }
+.lb-row.r1 { background:linear-gradient(90deg,rgba(255,215,0,.1),transparent); border-color:rgba(255,215,0,.2); }
+.lb-row.r2 { background:linear-gradient(90deg,rgba(192,192,192,.07),transparent); border-color:rgba(192,192,192,.18); }
+.lb-row.r3 { background:linear-gradient(90deg,rgba(205,127,50,.07),transparent); border-color:rgba(205,127,50,.18); }
+.rank-ico { font-size:1.7rem; text-align:center; }
+.rep-name { font-size:1.2rem; font-weight:700; }
+.rep-sub { font-size:.75rem; color:#666; margin-top:2px; }
+.plat-pill { font-size:.65rem; font-weight:700; letter-spacing:.06em; padding:3px 8px; border-radius:99px; text-align:center; }
+.plat-boom { background:rgba(0,212,255,.15); color:#00d4ff; }
+.plat-bulk { background:rgba(123,47,247,.15); color:#a78bfa; }
+.bar-bg { height:8px; background:rgba(255,255,255,.07); border-radius:99px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:99px; }
+.r1 .bar-fill { background:linear-gradient(90deg,#ffd700,#ff8c00); }
+.r2 .bar-fill { background:linear-gradient(90deg,#a0a0a0,#606060); }
+.r3 .bar-fill { background:linear-gradient(90deg,#cd7f32,#8b4513); }
+.r4 .bar-fill,.r5 .bar-fill,.r6 .bar-fill { background:linear-gradient(90deg,#00d4ff,#7b2ff7); }
+.lb-rev { text-align:right; font-size:1.45rem; font-weight:800; }
+.r1 .lb-rev { color:#ffd700; } .r2 .lb-rev { color:#c0c0c0; } .r3 .lb-rev { color:#cd7f32; }
+.lb-ord { text-align:right; font-size:.85rem; color:#888; }
+.lb-ord span { display:block; font-size:.65rem; color:#555; margin-top:1px; }
+
+/* ════════════════════════════════════
+   SLIDE: WEEKLY TEAM TREND
+════════════════════════════════════ */
+.slide-trend { background:linear-gradient(160deg,#080c18,#0a1428,#080c18); }
+.trend-body { flex:1; display:grid; grid-template-columns:1fr 340px; gap:0; }
+
+.trend-chart-panel { padding:28px 40px 50px 56px; display:flex; flex-direction:column; border-right:1px solid rgba(255,255,255,.06); }
+.trend-chart-panel .panel-title { font-size:.75rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:18px; }
+.weekly-bars { display:flex; align-items:flex-end; gap:10px; flex:1; }
+.wk-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; height:100%; justify-content:flex-end; }
+.wk-bar-wrap { flex:1; width:100%; display:flex; align-items:flex-end; }
+.wk-bar { width:100%; border-radius:5px 5px 0 0; min-height:3px; position:relative; transition:opacity .3s; }
+.wk-bar.peak { box-shadow:0 0 20px rgba(255,215,0,.5); }
+.wk-bar.current { box-shadow:0 0 14px rgba(0,212,255,.4); }
+.wk-val { font-size:.62rem; color:#aaa; font-weight:600; white-space:nowrap; }
+.wk-lbl { font-size:.6rem; color:#444; white-space:nowrap; }
+.wk-lbl.hl { color:#00d4ff; }
+
+.trend-stats-panel { padding:28px 32px; display:flex; flex-direction:column; gap:20px; justify-content:center; }
+.trend-stat-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:18px 20px; }
+.tsc-label { font-size:.7rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
+.tsc-val { font-size:2rem; font-weight:900; }
+.tsc-sub { font-size:.75rem; color:#666; margin-top:4px; }
+.green { color:#00e676; } .red { color:#ff5252; } .gold { color:#ffd700; } .cyan { color:#00d4ff; }
+
+/* ════════════════════════════════════
+   SLIDE: PROJECTION vs ACTUAL
+════════════════════════════════════ */
+.slide-pva { background:linear-gradient(160deg,#080c18,#0c1a14,#080c18); }
+.pva-body { flex:1; display:grid; grid-template-columns:1fr 320px; }
+
+.pva-chart { padding:24px 36px 50px 56px; display:flex; flex-direction:column; border-right:1px solid rgba(255,255,255,.06); }
+.pva-chart .panel-title { font-size:.75rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:16px; }
+.pva-weeks { display:flex; flex-direction:column; gap:10px; flex:1; justify-content:center; }
+.pva-row { display:grid; grid-template-columns:70px 1fr 1fr 90px; align-items:center; gap:12px; }
+.pva-date { font-size:.75rem; color:#666; white-space:nowrap; }
+.pva-bar-wrap { position:relative; height:24px; background:rgba(255,255,255,.05); border-radius:6px; overflow:visible; }
+.pva-bar-proj { position:absolute; top:4px; height:8px; border-radius:3px; background:rgba(255,255,255,.2); }
+.pva-bar-act { position:absolute; bottom:4px; height:8px; border-radius:3px; }
+.pva-bar-act.over { background:linear-gradient(90deg,#00e676,#00b0ff); }
+.pva-bar-act.under { background:linear-gradient(90deg,#ff6b6b,#ff8e53); }
+.pva-var { font-size:.85rem; font-weight:700; text-align:right; }
+.pva-legend { display:flex; gap:16px; margin-bottom:14px; }
+.pva-leg-item { display:flex; align-items:center; gap:6px; font-size:.72rem; color:#666; }
+.pva-leg-box { width:12px; height:6px; border-radius:2px; }
+
+.pva-sidebar { padding:24px 28px; display:flex; flex-direction:column; gap:16px; justify-content:center; }
+.pva-cumcard { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:20px; text-align:center; }
+.pva-cumcard .lbl { font-size:.7rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; }
+.pva-cumcard .val { font-size:2.4rem; font-weight:900; }
+.pva-cumcard .sub { font-size:.75rem; color:#666; margin-top:6px; }
+.pva-clinic-table { display:flex; flex-direction:column; gap:8px; }
+.pva-clinic-row { display:flex; justify-content:space-between; align-items:center; font-size:.82rem; padding:8px 12px; background:rgba(255,255,255,.02); border-radius:8px; border:1px solid rgba(255,255,255,.05); }
+.pva-clinic-row .dt { color:#666; } .pva-clinic-row .proj { color:#555; } .pva-clinic-row .act { font-weight:700; }
+.pva-clinic-row .diff.pos { color:#00e676; } .pva-clinic-row .diff.neg { color:#ff5252; }
+
+/* ════════════════════════════════════
+   SLIDE: NEW CLINICS
+════════════════════════════════════ */
+.slide-clinics { background:linear-gradient(160deg,#080c18,#0e1220,#080c18); }
+.clinics-body { flex:1; display:grid; grid-template-columns:1fr 1fr; }
+.nc-panel { padding:28px 40px; border-right:1px solid rgba(255,255,255,.06); display:flex; flex-direction:column; }
+.nc-panel:last-child { border-right:none; }
+.nc-panel .panel-title { font-size:.75rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:16px; }
+.nc-bar-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.nc-rep-name { font-size:.85rem; color:#ccc; font-weight:600; width:120px; flex-shrink:0; }
+.nc-bar-bg { flex:1; height:10px; background:rgba(255,255,255,.06); border-radius:99px; overflow:hidden; }
+.nc-bar-fill { height:100%; border-radius:99px; }
+.nc-val { font-size:.9rem; font-weight:700; width:36px; text-align:right; }
+
+.monthly-clinics { display:flex; flex-direction:column; gap:10px; flex:1; justify-content:center; }
+.mc-month { background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:14px 18px; }
+.mc-month-name { font-size:.7rem; color:#555; letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; }
+.mc-rep-bars { display:flex; flex-direction:column; gap:5px; }
+.mc-rep-row { display:flex; align-items:center; gap:10px; }
+.mc-rep-nm { font-size:.7rem; color:#888; width:80px; flex-shrink:0; }
+.mc-rep-bar { height:7px; border-radius:99px; }
+.mc-rep-val { font-size:.7rem; color:#aaa; margin-left:4px; }
+
+/* ════════════════════════════════════
+   SLIDE: INDIVIDUAL REP
+════════════════════════════════════ */
+.slide-rep { }
+.rep-body { flex:1; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
+
+.panel { padding:28px 42px; border-right:1px solid rgba(255,255,255,.055); border-bottom:1px solid rgba(255,255,255,.055); display:flex; flex-direction:column; justify-content:center; }
+.panel:nth-child(2n) { border-right:none; }
+.panel:nth-child(3),.panel:nth-child(4) { border-bottom:none; }
+.panel-title { font-size:.72rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:14px; }
+.panel.alt-bg { background:rgba(255,255,255,.015); }
+
+/* Name panel */
+.rank-badge { display:inline-flex; align-items:center; gap:7px; background:rgba(255,255,255,.05); border-radius:99px; padding:5px 16px; font-size:.8rem; color:#888; letter-spacing:.05em; margin-bottom:14px; width:fit-content; border:1px solid rgba(255,255,255,.08); }
+.rep-big-name { font-size:2.5rem; font-weight:900; line-height:1.08; letter-spacing:-.01em; }
+.period-tag { margin-top:12px; font-size:.8rem; color:#444; letter-spacing:.05em; }
+.platform-split { display:flex; gap:10px; margin-top:14px; }
+.ps-pill { display:flex; flex-direction:column; padding:8px 14px; border-radius:10px; }
+.ps-boom { background:rgba(0,212,255,.07); border:1px solid rgba(0,212,255,.15); }
+.ps-bulk { background:rgba(123,47,247,.07); border:1px solid rgba(123,47,247,.15); }
+.ps-lbl { font-size:.62rem; color:#666; letter-spacing:.08em; margin-bottom:3px; }
+.ps-val { font-size:1rem; font-weight:700; }
+.ps-boom .ps-val { color:#00d4ff; } .ps-bulk .ps-val { color:#a78bfa; }
+.ps-pct { font-size:.65rem; color:#555; margin-top:1px; }
+
+/* Revenue panel */
+.rev-label { font-size:.75rem; color:#666; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+.rev-amount { font-size:4rem; font-weight:900; line-height:1; letter-spacing:-.02em; }
+.sub-stats { display:flex; gap:30px; margin-top:18px; flex-wrap:wrap; }
+.sub-stat .val { font-size:1.5rem; font-weight:800; }
+.sub-stat .lbl { font-size:.68rem; color:#555; letter-spacing:.07em; text-transform:uppercase; margin-top:2px; }
+.new-clinics-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(0,230,118,.07); border:1px solid rgba(0,230,118,.2); border-radius:99px; padding:5px 14px; font-size:.8rem; color:#00e676; font-weight:600; margin-top:16px; width:fit-content; }
+
+/* Weekly trend panel */
+.rep-weekly-bars { display:flex; align-items:flex-end; gap:5px; height:110px; }
+.rwk-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end; }
+.rwk-bar-wrap { flex:1; width:100%; display:flex; align-items:flex-end; }
+.rwk-bar { width:100%; border-radius:3px 3px 0 0; min-height:2px; }
+.rwk-bar.peak { opacity:1; }
+.rwk-lbl { font-size:.52rem; color:#444; writing-mode:vertical-rl; text-orientation:mixed; transform:rotate(180deg); height:28px; line-height:1; }
+
+/* Drug panel */
+.drug-row { display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px solid rgba(255,255,255,.045); }
+.drug-row:last-child { border-bottom:none; }
+.drug-num { font-size:.8rem; color:#3a3a3a; font-weight:700; width:18px; }
+.drug-name { flex:1; font-size:.92rem; font-weight:600; color:#ccc; }
+.drug-rev { font-size:.95rem; font-weight:700; }
+
+/* ── THEME COLORS ── */
+.theme-0 { --ac:#ffd700; --ac2:#ff8c00; }
+.theme-1 { --ac:#00d4ff; --ac2:#7b2ff7; }
+.theme-2 { --ac:#00e676; --ac2:#00b0ff; }
+.theme-3 { --ac:#ff6b6b; --ac2:#ff8e53; }
+.theme-4 { --ac:#a78bfa; --ac2:#ec4899; }
+.theme-5 { --ac:#34d399; --ac2:#06b6d4; }
+
+.theme-0 .rep-big-name,.theme-0 .rev-amount,.theme-0 .sub-stat .val,.theme-0 .drug-rev { color:var(--ac); }
+.theme-0 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
+.theme-0 .rank-badge { border-color:rgba(255,215,0,.2); }
+.theme-0 .new-clinics-badge { border-color:rgba(255,215,0,.25); color:var(--ac); background:rgba(255,215,0,.06); }
+
+.theme-1 .rep-big-name,.theme-1 .rev-amount,.theme-1 .sub-stat .val,.theme-1 .drug-rev { color:var(--ac); }
+.theme-1 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
+.theme-1 .rank-badge { border-color:rgba(0,212,255,.2); }
+
+.theme-2 .rep-big-name,.theme-2 .rev-amount,.theme-2 .sub-stat .val,.theme-2 .drug-rev { color:var(--ac); }
+.theme-2 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
+.theme-2 .rank-badge { border-color:rgba(0,230,118,.2); }
+
+.theme-3 .rep-big-name,.theme-3 .rev-amount,.theme-3 .sub-stat .val,.theme-3 .drug-rev { color:var(--ac); }
+.theme-3 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
+
+.theme-4 .rep-big-name,.theme-4 .rev-amount,.theme-4 .sub-stat .val,.theme-4 .drug-rev { color:var(--ac); }
+.theme-4 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
+
+.theme-5 .rep-big-name,.theme-5 .rev-amount,.theme-5 .sub-stat .val,.theme-5 .drug-rev { color:var(--ac); }
+.theme-5 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
+
+/* ════════════════════════════════════
+   SLIDE: CLINIC LEADERBOARD
+════════════════════════════════════ */
+.slide-clb { background:linear-gradient(135deg,#080c18 0%,#0d1a2e 55%,#080c18 100%); }
+.clb-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:10px 56px 44px; gap:7px; }
+.clb-row { display:grid; grid-template-columns:46px 1fr 52px 120px 120px 170px 90px; align-items:center; gap:14px;
+  background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.05); border-radius:12px; padding:13px 22px; }
+.clb-row.cr1 { background:linear-gradient(90deg,rgba(255,215,0,.09),transparent); border-color:rgba(255,215,0,.22); }
+.clb-row.cr2 { background:linear-gradient(90deg,rgba(192,192,192,.07),transparent); border-color:rgba(192,192,192,.18); }
+.clb-row.cr3 { background:linear-gradient(90deg,rgba(205,127,50,.07),transparent); border-color:rgba(205,127,50,.18); }
+.clb-rank { font-size:1.5rem; text-align:center; }
+.clb-name { font-size:1.05rem; font-weight:700; }
+.clb-sub { font-size:.7rem; color:#555; margin-top:2px; }
+.clb-state { background:rgba(123,47,247,.15); border:1px solid rgba(123,47,247,.25); border-radius:6px;
+  font-size:.75rem; font-weight:700; color:#a78bfa; padding:4px 10px; text-align:center; }
+.clb-bar-bg { height:7px; background:rgba(255,255,255,.07); border-radius:99px; overflow:hidden; }
+.clb-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#00d4ff,#7b2ff7); }
+.cr1 .clb-bar-fill { background:linear-gradient(90deg,#ffd700,#ff8c00); }
+.cr2 .clb-bar-fill { background:linear-gradient(90deg,#a0a0a0,#606060); }
+.cr3 .clb-bar-fill { background:linear-gradient(90deg,#cd7f32,#8b4513); }
+.clb-rev { text-align:right; font-size:1.3rem; font-weight:800; }
+.cr1 .clb-rev { color:#ffd700; } .cr2 .clb-rev { color:#c0c0c0; } .cr3 .clb-rev { color:#cd7f32; }
+.clb-rx { text-align:right; font-size:.82rem; color:#888; }
+.clb-rx span { display:block; font-size:.6rem; color:#555; margin-top:1px; }
+
+/* ════════════════════════════════════
+   SLIDE: CLINIC PERFORMANCE CARDS
+════════════════════════════════════ */
+.slide-cpc { background:linear-gradient(160deg,#080c18,#0b1522,#080c18); }
+.cpc-body { flex:1; display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:1fr 1fr; gap:0; }
+.cpc-card { padding:20px 22px; border-right:1px solid rgba(255,255,255,.055); border-bottom:1px solid rgba(255,255,255,.055);
+  display:flex; flex-direction:column; gap:8px; }
+.cpc-card:nth-child(4n) { border-right:none; }
+.cpc-card:nth-child(5),.cpc-card:nth-child(6),.cpc-card:nth-child(7),.cpc-card:nth-child(8) { border-bottom:none; }
+.cpc-header { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+.cpc-name { font-size:.88rem; font-weight:700; color:#ddd; line-height:1.25; flex:1; }
+.cpc-state-badge { background:rgba(0,212,255,.1); border:1px solid rgba(0,212,255,.2); border-radius:6px;
+  font-size:.68rem; font-weight:700; color:#00d4ff; padding:3px 8px; white-space:nowrap; flex-shrink:0; }
+.cpc-rev { font-size:1.7rem; font-weight:900; color:#00d4ff; line-height:1; }
+.cpc-stats-row { display:flex; gap:10px; }
+.cpc-stat { flex:1; background:rgba(255,255,255,.03); border-radius:8px; padding:7px 9px; }
+.cpc-stat-val { font-size:.95rem; font-weight:800; color:#fff; }
+.cpc-stat-lbl { font-size:.58rem; color:#555; letter-spacing:.07em; text-transform:uppercase; margin-top:2px; }
+.cpc-drug { font-size:.68rem; color:#888; padding:5px 8px; background:rgba(255,255,255,.025);
+  border-radius:6px; border:1px solid rgba(255,255,255,.05); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.cpc-drug strong { color:#a78bfa; }
+.cpc-bar-row { display:flex; align-items:center; gap:8px; margin-top:2px; }
+.cpc-bar-bg { flex:1; height:5px; background:rgba(255,255,255,.07); border-radius:99px; overflow:hidden; }
+.cpc-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#00d4ff,#7b2ff7); }
+.cpc-pct { font-size:.65rem; color:#555; white-space:nowrap; }
+
+/* ════════════════════════════════════
+   SLIDE: STATE BREAKDOWN
+════════════════════════════════════ */
+.slide-state { background:linear-gradient(160deg,#080c18,#0c1820,#080c18); }
+.state-body { flex:1; display:grid; grid-template-columns:1fr 320px; gap:0; }
+.state-chart { padding:22px 36px 44px 56px; display:flex; flex-direction:column; border-right:1px solid rgba(255,255,255,.06); }
+.state-chart .panel-title { font-size:.75rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:18px; }
+.state-bars { display:flex; flex-direction:column; gap:9px; flex:1; justify-content:center; }
+.state-row { display:grid; grid-template-columns:38px 1fr 90px 60px; align-items:center; gap:12px; }
+.state-name { font-size:.88rem; font-weight:700; color:#bbb; }
+.state-bar-bg { height:20px; background:rgba(255,255,255,.05); border-radius:5px; overflow:hidden; position:relative; }
+.state-bar-fill { height:100%; border-radius:5px; background:linear-gradient(90deg,#00d4ff,#7b2ff7); position:absolute; top:0; left:0; }
+.state-bar-label { position:absolute; left:8px; top:50%; transform:translateY(-50%); font-size:.67rem; color:rgba(255,255,255,.5); white-space:nowrap; }
+.state-rev { font-size:.9rem; font-weight:700; color:#fff; text-align:right; }
+.state-clinics { font-size:.72rem; color:#555; text-align:right; }
+.state-sidebar { padding:22px 28px; display:flex; flex-direction:column; gap:14px; justify-content:center; }
+.state-summary-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:18px 20px; }
+.ssc-label { font-size:.68rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
+.ssc-val { font-size:2rem; font-weight:900; }
+.ssc-sub { font-size:.72rem; color:#666; margin-top:4px; }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="gate">
+  <div class="gate-brand">JMS SALES</div>
+  <div class="gate-sub">SALES FLOOR · LIVE STATS</div>
+  <div class="gate-box">
+    <div class="gate-label">Enter Access Password</div>
+    <input class="gate-input" id="gateInput" type="password" placeholder="••••••••" autocomplete="off" />
+    <button class="gate-btn" onclick="checkPass()">ACCESS DASHBOARD →</button>
+    <div class="gate-error" id="gateError">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<div class="ticker"><div class="ticker-inner" id="tickerInner"></div></div>
+<div class="indicators" id="indicators"></div>
+<div class="progress-bar" id="progressBar"></div>
+<div class="slideshow" id="slideshow"></div>
+
+<script>
+// ─── PASSWORD GATE ───────────────────────────────────────────────
+function checkPass() {
+  const val = document.getElementById('gateInput').value;
+  if (val === 'LFGBOCA') {
+    document.getElementById('gate').style.display = 'none';
+    render(); buildTicker();
+    total = document.querySelectorAll('.slide').length;
+    buildIndicators(total);
+    goTo(0);
+  } else {
+    const err = document.getElementById('gateError');
+    err.classList.add('show');
+    document.getElementById('gateInput').value = '';
+    document.getElementById('gateInput').focus();
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('gateInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPass();
+  });
+});
+
+// ─── CONFIG ───────────────────────────────────────────────────────
+const DURATION = 10000; // ms per slide
+const PERIOD   = "Mar 1 – May 24, 2026";
+
+// ─── WEEKLY DATA ──────────────────────────────────────────────────
+const weeks = [
+  { lbl:"Mar 8",  wk:27, dylan:880,    erin:56817,  jon:360,  zach:12487,  ash:330, jack:168045, tot:238919 },
+  { lbl:"Mar 15", wk:28, dylan:755,    erin:66614,  jon:300,  zach:8624,   ash:120, jack:136156, tot:212569 },
+  { lbl:"Mar 22", wk:29, dylan:2401,   erin:38891,  jon:240,  zach:15390,  ash:210, jack:186998, tot:244130 },
+  { lbl:"Mar 29", wk:30, dylan:270,    erin:47126,  jon:270,  zach:48574,  ash:210, jack:177784, tot:274233 },
+  { lbl:"Apr 5",  wk:31, dylan:907,    erin:48066,  jon:120,  zach:26926,  ash:210, jack:173613, tot:249842 },
+  { lbl:"Apr 12", wk:32, dylan:2284,   erin:160178, jon:440,  zach:14891,  ash:330, jack:327928, tot:506050 },
+  { lbl:"Apr 19", wk:33, dylan:1348,   erin:37002,  jon:350,  zach:19528,  ash:630, jack:153156, tot:212013 },
+  { lbl:"Apr 26", wk:34, dylan:2758,   erin:54937,  jon:1175, zach:12894,  ash:990, jack:166479, tot:239233 },
+  { lbl:"May 3",  wk:35, dylan:1931,   erin:24759,  jon:835,  zach:8258,   ash:340, jack:149477, tot:185600 },
+  { lbl:"May 10", wk:36, dylan:5729,   erin:19502,  jon:381,  zach:16571,  ash:975, jack:152417, tot:195575 },
+  { lbl:"May 17", wk:37, dylan:3894,   erin:27824,  jon:1278, zach:8546,   ash:168, jack:143584, tot:185293 },
+  { lbl:"May 24", wk:38, dylan:4161,   erin:18551,  jon:1005, zach:14597,  ash:855, jack:158843, tot:198012 },
+];
+
+// ─── PROJECTION vs ACTUAL ────────────────────────────────────────
+const pva = [
+  { dt:"Apr 12", proj:240000, act:506461, clinicProj:240, clinicAct:270 },
+  { dt:"Apr 19", proj:250000, act:211098, clinicProj:250, clinicAct:236 },
+  { dt:"Apr 26", proj:260000, act:243380, clinicProj:260, clinicAct:260 },
+  { dt:"May 3",  proj:270000, act:185600, clinicProj:270, clinicAct:247 },
+  { dt:"May 10", proj:280000, act:195575, clinicProj:280, clinicAct:250 },
+  { dt:"May 17", proj:290000, act:185293, clinicProj:290, clinicAct:249 },
+  { dt:"May 24", proj:300000, act:198012, clinicProj:300, clinicAct:237 },
+];
+const cumRevVar = pva.reduce((s,w) => s + (w.act - w.proj), 0); // -164,581
+
+// ─── REPS ────────────────────────────────────────────────────────
+const reps = [
+  {
+    name:"Jack / Mark", rank:1, theme:0,
+    revenue:2099262, orders:12721, clinics:363,
+    boom:2000422, bulk:98840,
+    newClinics:{ mar:112, apr:79, may:22 },
+    activeClinics:{ mar:260, apr:290, may:258 },
+    weekly: weeks.map(w=>w.jack),
+    topDrugs:[
+      {name:"Tirzepatide Compound",      rev:485562},
+      {name:"Tirzepatide / Glycine",     rev:408168},
+      {name:"Tirzepatide / B12",         rev:214043},
+    ],
+  },
+  {
+    name:"Erin Ryan Snyder", rank:2, theme:1,
+    revenue:600496, orders:2131, clinics:133,
+    boom:393187, bulk:207309,
+    newClinics:{ mar:36, apr:42, may:8 },
+    activeClinics:{ mar:79, apr:101, may:62 },
+    weekly: weeks.map(w=>w.erin),
+    topDrugs:[
+      {name:"Tirzepatide Compound",  rev:107706},
+      {name:"Tirzepatide / B12",     rev:55708},
+      {name:"Tirzepatide / Glycine", rev:43890},
+    ],
+  },
+  {
+    name:"Zachary Salazar", rank:3, theme:2,
+    revenue:207641, orders:1007, clinics:39,
+    boom:136330, bulk:71310,
+    newClinics:{ mar:18, apr:7, may:2 },
+    activeClinics:{ mar:30, apr:31, may:25 },
+    weekly: weeks.map(w=>w.zach),
+    topDrugs:[
+      {name:"Tirzepatide / B12",       rev:39705},
+      {name:"Tirzepatide Compound",    rev:19252},
+      {name:"Bulk Tirzepatide 72mg",   rev:14868},
+    ],
+  },
+  {
+    name:"Dylan White", rank:4, theme:3,
+    revenue:27318, orders:188, clinics:22,
+    boom:24952, bulk:2366,
+    newClinics:{ mar:7, apr:12, may:0 },
+    activeClinics:{ mar:9, apr:18, may:15 },
+    weekly: weeks.map(w=>w.dylan),
+    topDrugs:[
+      {name:"Tirz / Glycine / MeCbl",  rev:5157},
+      {name:"Tirzepatide / B12",       rev:3775},
+      {name:"Tirzepatide / Glycine",   rev:3430},
+    ],
+  },
+  {
+    name:"Jonathan Izquierdo", rank:5, theme:4,
+    revenue:6753, orders:151, clinics:6,
+    boom:null, bulk:null,
+    newClinics:{ mar:0, apr:2, may:3 },
+    activeClinics:{ mar:1, apr:3, may:6 },
+    weekly: weeks.map(w=>w.jon),
+    topDrugs:[
+      {name:"Testosterone Cypionate", rev:1155},
+      {name:"Tirzepatide / Glycine",  rev:970},
+      {name:"GHK-Cu / Epithalon",     rev:600},
+    ],
+  },
+  {
+    name:"Ashlyn Smith", rank:6, theme:5,
+    revenue:5368, orders:34, clinics:2,
+    boom:null, bulk:null,
+    newClinics:{ mar:0, apr:1, may:0 },
+    activeClinics:{ mar:1, apr:2, may:1 },
+    weekly: weeks.map(w=>w.ash),
+    topDrugs:[
+      {name:"Tirzepatide / Glycine", rev:1275},
+      {name:"Tirzepatide / B12",     rev:1110},
+      {name:"Tirzepatide Compound",  rev:1050},
+    ],
+  },
+];
+
+const totalRevenue = reps.reduce((s,r)=>s+r.revenue,0);
+
+// ─── CLINIC DATA (May 25–26, 2026) ──────────────────────────────
+const CLINIC_PERIOD = "May 25–26, 2026";
+const clinicData = {
+  totalRevenue: 38761.29,
+  totalProfit:   5701.44,
+  totalRx:       340,
+  totalClinics:  109,
+};
+
+const topClinics = [
+  { name:"Revitalize You Weight Loss Center LLC", state:"NY", rx:16, revenue:2800.00, profit:560.00,  avgOrder:175.00, margin:20.0, topDrug:"Tirzepatide / Glycine" },
+  { name:"The DripBar Grand Forks",               state:"ND", rx:15, revenue:2250.00, profit:450.00,  avgOrder:150.00, margin:20.0, topDrug:"Tirzepatide / Glycine" },
+  { name:"JumpStartMD",                           state:"CA", rx:33, revenue:2118.33, profit:224.31,  avgOrder:64.19,  margin:10.6, topDrug:"Tirzepatide / Glycine" },
+  { name:"Giddie Skin MedSpa",                    state:"MN", rx:10, revenue:1850.00, profit:555.00,  avgOrder:185.00, margin:30.0, topDrug:"Tirzepatide / Glycine" },
+  { name:"Healthon",                              state:"CA", rx:12, revenue:1600.00, profit:187.00,  avgOrder:133.33, margin:11.7, topDrug:"Tirzepatide / Glycine" },
+  { name:"MedFIT Weight Loss and Wellness",       state:"NC", rx:13, revenue:1505.00, profit:150.50,  avgOrder:115.77, margin:10.0, topDrug:"Tirzepatide / Glycine" },
+  { name:"Holloway Health LLC",                   state:"OK", rx: 9, revenue:1495.00, profit:149.50,  avgOrder:166.11, margin:10.0, topDrug:"Tirzepatide / Glycine / MeCbl" },
+  { name:"Center For Men",                        state:"OK", rx: 6, revenue: 836.20, profit: 94.30,  avgOrder:139.37, margin:11.3, topDrug:"Tirzepatide / Glycine / MeCbl" },
+  { name:"New Beginnings Wellness Clinic",        state:"OH", rx: 7, revenue: 821.60, profit:110.66,  avgOrder:117.37, margin:13.5, topDrug:"Tirzepatide / Glycine" },
+  { name:"Apex Care & Wellness PLLC",             state:"TX", rx: 4, revenue: 670.00, profit:105.00,  avgOrder:167.50, margin:15.7, topDrug:"Tirzepatide / Glycine / MeCbl" },
+];
+
+const stateData = [
+  { state:"CA", revenue:5435.83, profit:663.81,  rx:60, clinics:10 },
+  { state:"FL", revenue:4932.00, profit:607.20,  rx:35, clinics:19 },
+  { state:"NY", revenue:2900.00, profit:580.00,  rx:17, clinics: 2 },
+  { state:"TX", revenue:2611.62, profit:454.88,  rx:26, clinics: 8 },
+  { state:"OK", revenue:2516.20, profit:262.30,  rx:16, clinics: 3 },
+  { state:"ND", revenue:2250.00, profit:450.00,  rx:15, clinics: 1 },
+  { state:"NC", revenue:2019.00, profit:211.90,  rx:17, clinics: 3 },
+  { state:"MN", revenue:1850.00, profit:555.00,  rx:10, clinics: 1 },
+  { state:"OH", revenue:1080.60, profit:150.36,  rx:10, clinics: 3 },
+  { state:"TN", revenue:1054.00, profit:199.80,  rx: 9, clinics: 3 },
+  { state:"WV", revenue: 930.00, profit: 93.00,  rx: 6, clinics: 3 },
+  { state:"MD", revenue: 875.00, profit:106.00,  rx: 7, clinics: 5 },
+];
+const rankEmoji = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣"];
+
+// ─── HELPERS ─────────────────────────────────────────────────────
+const fmt = n => n>=1e6 ? '$'+(n/1e6).toFixed(2)+'M' : n>=1e3 ? '$'+(n/1e3).toFixed(0)+'K' : '$'+Math.round(n).toLocaleString();
+const fmtFull = n => '$'+Math.round(n).toLocaleString('en-US');
+const pct = (v,mx) => Math.max(3, (v/mx*100)).toFixed(1);
+
+// ─── BUILD TICKER ────────────────────────────────────────────────
+function buildTicker() {
+  const items = reps.map(r => {
+    const lastWk = r.weekly[r.weekly.length-1];
+    const prevWk = r.weekly[r.weekly.length-2];
+    const arrow = lastWk >= prevWk ? '<span class="ti-up">▲</span>' : '<span class="ti-dn">▼</span>';
+    return `<span class="ticker-item"><strong>${r.name}</strong> ${fmtFull(r.revenue)} &nbsp;${arrow} ${r.orders.toLocaleString()} orders &nbsp;·&nbsp; ${r.clinics} clinics</span>`;
+  });
+  const all = [...items,...items].join('');
+  document.getElementById('tickerInner').innerHTML = all;
+}
+
+// ─── SLIDE: LEADERBOARD ──────────────────────────────────────────
+function slideLeaderboard() {
+  const maxRev = reps[0].revenue;
+  const rows = reps.map((r,i) => {
+    const boomPct = r.boom ? (r.boom/r.revenue*100).toFixed(0) : null;
+    return `
+    <div class="lb-row r${i+1}">
+      <div class="rank-ico">${rankEmoji[i]}</div>
+      <div>
+        <div class="rep-name">${r.name}</div>
+        <div class="rep-sub">${r.orders.toLocaleString()} orders &nbsp;·&nbsp; ${r.clinics} clinics &nbsp;·&nbsp; ${(r.newClinics.mar+r.newClinics.apr+r.newClinics.may)} new</div>
+      </div>
+      <div class="plat-pill plat-boom" title="BoomRx">${boomPct ? boomPct+'%<br>Boom' : '—'}</div>
+      <div class="plat-pill plat-bulk" title="Bulk">${boomPct ? (100-+boomPct)+'%<br>Bulk' : '—'}</div>
+      <div>
+        <div class="bar-bg"><div class="bar-fill" style="width:${pct(r.revenue,maxRev)}%"></div></div>
+      </div>
+      <div class="lb-rev">${fmt(r.revenue)}</div>
+      <div class="lb-ord">${r.orders.toLocaleString()}<span>orders</span></div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="slide slide-lb" id="s0">
+    <div class="slide-header">
+      <div class="brand">JMS SALES</div>
+      <div class="hdr-center">${PERIOD} &nbsp;·&nbsp; Full Team</div>
+      <div class="hdr-badge">Team Total &nbsp; ${fmt(totalRevenue)}</div>
+    </div>
+    <div class="lb-body">${rows}</div>
+  </div>`;
+}
+
+// ─── SLIDE: WEEKLY TEAM TREND ────────────────────────────────────
+function slideWeeklyTrend() {
+  const maxTot = Math.max(...weeks.map(w=>w.tot));
+  const peakIdx = weeks.findIndex(w=>w.tot===maxTot);
+  const lastTot = weeks[weeks.length-1].tot;
+  const prevTot = weeks[weeks.length-2].tot;
+  const avgTot = Math.round(weeks.reduce((s,w)=>s+w.tot,0)/weeks.length);
+  const trend = lastTot > prevTot;
+
+  const bars = weeks.map((w,i) => {
+    const h = pct(w.tot, maxTot);
+    const cls = i===peakIdx ? 'peak' : (i===weeks.length-1 ? 'current' : '');
+    const color = i===peakIdx ? 'background:linear-gradient(180deg,#ffd700,#ff8c00)' :
+                  i===weeks.length-1 ? 'background:linear-gradient(180deg,#00d4ff,#7b2ff7)' :
+                  'background:linear-gradient(180deg,#334,#223)';
+    return `
+    <div class="wk-col">
+      <div class="wk-val">${fmt(w.tot)}</div>
+      <div class="wk-bar-wrap"><div class="wk-bar ${cls}" style="height:${h}%;${color}"></div></div>
+      <div class="wk-lbl${i===weeks.length-1?' hl':''}">${w.lbl}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="slide slide-trend" id="s1">
+    <div class="slide-header">
+      <div class="brand-sm">JMS SALES</div>
+      <div class="hdr-center">Weekly Team Revenue — 12 Weeks</div>
+      <div class="brand-sm">${PERIOD}</div>
+    </div>
+    <div class="trend-body">
+      <div class="trend-chart-panel">
+        <div class="panel-title">Total Team Revenue by Week &nbsp; <span style="color:#ffd700">★ Peak week highlighted</span></div>
+        <div class="weekly-bars">${bars}</div>
+      </div>
+      <div class="trend-stats-panel">
+        <div class="trend-stat-card">
+          <div class="tsc-label">Peak Week</div>
+          <div class="tsc-val gold">${fmt(maxTot)}</div>
+          <div class="tsc-sub">${weeks[peakIdx].lbl} (Week ${weeks[peakIdx].wk})</div>
+        </div>
+        <div class="trend-stat-card">
+          <div class="tsc-label">Most Recent Week</div>
+          <div class="tsc-val cyan">${fmt(lastTot)}</div>
+          <div class="tsc-sub">May 24 &nbsp; <span class="${trend?'green':'red'}">${trend?'▲':'▼'} ${fmt(Math.abs(lastTot-prevTot))} vs prior wk</span></div>
+        </div>
+        <div class="trend-stat-card">
+          <div class="tsc-label">12-Week Average</div>
+          <div class="tsc-val" style="color:#a78bfa">${fmt(avgTot)}</div>
+          <div class="tsc-sub">Per week</div>
+        </div>
+        <div class="trend-stat-card">
+          <div class="tsc-label">3-Month Total</div>
+          <div class="tsc-val" style="color:#00e676">${fmt(totalRevenue)}</div>
+          <div class="tsc-sub">All reps combined</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── SLIDE: PROJECTION vs ACTUAL ─────────────────────────────────
+function slidePVA() {
+  const maxVal = Math.max(...pva.map(w=>Math.max(w.proj,w.act)));
+
+  const rows = pva.map(w => {
+    const projW = (w.proj/maxVal*100).toFixed(1);
+    const actW  = (w.act /maxVal*100).toFixed(1);
+    const diff  = w.act - w.proj;
+    const cls   = diff >= 0 ? 'over' : 'under';
+    const sign  = diff >= 0 ? '+' : '';
+    return `
+    <div class="pva-row">
+      <div class="pva-date">${w.dt}</div>
+      <div class="pva-bar-wrap">
+        <div class="pva-bar-proj" style="width:${projW}%"></div>
+        <div class="pva-bar-act ${cls}" style="width:${actW}%"></div>
+      </div>
+      <div style="font-size:.75rem;color:#666">${fmt(w.proj)} proj &nbsp;→&nbsp; <strong style="color:${diff>=0?'#00e676':'#ff6b6b'}">${fmt(w.act)}</strong></div>
+      <div class="pva-var ${diff>=0?'green':'red'}">${sign}${fmt(diff)}</div>
+    </div>`;
+  }).join('');
+
+  const clinicRows = pva.map(w => {
+    const d = w.clinicAct - w.clinicProj;
+    const cls = d>=0 ? 'pos' : 'neg';
+    const sign = d>=0 ? '+' : '';
+    return `
+    <div class="pva-clinic-row">
+      <span class="dt">${w.dt}</span>
+      <span class="proj">${w.clinicProj} target</span>
+      <span class="act">${w.clinicAct} actual</span>
+      <span class="diff ${cls}">${sign}${d}</span>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="slide slide-pva" id="s2">
+    <div class="slide-header">
+      <div class="brand-sm">JMS SALES</div>
+      <div class="hdr-center">Q2 Projection vs. Actual</div>
+      <div class="brand-sm">Apr 12 – May 24</div>
+    </div>
+    <div class="pva-body">
+      <div class="pva-chart">
+        <div class="panel-title">Weekly Revenue — Projection vs. Actual</div>
+        <div class="pva-legend">
+          <div class="pva-leg-item"><div class="pva-leg-box" style="background:rgba(255,255,255,.25)"></div>Projection</div>
+          <div class="pva-leg-item"><div class="pva-leg-box" style="background:linear-gradient(90deg,#00e676,#00b0ff)"></div>Over Target</div>
+          <div class="pva-leg-item"><div class="pva-leg-box" style="background:linear-gradient(90deg,#ff6b6b,#ff8e53)"></div>Under Target</div>
+        </div>
+        <div class="pva-weeks">${rows}</div>
+      </div>
+      <div class="pva-sidebar">
+        <div class="pva-cumcard">
+          <div class="lbl">Cumulative Variance</div>
+          <div class="val ${cumRevVar>=0?'green':'red'}">${cumRevVar>=0?'+':''}${fmt(cumRevVar)}</div>
+          <div class="sub">vs. Q2 projection to date</div>
+        </div>
+        <div style="margin-top:4px">
+          <div class="panel-title">Ordering Clinics per Week</div>
+          <div class="pva-clinic-table">${clinicRows}</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── SLIDE: INDIVIDUAL REP ───────────────────────────────────────
+function slideRep(r, idx) {
+  const maxWk = Math.max(...r.weekly);
+  const peakIdx = r.weekly.findIndex(v=>v===maxWk);
+  const lastWk = r.weekly[r.weekly.length-1];
+  const prevWk = r.weekly[r.weekly.length-2];
+  const wkTrend = lastWk >= prevWk;
+  const newTotal = r.newClinics.mar + r.newClinics.apr + r.newClinics.may;
+  const shareStr = (r.revenue/totalRevenue*100).toFixed(1);
+  const avgOrd = fmt(r.revenue/r.orders);
+
+  // Platform split
+  let platformHTML = '';
+  if (r.boom !== null) {
+    const boomPct = (r.boom/r.revenue*100).toFixed(0);
+    const bulkPct = (r.bulk/r.revenue*100).toFixed(0);
+    platformHTML = `
+    <div class="platform-split">
+      <div class="ps-pill ps-boom"><div class="ps-lbl">BOOMRX</div><div class="ps-val">${fmt(r.boom)}</div><div class="ps-pct">${boomPct}% of revenue</div></div>
+      <div class="ps-pill ps-bulk"><div class="ps-lbl">BULK</div><div class="ps-val">${fmt(r.bulk)}</div><div class="ps-pct">${bulkPct}% of revenue</div></div>
+    </div>`;
+  }
+
+  // Weekly bars
+  const wkBars = weeks.map((w,i) => {
+    const h = maxWk > 0 ? Math.max(2, (r.weekly[i]/maxWk*100)).toFixed(1) : 2;
+    const extra = i === peakIdx ? ' peak' : '';
+    return `<div class="rwk-col">
+      <div class="rwk-bar-wrap"><div class="rwk-bar${extra}" style="height:${h}%"></div></div>
+      <div class="rwk-lbl">${w.lbl}</div>
+    </div>`;
+  }).join('');
+
+  // Drug rows
+  const drugRows = r.topDrugs.map((d,di) => `
+  <div class="drug-row">
+    <div class="drug-num">${di+1}</div>
+    <div class="drug-name">${d.name}</div>
+    <div class="drug-rev">${fmt(d.rev)}</div>
+  </div>`).join('');
+
+  return `
+  <div class="slide slide-rep theme-${r.theme}" id="s${idx+3}">
+    <div class="slide-header">
+      <div class="brand-sm">JMS SALES</div>
+      <div class="hdr-center">${PERIOD}</div>
+      <div class="brand-sm">Rank #${r.rank} of ${reps.length}</div>
+    </div>
+    <div class="rep-body">
+
+      <div class="panel">
+        <div class="rank-badge">${rankEmoji[r.rank-1]} &nbsp; Rank #${r.rank}</div>
+        <div class="rep-big-name">${r.name}</div>
+        <div class="period-tag">${shareStr}% of team revenue</div>
+        ${platformHTML}
+        <div class="new-clinics-badge">✦ ${newTotal} new clinics onboarded</div>
+      </div>
+
+      <div class="panel alt-bg">
+        <div class="rev-label">Total Revenue</div>
+        <div class="rev-amount">${fmt(r.revenue)}</div>
+        <div class="sub-stats">
+          <div class="sub-stat"><div class="val">${r.orders.toLocaleString()}</div><div class="lbl">Orders</div></div>
+          <div class="sub-stat"><div class="val">${r.clinics}</div><div class="lbl">Clinics</div></div>
+          <div class="sub-stat"><div class="val">${avgOrd}</div><div class="lbl">Avg Order</div></div>
+          <div class="sub-stat"><div class="val ${wkTrend?'green':'red'}">${wkTrend?'▲':'▼'}</div><div class="lbl">Wk Trend</div></div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:18px">
+          <div style="text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 16px">
+            <div style="font-size:1.2rem;font-weight:800;color:#a78bfa">${r.activeClinics.mar}</div>
+            <div style="font-size:.65rem;color:#555;margin-top:2px">Mar Clinics</div>
+          </div>
+          <div style="text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 16px">
+            <div style="font-size:1.2rem;font-weight:800;color:#a78bfa">${r.activeClinics.apr}</div>
+            <div style="font-size:.65rem;color:#555;margin-top:2px">Apr Clinics</div>
+          </div>
+          <div style="text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 16px">
+            <div style="font-size:1.2rem;font-weight:800;color:#a78bfa">${r.activeClinics.may}</div>
+            <div style="font-size:.65rem;color:#555;margin-top:2px">May Clinics</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">12-Week Revenue Trend &nbsp; <span style="font-size:.65rem;color:#555">${fmt(lastWk)} this week</span></div>
+        <div class="rep-weekly-bars">${wkBars}</div>
+      </div>
+
+      <div class="panel alt-bg">
+        <div class="panel-title">Top Products by Revenue</div>
+        ${drugRows}
+        <div style="margin-top:16px;display:flex;gap:16px">
+          <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 14px;text-align:center">
+            <div style="font-size:1.1rem;font-weight:800;color:#00e676">${r.newClinics.mar}</div>
+            <div style="font-size:.6rem;color:#555;margin-top:2px">New Mar</div>
+          </div>
+          <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 14px;text-align:center">
+            <div style="font-size:1.1rem;font-weight:800;color:#00e676">${r.newClinics.apr}</div>
+            <div style="font-size:.6rem;color:#555;margin-top:2px">New Apr</div>
+          </div>
+          <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 14px;text-align:center">
+            <div style="font-size:1.1rem;font-weight:800;color:#00e676">${r.newClinics.may}</div>
+            <div style="font-size:.6rem;color:#555;margin-top:2px">New May</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;text-align:center">
+            <div style="font-size:1.1rem;font-weight:800;color:#00e676">${newTotal}</div>
+            <div style="font-size:.6rem;color:#555;margin-top:2px">Total New</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>`;
+}
+
+// ─── SLIDE: CLINIC LEADERBOARD ───────────────────────────────────
+function slideClinicLeaderboard() {
+  const rankIco = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"];
+  const maxRev = topClinics[0].revenue;
+  const rows = topClinics.map((c,i) => {
+    const crCls = i < 3 ? ` cr${i+1}` : '';
+    const barW = Math.max(4, (c.revenue / maxRev * 100)).toFixed(1);
+    const marginColor = c.margin >= 20 ? '#00e676' : c.margin >= 15 ? '#ffd700' : '#00d4ff';
+    return `
+    <div class="clb-row${crCls}">
+      <div class="clb-rank">${rankIco[i]}</div>
+      <div>
+        <div class="clb-name">${c.name}</div>
+        <div class="clb-sub">${c.rx} Rx &nbsp;·&nbsp; Avg ${fmt(c.avgOrder)}/order &nbsp;·&nbsp; <span style="color:${marginColor}">${c.margin}% margin</span></div>
+      </div>
+      <div class="clb-state">${c.state}</div>
+      <div style="font-size:.68rem;color:#666;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${c.topDrug}</div>
+      <div class="clb-bar-bg"><div class="clb-bar-fill" style="width:${barW}%"></div></div>
+      <div class="clb-rev">${fmt(c.revenue)}</div>
+      <div class="clb-rx">${fmt(c.profit)}<span>profit</span></div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="slide slide-clb" id="sc0">
+    <div class="slide-header">
+      <div class="brand">JMS SALES</div>
+      <div class="hdr-center">Top Clinic Rankings &nbsp;·&nbsp; ${CLINIC_PERIOD}</div>
+      <div class="hdr-badge">${clinicData.totalClinics} Active Clinics &nbsp; ${fmt(clinicData.totalRevenue)} Rev</div>
+    </div>
+    <div class="clb-body">${rows}</div>
+  </div>`;
+}
+
+// ─── SLIDE: CLINIC PERFORMANCE CARDS ─────────────────────────────
+function slideClinicCards() {
+  const maxRev = topClinics[0].revenue;
+  const cards = topClinics.slice(0,8).map((c,i) => {
+    const barW = Math.max(4, (c.revenue / maxRev * 100)).toFixed(1);
+    const marginColor = c.margin >= 20 ? '#00e676' : c.margin >= 15 ? '#ffd700' : '#00d4ff';
+    const rankColors = ['#ffd700','#c0c0c0','#cd7f32','#00d4ff','#00d4ff','#a78bfa','#a78bfa','#34d399'];
+    return `
+    <div class="cpc-card">
+      <div class="cpc-header">
+        <div class="cpc-name">${c.name}</div>
+        <div class="cpc-state-badge">${c.state}</div>
+      </div>
+      <div class="cpc-rev" style="color:${rankColors[i]}">${fmt(c.revenue)}</div>
+      <div class="cpc-stats-row">
+        <div class="cpc-stat">
+          <div class="cpc-stat-val">${c.rx}</div>
+          <div class="cpc-stat-lbl">Rx Orders</div>
+        </div>
+        <div class="cpc-stat">
+          <div class="cpc-stat-val">${fmt(c.profit)}</div>
+          <div class="cpc-stat-lbl">Profit</div>
+        </div>
+        <div class="cpc-stat">
+          <div class="cpc-stat-val" style="color:${marginColor}">${c.margin}%</div>
+          <div class="cpc-stat-lbl">Margin</div>
+        </div>
+      </div>
+      <div class="cpc-drug"><strong>Top Rx:</strong> ${c.topDrug}</div>
+      <div class="cpc-bar-row">
+        <div class="cpc-bar-bg"><div class="cpc-bar-fill" style="width:${barW}%;background:linear-gradient(90deg,${rankColors[i]},${rankColors[Math.min(i+1,7)]})"></div></div>
+        <div class="cpc-pct">${barW}%</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="slide slide-cpc" id="sc1">
+    <div class="slide-header">
+      <div class="brand-sm">JMS SALES</div>
+      <div class="hdr-center">Clinic Performance Deep Dive &nbsp;·&nbsp; ${CLINIC_PERIOD}</div>
+      <div class="hdr-badge">Top 8 by Revenue</div>
+    </div>
+    <div class="cpc-body">${cards}</div>
+  </div>`;
+}
+
+// ─── SLIDE: STATE BREAKDOWN ───────────────────────────────────────
+function slideStateBreakdown() {
+  const maxRev = stateData[0].revenue;
+  const totalStateRev = stateData.reduce((s,d)=>s+d.revenue,0);
+
+  const bars = stateData.map((d,i) => {
+    const barW = Math.max(3, (d.revenue / maxRev * 100)).toFixed(1);
+    const gradients = [
+      'linear-gradient(90deg,#ffd700,#ff8c00)',
+      'linear-gradient(90deg,#00d4ff,#7b2ff7)',
+      'linear-gradient(90deg,#00e676,#00b0ff)',
+      'linear-gradient(90deg,#a78bfa,#ec4899)',
+      'linear-gradient(90deg,#ff6b6b,#ff8e53)',
+      'linear-gradient(90deg,#34d399,#06b6d4)',
+    ];
+    const grad = gradients[i % gradients.length];
+    const marginColor = (d.profit/d.revenue*100) >= 15 ? '#00e676' : '#00d4ff';
+    return `
+    <div class="state-row">
+      <div class="state-name">${d.state}</div>
+      <div class="state-bar-bg">
+        <div class="state-bar-fill" style="width:${barW}%;background:${grad}"></div>
+        <div class="state-bar-label">${d.clinics} clinic${d.clinics>1?'s':''} &nbsp;·&nbsp; ${d.rx} Rx</div>
+      </div>
+      <div class="state-rev">${fmt(d.revenue)}</div>
+      <div class="state-clinics" style="color:${marginColor}">${(d.profit/d.revenue*100).toFixed(0)}% mgn</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="slide slide-state" id="sc2">
+    <div class="slide-header">
+      <div class="brand-sm">JMS SALES</div>
+      <div class="hdr-center">Revenue by State &nbsp;·&nbsp; ${CLINIC_PERIOD}</div>
+      <div class="brand-sm">12 States Active</div>
+    </div>
+    <div class="state-body">
+      <div class="state-chart">
+        <div class="panel-title">Top States by Revenue — ${CLINIC_PERIOD}</div>
+        <div class="state-bars">${bars}</div>
+      </div>
+      <div class="state-sidebar">
+        <div class="state-summary-card">
+          <div class="ssc-label">2-Day Total Revenue</div>
+          <div class="ssc-val green">${fmt(clinicData.totalRevenue)}</div>
+          <div class="ssc-sub">May 25 + May 26, 2026</div>
+        </div>
+        <div class="state-summary-card">
+          <div class="ssc-label">Total Profit</div>
+          <div class="ssc-val cyan">${fmt(clinicData.totalProfit)}</div>
+          <div class="ssc-sub">${(clinicData.totalProfit/clinicData.totalRevenue*100).toFixed(1)}% blended margin</div>
+        </div>
+        <div class="state-summary-card">
+          <div class="ssc-label">Rx Volume</div>
+          <div class="ssc-val" style="color:#a78bfa">${clinicData.totalRx}</div>
+          <div class="ssc-sub">Across ${clinicData.totalClinics} clinics</div>
+        </div>
+        <div class="state-summary-card">
+          <div class="ssc-label">Avg Rev / Clinic</div>
+          <div class="ssc-val gold">${fmt(clinicData.totalRevenue/clinicData.totalClinics)}</div>
+          <div class="ssc-sub">Per ordering clinic</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────
+function render() {
+  let html = slideLeaderboard() + slideWeeklyTrend() + slidePVA();
+  reps.forEach((r,i) => html += slideRep(r,i));
+  html += slideClinicLeaderboard() + slideClinicCards() + slideStateBreakdown();
+  document.getElementById('slideshow').innerHTML = html;
+}
+
+// ─── SLIDESHOW LOGIC ──────────────────────────────────────────────
+let cur=0, total=0, timer=null;
+
+function goTo(n) {
+  document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+  cur=n; startProgress();
+}
+function next() { goTo((cur+1)%total); }
+function prev() { clearTimeout(timer); goTo((cur-1+total)%total); }
+
+function startProgress() {
+  clearTimeout(timer);
+  const bar = document.getElementById('progressBar');
+  bar.style.transition='none'; bar.style.width='0%';
+  bar.offsetWidth; // reflow
+  bar.style.transition=`width ${DURATION}ms linear`; bar.style.width='100%';
+  timer = setTimeout(next, DURATION);
+}
+
+function buildIndicators(n) {
+  document.getElementById('indicators').innerHTML =
+    Array.from({length:n},(_,i)=>`<div class="dot" onclick="goTo(${i})"></div>`).join('');
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────
+// Slideshow is initialized after password is entered (see checkPass above)
+
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key===' ') next();
+  if (e.key==='ArrowLeft') prev();
+});
+</script>
+</body>
+</html>
