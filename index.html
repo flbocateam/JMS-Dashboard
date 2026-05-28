@@ -3,1006 +3,2217 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JMS Sales Floor — Live Stats</title>
+<title>JMS Sales Intelligence — Wall Street</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Inter',sans-serif; background:#080c18; color:#fff; width:100vw; height:100vh; overflow:hidden; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Barlow+Condensed:wght@400;600;700;800;900&display=swap');
 
-/* ── PASSWORD GATE ── */
+:root {
+  --bg:       #040c18;
+  --bg2:      #071020;
+  --gold:     #c9a84c;
+  --gold2:    #f0c040;
+  --gold3:    #ffd700;
+  --navy:     #0a1e3d;
+  --blue:     #1a3a6e;
+  --silver:   #8090a8;
+  --green:    #00d97e;
+  --red:      #e84040;
+  --white:    #dce6f0;
+  --muted:    #2d4060;
+  --border:   rgba(201,168,76,.2);
+  --glow:     0 0 24px rgba(201,168,76,.3);
+  --glow-lg:  0 0 48px rgba(201,168,76,.45);
+  --g-glow:   0 0 20px rgba(0,217,126,.35);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  width:100vw; height:100vh; overflow:hidden;
+}
+
+/* ── COVER SLIDE ── */
+.slide-cover {
+  background: radial-gradient(ellipse at 50% 42%, #071528 0%, var(--bg) 68%);
+  background-image:
+    repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,.02) 40px, rgba(201,168,76,.02) 41px),
+    repeating-linear-gradient(30deg, transparent, transparent 60px, rgba(26,58,110,.02) 60px, rgba(26,58,110,.02) 61px);
+}
+.cover-body {
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:0 80px 50px; gap:0;
+}
+.cover-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:.78rem; font-weight:700; letter-spacing:.45em; color:var(--muted); text-transform:uppercase; margin-bottom:16px; }
+.cover-rule-top { width:260px; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin-bottom:22px; opacity:.55; }
+.cover-brand {
+  font-family:'Barlow Condensed',sans-serif; font-size:5.2rem; font-weight:900;
+  letter-spacing:.32em; color:var(--gold2); text-transform:uppercase;
+  text-shadow:var(--glow-lg); animation:gold-glow 4s ease-in-out infinite;
+}
+.cover-tagline { font-family:'Barlow Condensed',sans-serif; font-size:.86rem; font-weight:700; letter-spacing:.5em; color:var(--silver); text-transform:uppercase; margin-top:5px; }
+.cover-period  { font-family:'Barlow Condensed',sans-serif; font-size:.78rem; color:var(--muted); letter-spacing:.18em; margin-top:7px; }
+.cover-rule { width:520px; height:1px; background:linear-gradient(90deg,transparent,var(--gold),var(--gold3),var(--gold),transparent); margin:22px 0; opacity:.55; }
+.cover-kpis { display:flex; gap:16px; width:100%; max-width:900px; }
+.cover-kpi {
+  flex:1; text-align:center;
+  background:rgba(201,168,76,.03); border:1px solid rgba(201,168,76,.12);
+  border-radius:3px; padding:20px 12px 16px;
+}
+.cover-kpi-val { font-family:'Barlow Condensed',sans-serif; font-size:2.55rem; font-weight:900; letter-spacing:.02em; line-height:1; }
+.cover-kpi-lbl { font-family:'Barlow Condensed',sans-serif; font-size:.76rem; font-weight:700; color:var(--silver); letter-spacing:.16em; text-transform:uppercase; margin-top:7px; }
+.cover-kpi-sub { font-size:.67rem; color:var(--muted); margin-top:3px; letter-spacing:.04em; }
+.cover-reps { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; justify-content:center; }
+.cover-rep-pill { font-family:'Barlow Condensed',sans-serif; font-size:.8rem; font-weight:700; letter-spacing:.1em; border:1px solid; border-radius:2px; padding:5px 16px; }
+.cover-hint { font-size:.66rem; color:var(--muted); letter-spacing:.14em; margin-top:18px; text-transform:uppercase; }
+
+/* ── WALL STREET BACKGROUND TEXTURE ── */
+.ws-bg {
+  background-image:
+    repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,.018) 40px, rgba(201,168,76,.018) 41px),
+    repeating-linear-gradient(30deg, transparent, transparent 60px, rgba(26,58,110,.025) 60px, rgba(26,58,110,.025) 61px);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes glow-pulse    { 0%,100%{opacity:1} 50%{opacity:.65} }
+@keyframes gold-glow     { 0%,100%{text-shadow:0 0 18px rgba(201,168,76,.35)} 50%{text-shadow:0 0 36px rgba(240,192,64,.7),0 0 60px rgba(201,168,76,.25)} }
+@keyframes fade-in       { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes scanline      { 0%{transform:translateY(-100%)} 100%{transform:translateY(100vh)} }
+@keyframes shimmer-gold  { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+@keyframes tick          { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ══════════════════════════════════
+   PASSWORD GATE
+══════════════════════════════════ */
 #gate {
-  position:fixed; inset:0; background:#080c18; z-index:9999;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;
+  position:fixed; inset:0; z-index:9999;
+  background: radial-gradient(ellipse at center, #071528 0%, var(--bg) 70%);
+  background-image:
+    repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,.02) 40px, rgba(201,168,76,.02) 41px),
+    repeating-linear-gradient(30deg, transparent, transparent 60px, rgba(26,58,110,.02) 60px, rgba(26,58,110,.02) 61px);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
+  overflow:hidden;
+}
+.gate-scanline {
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,.25),transparent);
+  animation:scanline 5s linear infinite;
+  pointer-events:none;
+}
+.gate-rule-top {
+  width:260px; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:.5;
 }
 .gate-brand {
-  font-size:2.8rem; font-weight:900; letter-spacing:.14em;
-  background:linear-gradient(90deg,#00d4ff,#7b2ff7);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:3.6rem; font-weight:900; letter-spacing:.25em;
+  color:var(--gold2); text-transform:uppercase;
+  text-shadow: var(--glow-lg);
+  animation: gold-glow 4s ease-in-out infinite;
 }
-.gate-sub { font-size:.95rem; color:#444; letter-spacing:.08em; margin-top:-14px; }
+.gate-tagline {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.88rem; font-weight:700; letter-spacing:.5em;
+  color:var(--silver); text-transform:uppercase;
+  margin-top:-12px;
+}
+.gate-rule {
+  width:320px; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold3),var(--gold),transparent);
+  opacity:.6;
+}
+.gate-sub {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.78rem; color:var(--muted); letter-spacing:.22em;
+  text-transform:uppercase;
+}
 .gate-box {
-  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);
-  border-radius:18px; padding:36px 44px; display:flex; flex-direction:column;
-  align-items:center; gap:18px; width:340px;
+  background:rgba(201,168,76,.03); border:1px solid var(--border);
+  border-radius:3px; padding:36px 44px;
+  display:flex; flex-direction:column; align-items:center; gap:16px; width:360px;
+  box-shadow: inset 0 0 40px rgba(201,168,76,.03), 0 0 40px rgba(10,30,61,.6);
 }
-.gate-label { font-size:.75rem; color:#555; letter-spacing:.1em; text-transform:uppercase; align-self:flex-start; }
+.gate-label {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.76rem; color:var(--silver); letter-spacing:.22em;
+  text-transform:uppercase; align-self:flex-start;
+}
 .gate-input {
-  width:100%; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
-  border-radius:10px; padding:14px 18px; color:#fff; font-size:1.1rem;
-  font-family:'Inter',sans-serif; letter-spacing:.12em; outline:none;
-  transition:border-color .2s;
+  width:100%; background:rgba(201,168,76,.03); border:1px solid rgba(201,168,76,.25);
+  border-radius:2px; padding:14px 18px; color:var(--gold2); font-size:1.1rem;
+  font-family:'Barlow Condensed',sans-serif; letter-spacing:.18em;
+  outline:none; transition:all .2s;
 }
-.gate-input:focus { border-color:rgba(0,212,255,.4); }
+.gate-input:focus { border-color:var(--gold2); box-shadow:0 0 14px rgba(201,168,76,.2); }
 .gate-btn {
-  width:100%; background:linear-gradient(90deg,#00d4ff,#7b2ff7);
-  border:none; border-radius:10px; padding:14px; color:#fff;
-  font-size:1rem; font-weight:700; letter-spacing:.06em; cursor:pointer;
-  transition:opacity .2s;
+  width:100%;
+  background:linear-gradient(90deg,#6b4d0a,var(--gold),var(--gold3),var(--gold),#6b4d0a);
+  background-size:200% 100%; animation:shimmer-gold 3s linear infinite;
+  border:none; border-radius:2px; padding:15px;
+  color:#040c18; font-family:'Barlow Condensed',sans-serif;
+  font-size:1.1rem; font-weight:900; letter-spacing:.26em; cursor:pointer;
+  text-transform:uppercase; transition:opacity .2s;
+  box-shadow: var(--glow);
 }
-.gate-btn:hover { opacity:.85; }
-.gate-error { font-size:.82rem; color:#ff5252; display:none; }
+.gate-btn:hover { opacity:.9; box-shadow:var(--glow-lg); }
+.gate-error { font-size:.8rem; color:var(--red); display:none; letter-spacing:.08em; }
 .gate-error.show { display:block; }
 
-/* ── SLIDESHOW ── */
+/* ══════════════════════════════════
+   CORE LAYOUT
+══════════════════════════════════ */
 .slideshow { width:100%; height:100%; position:relative; }
-.slide { position:absolute; inset:0; display:flex; flex-direction:column; opacity:0; transition:opacity .8s ease; pointer-events:none; }
-.slide.active { opacity:1; pointer-events:all; }
+.slide {
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  opacity:0; transform:translateY(10px);
+  transition:opacity .55s ease, transform .55s ease;
+  pointer-events:none;
+}
+.slide.active { opacity:1; transform:translateY(0); pointer-events:all; }
+.slide.exit   { opacity:0; transform:translateY(-8px); }
 
-/* ── PROGRESS BAR ── */
-.progress-bar { position:fixed; bottom:0; left:0; height:4px; background:linear-gradient(90deg,#00d4ff,#7b2ff7); width:0%; z-index:100; }
+.progress-bar {
+  position:fixed; bottom:0; left:0; height:3px;
+  background:linear-gradient(90deg,#3a2800,var(--gold),var(--gold3),var(--gold2),#3a2800);
+  width:0%; z-index:100;
+  box-shadow:0 0 10px rgba(201,168,76,.6);
+}
+.indicators { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:100; }
+.dot {
+  width:7px; height:7px; border-radius:50%; background:rgba(201,168,76,.18);
+  transition:all .4s; cursor:pointer; position:relative;
+}
+.dot.active { background:var(--gold2); transform:scale(1.5); box-shadow:0 0 8px rgba(240,192,64,.5); }
+.dot:hover::after {
+  content: attr(data-name);
+  position:absolute; bottom:16px; left:50%; transform:translateX(-50%);
+  background:rgba(4,12,24,.95); border:1px solid rgba(201,168,76,.25);
+  color:var(--gold2); font-family:'Barlow Condensed',sans-serif;
+  font-size:.68rem; font-weight:700; letter-spacing:.1em;
+  white-space:nowrap; padding:4px 10px; border-radius:2px;
+  pointer-events:none; z-index:200;
+}
 
-/* ── INDICATORS ── */
-.indicators { position:fixed; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:100; }
-.dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.25); transition:background .4s,transform .4s; cursor:pointer; }
-.dot.active { background:#00d4ff; transform:scale(1.5); }
+/* ── SLIDE NAME FLASH ── */
+#slideNameFlash {
+  position:fixed; top:46px; left:50%; transform:translateX(-50%);
+  font-family:'Barlow Condensed',sans-serif; font-size:.72rem; font-weight:700;
+  letter-spacing:.3em; color:var(--gold); text-transform:uppercase;
+  background:rgba(4,12,24,.88); border:1px solid rgba(201,168,76,.2);
+  padding:5px 18px; border-radius:2px; opacity:0;
+  transition:opacity .3s ease; pointer-events:none; z-index:200;
+}
+#slideNameFlash.snf-show  { opacity:1; }
+#slideNameFlash.snf-hide  { opacity:0; transition:opacity .9s ease; }
 
-/* ── TICKER ── */
-.ticker { position:fixed; top:0; left:0; right:0; height:40px; background:rgba(8,12,24,.85); border-bottom:1px solid rgba(255,255,255,.07); backdrop-filter:blur(10px); display:flex; align-items:center; overflow:hidden; z-index:50; }
-.ticker-inner { display:flex; gap:70px; white-space:nowrap; animation:tick 50s linear infinite; padding-left:100%; }
-@keyframes tick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-.ticker-item { font-size:.74rem; letter-spacing:.05em; color:#777; }
-.ticker-item strong { color:#bbb; }
-.ti-up { color:#00e676; } .ti-dn { color:#ff5252; }
+/* ── SLIDE COUNTER ── */
+#slideCounter {
+  position:fixed; bottom:30px; right:20px;
+  font-family:'Barlow Condensed',sans-serif; font-size:.72rem; font-weight:700;
+  letter-spacing:.12em; color:rgba(201,168,76,.35); z-index:100;
+  pointer-events:none;
+}
 
-/* ── SHARED HEADER ── */
-.slide-header { margin-top:40px; padding:22px 56px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.06); flex-shrink:0; }
-.brand { font-size:1.9rem; font-weight:900; letter-spacing:.14em; background:linear-gradient(90deg,#00d4ff,#7b2ff7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.brand-sm { font-size:.95rem; font-weight:700; letter-spacing:.14em; color:#444; }
-.hdr-center { font-size:1rem; color:#555; letter-spacing:.05em; }
-.hdr-badge { background:rgba(0,212,255,.08); border:1px solid rgba(0,212,255,.2); border-radius:40px; padding:8px 22px; font-size:.9rem; color:#00d4ff; font-weight:600; letter-spacing:.04em; }
+/* ── GLOBAL CHART TOOLTIP ── */
+#chartTip {
+  position:fixed; pointer-events:none; z-index:500;
+  background:rgba(4,12,24,.96); border:1px solid rgba(201,168,76,.3);
+  color:var(--white); font-family:'Barlow Condensed',sans-serif;
+  font-size:.78rem; font-weight:600; letter-spacing:.06em;
+  padding:6px 12px; border-radius:3px; opacity:0;
+  transition:opacity .15s ease; white-space:nowrap;
+  box-shadow:0 4px 16px rgba(0,0,0,.4);
+}
+#chartTip.ct-show { opacity:1; }
 
-/* ════════════════════════════════════
-   SLIDE: LEADERBOARD
-════════════════════════════════════ */
-.slide-lb { background:linear-gradient(135deg,#080c18 0%,#0d1f3c 55%,#080c18 100%); }
-.lb-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:16px 56px 50px; gap:10px; }
-.lb-row { display:grid; grid-template-columns:52px 1fr 60px 60px 180px 180px 130px; align-items:center; gap:16px; background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.05); border-radius:14px; padding:16px 24px; }
-.lb-row.r1 { background:linear-gradient(90deg,rgba(255,215,0,.1),transparent); border-color:rgba(255,215,0,.2); }
-.lb-row.r2 { background:linear-gradient(90deg,rgba(192,192,192,.07),transparent); border-color:rgba(192,192,192,.18); }
-.lb-row.r3 { background:linear-gradient(90deg,rgba(205,127,50,.07),transparent); border-color:rgba(205,127,50,.18); }
-.rank-ico { font-size:1.7rem; text-align:center; }
-.rep-name { font-size:1.2rem; font-weight:700; }
-.rep-sub { font-size:.75rem; color:#666; margin-top:2px; }
-.plat-pill { font-size:.65rem; font-weight:700; letter-spacing:.06em; padding:3px 8px; border-radius:99px; text-align:center; }
-.plat-boom { background:rgba(0,212,255,.15); color:#00d4ff; }
-.plat-bulk { background:rgba(123,47,247,.15); color:#a78bfa; }
-.bar-bg { height:8px; background:rgba(255,255,255,.07); border-radius:99px; overflow:hidden; }
-.bar-fill { height:100%; border-radius:99px; }
-.r1 .bar-fill { background:linear-gradient(90deg,#ffd700,#ff8c00); }
-.r2 .bar-fill { background:linear-gradient(90deg,#a0a0a0,#606060); }
-.r3 .bar-fill { background:linear-gradient(90deg,#cd7f32,#8b4513); }
-.r4 .bar-fill,.r5 .bar-fill,.r6 .bar-fill { background:linear-gradient(90deg,#00d4ff,#7b2ff7); }
-.lb-rev { text-align:right; font-size:1.45rem; font-weight:800; }
-.r1 .lb-rev { color:#ffd700; } .r2 .lb-rev { color:#c0c0c0; } .r3 .lb-rev { color:#cd7f32; }
-.lb-ord { text-align:right; font-size:.85rem; color:#888; }
-.lb-ord span { display:block; font-size:.65rem; color:#555; margin-top:1px; }
+/* ── THEME TOGGLE ── */
+#themeToggle {
+  position:fixed; top:46px; right:16px; z-index:200;
+  background:rgba(201,168,76,.08); border:1px solid rgba(201,168,76,.2);
+  color:var(--gold); font-size:.9rem; cursor:pointer;
+  padding:5px 9px; border-radius:3px; transition:all .2s;
+  line-height:1;
+}
+#themeToggle:hover { background:rgba(201,168,76,.18); box-shadow:var(--glow); }
 
-/* ════════════════════════════════════
-   SLIDE: WEEKLY TEAM TREND
-════════════════════════════════════ */
-.slide-trend { background:linear-gradient(160deg,#080c18,#0a1428,#080c18); }
-.trend-body { flex:1; display:grid; grid-template-columns:1fr 340px; gap:0; }
+/* ══════════════════════════════════
+   LIGHT MODE
+══════════════════════════════════ */
+body.light-mode {
+  --bg:     #f0f4f8;
+  --bg2:    #e4ecf4;
+  --gold:   #8a6a10;
+  --gold2:  #a07810;
+  --gold3:  #b88c14;
+  --navy:   #dce8f4;
+  --blue:   #c8daf0;
+  --silver: #4a5a72;
+  --green:  #007a44;
+  --red:    #b82020;
+  --white:  #0a1e3d;
+  --muted:  #7a90a8;
+  --border: rgba(10,30,61,.15);
+  --glow:   0 0 16px rgba(138,106,16,.2);
+  --glow-lg:0 0 32px rgba(138,106,16,.3);
+}
+body.light-mode .gate-brand,
+body.light-mode .cover-brand { color:var(--gold2); }
+body.light-mode .slide-hdr  { background:rgba(240,244,248,.85); }
+body.light-mode .ws-bg      { background-color:var(--bg); }
+body.light-mode .ticker     { background:rgba(240,244,248,.97); border-bottom-color:rgba(10,30,61,.15); }
+body.light-mode #tickerTimestamp { background:rgba(240,244,248,.97); border-left-color:rgba(10,30,61,.15); }
+body.light-mode #slideNameFlash { background:rgba(240,244,248,.95); color:var(--gold2); }
+body.light-mode #themeToggle { background:rgba(10,30,61,.06); border-color:rgba(10,30,61,.2); color:var(--gold2); }
 
-.trend-chart-panel { padding:28px 40px 50px 56px; display:flex; flex-direction:column; border-right:1px solid rgba(255,255,255,.06); }
-.trend-chart-panel .panel-title { font-size:.75rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:18px; }
-.weekly-bars { display:flex; align-items:flex-end; gap:10px; flex:1; }
-.wk-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; height:100%; justify-content:flex-end; }
+/* ══════════════════════════════════
+   TICKER
+══════════════════════════════════ */
+.ticker {
+  position:fixed; top:0; left:0; right:0; height:38px;
+  background:rgba(4,12,24,.97); border-bottom:1px solid rgba(201,168,76,.2);
+  backdrop-filter:blur(10px); display:flex; align-items:center; overflow:hidden; z-index:50;
+}
+.ticker-scroll { flex:1; overflow:hidden; min-width:0; }
+.ticker-inner { display:flex; gap:50px; white-space:nowrap; animation:tick 40s linear infinite; padding-left:50px; }
+#tickerTimestamp {
+  flex-shrink:0; display:flex; align-items:center; gap:8px;
+  padding:0 14px; height:100%; border-left:1px solid rgba(201,168,76,.15);
+  background:rgba(4,12,24,.97);
+}
+#tickerTimestamp .ts-dot {
+  width:6px; height:6px; border-radius:50%; background:var(--green);
+  animation:live-pulse 2s ease-in-out infinite; flex-shrink:0;
+}
+#tickerTimestamp .ts-text {
+  font-family:'Barlow Condensed',sans-serif; font-size:.72rem; font-weight:700;
+  letter-spacing:.1em; color:var(--silver); white-space:nowrap;
+}
+#tickerTimestamp .ts-text strong { color:var(--gold2); }
+.ticker-item { font-size:.78rem; letter-spacing:.04em; color:rgba(201,168,76,.45); }
+.ticker-item strong { color:var(--white); font-weight:700; }
+.ticker-item .sym { font-family:'Barlow Condensed',sans-serif; font-size:.82rem; font-weight:900; letter-spacing:.1em; color:var(--gold2); margin-right:5px; }
+.ti-up { color:var(--green); font-weight:700; }
+.ti-dn { color:var(--red); }
+
+/* ══════════════════════════════════
+   SHARED HEADER
+══════════════════════════════════ */
+.slide-header {
+  margin-top:38px; padding:16px 56px;
+  display:flex; justify-content:space-between; align-items:center;
+  border-bottom:1px solid rgba(201,168,76,.12); flex-shrink:0;
+  background:rgba(4,12,24,.6);
+}
+.brand {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:2rem; font-weight:900; letter-spacing:.22em;
+  color:var(--gold2); text-transform:uppercase;
+  text-shadow:var(--glow);
+}
+.brand-sm {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1rem; font-weight:700; letter-spacing:.2em; color:var(--muted);
+}
+.hdr-center { font-size:.88rem; color:var(--silver); letter-spacing:.08em; font-weight:500; font-family:'Barlow Condensed',sans-serif; }
+.hdr-badge {
+  background:rgba(201,168,76,.07); border:1px solid var(--border);
+  border-radius:2px; padding:7px 20px; font-size:.92rem;
+  color:var(--gold2); font-weight:900; letter-spacing:.08em;
+  font-family:'Barlow Condensed',sans-serif;
+  box-shadow:inset 0 0 16px rgba(201,168,76,.04);
+}
+.period-badge {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.76rem; font-weight:900; letter-spacing:.16em;
+  color:var(--bg); background:var(--gold);
+  border-radius:2px; padding:4px 12px;
+}
+
+/* ══════════════════════════════════
+   SLIDE: TEAM LEADERBOARD
+══════════════════════════════════ */
+.slide-lb {
+  background: radial-gradient(ellipse at 25% 50%, #071528 0%, var(--bg) 70%);
+  background-image:
+    repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,.018) 40px, rgba(201,168,76,.018) 41px),
+    repeating-linear-gradient(30deg, transparent, transparent 60px, rgba(26,58,110,.02) 60px, rgba(26,58,110,.02) 61px);
+}
+.lb-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:16px 56px 50px; gap:12px; }
+.lb-row {
+  display:grid; grid-template-columns:52px 1fr 148px 168px 88px;
+  align-items:center; gap:18px;
+  background:rgba(201,168,76,.025); border:1px solid rgba(201,168,76,.1);
+  border-left:4px solid rgba(201,168,76,.18);
+  border-radius:2px; padding:18px 24px;
+}
+.lb-row.r1 {
+  background:linear-gradient(90deg,rgba(201,168,76,.1),rgba(201,168,76,.025));
+  border-color:rgba(201,168,76,.35); border-left-color:var(--gold2);
+  box-shadow:inset 0 0 30px rgba(201,168,76,.04), 0 0 20px rgba(201,168,76,.08);
+}
+.lb-row.r2 { border-left-color:#8090a8; border-color:rgba(128,144,168,.2); }
+.lb-row.r3 { border-left-color:#cd7f32; border-color:rgba(205,127,50,.18); }
+.lb-row.r4 { border-left-color:rgba(201,168,76,.25); }
+.rank-ico { font-size:1.9rem; text-align:center; }
+.rep-name { font-family:'Barlow Condensed',sans-serif; font-size:1.5rem; font-weight:800; letter-spacing:.04em; color:var(--white); }
+.rep-sub { font-size:.78rem; color:var(--silver); margin-top:3px; letter-spacing:.02em; }
+.bar-bg { height:6px; background:rgba(201,168,76,.08); border-radius:2px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:2px; }
+.r1 .bar-fill { background:linear-gradient(90deg,#6b4d0a,var(--gold2)); box-shadow:0 0 6px rgba(201,168,76,.4); }
+.r2 .bar-fill { background:linear-gradient(90deg,#3a4050,#8090a8); }
+.r3 .bar-fill { background:linear-gradient(90deg,#5a3010,#cd7f32); }
+.r4 .bar-fill { background:linear-gradient(90deg,#1a2a1a,#3a5a3a); }
+.lb-rev {
+  font-family:'Barlow Condensed',sans-serif; text-align:right;
+  font-size:1.9rem; font-weight:900; letter-spacing:.02em;
+  animation: gold-glow 4s ease-in-out infinite;
+}
+.r1 .lb-rev { color:var(--gold2); }
+.r2 .lb-rev { color:var(--silver); }
+.r3 .lb-rev { color:#cd7f32; }
+.r4 .lb-rev { color:rgba(201,168,76,.65); animation:none; }
+.lb-ord { text-align:right; }
+.lb-ord .ord-num { font-family:'Barlow Condensed',sans-serif; font-size:1.12rem; font-weight:700; color:var(--silver); }
+.lb-ord .ord-lbl { font-size:.68rem; color:var(--muted); margin-top:2px; letter-spacing:.08em; text-transform:uppercase; }
+
+/* ══════════════════════════════════
+   SLIDE: WEEKLY TREND
+══════════════════════════════════ */
+.slide-trend {
+  background: radial-gradient(ellipse at 70% 30%, #071528 0%, var(--bg) 65%);
+  background-image: repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,.018) 40px, rgba(201,168,76,.018) 41px);
+}
+.trend-body { flex:1; display:grid; grid-template-columns:1fr 310px; }
+.trend-chart-panel { padding:22px 40px 50px 56px; display:flex; flex-direction:column; border-right:1px solid rgba(201,168,76,.1); }
+.panel-title { font-family:'Barlow Condensed',sans-serif; font-size:.88rem; font-weight:700; color:var(--silver); letter-spacing:.16em; text-transform:uppercase; margin-bottom:18px; }
+.weekly-bars { display:flex; align-items:flex-end; gap:8px; flex:1; }
+.wk-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end; }
 .wk-bar-wrap { flex:1; width:100%; display:flex; align-items:flex-end; }
-.wk-bar { width:100%; border-radius:5px 5px 0 0; min-height:3px; position:relative; transition:opacity .3s; }
-.wk-bar.peak { box-shadow:0 0 20px rgba(255,215,0,.5); }
-.wk-bar.current { box-shadow:0 0 14px rgba(0,212,255,.4); }
-.wk-val { font-size:.62rem; color:#aaa; font-weight:600; white-space:nowrap; }
-.wk-lbl { font-size:.6rem; color:#444; white-space:nowrap; }
-.wk-lbl.hl { color:#00d4ff; }
+.wk-bar { width:100%; border-radius:2px 2px 0 0; min-height:3px; }
+.wk-bar.peak { box-shadow:0 0 16px rgba(201,168,76,.5); }
+.wk-bar.current { box-shadow:0 0 12px rgba(0,217,126,.4); }
+.wk-val { font-family:'Barlow Condensed',sans-serif; font-size:.76rem; color:rgba(201,168,76,.6); font-weight:700; white-space:nowrap; }
+.wk-lbl { font-size:.64rem; color:var(--muted); white-space:nowrap; }
+.wk-lbl.hl { color:var(--green); font-weight:700; }
+.trend-stats-panel { padding:26px 28px; display:flex; flex-direction:column; gap:12px; justify-content:center; }
+.trend-stat-card {
+  background:rgba(201,168,76,.03); border:1px solid rgba(201,168,76,.1);
+  border-left:4px solid var(--gold); border-radius:2px; padding:16px 18px;
+}
+.tsc-label { font-family:'Barlow Condensed',sans-serif; font-size:.76rem; color:var(--silver); letter-spacing:.16em; text-transform:uppercase; margin-bottom:6px; }
+.tsc-val { font-family:'Barlow Condensed',sans-serif; font-size:2rem; font-weight:900; letter-spacing:.02em; }
+.tsc-sub { font-size:.76rem; color:var(--silver); margin-top:4px; }
+.g { color:var(--green); } .r { color:var(--red); } .gd { color:var(--gold2); } .wh { color:var(--white); }
 
-.trend-stats-panel { padding:28px 32px; display:flex; flex-direction:column; gap:20px; justify-content:center; }
-.trend-stat-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:18px 20px; }
-.tsc-label { font-size:.7rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
-.tsc-val { font-size:2rem; font-weight:900; }
-.tsc-sub { font-size:.75rem; color:#666; margin-top:4px; }
-.green { color:#00e676; } .red { color:#ff5252; } .gold { color:#ffd700; } .cyan { color:#00d4ff; }
-
-/* ════════════════════════════════════
-   SLIDE: PROJECTION vs ACTUAL
-════════════════════════════════════ */
-.slide-pva { background:linear-gradient(160deg,#080c18,#0c1a14,#080c18); }
-.pva-body { flex:1; display:grid; grid-template-columns:1fr 320px; }
-
-.pva-chart { padding:24px 36px 50px 56px; display:flex; flex-direction:column; border-right:1px solid rgba(255,255,255,.06); }
-.pva-chart .panel-title { font-size:.75rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:16px; }
-.pva-weeks { display:flex; flex-direction:column; gap:10px; flex:1; justify-content:center; }
-.pva-row { display:grid; grid-template-columns:70px 1fr 1fr 90px; align-items:center; gap:12px; }
-.pva-date { font-size:.75rem; color:#666; white-space:nowrap; }
-.pva-bar-wrap { position:relative; height:24px; background:rgba(255,255,255,.05); border-radius:6px; overflow:visible; }
-.pva-bar-proj { position:absolute; top:4px; height:8px; border-radius:3px; background:rgba(255,255,255,.2); }
-.pva-bar-act { position:absolute; bottom:4px; height:8px; border-radius:3px; }
-.pva-bar-act.over { background:linear-gradient(90deg,#00e676,#00b0ff); }
-.pva-bar-act.under { background:linear-gradient(90deg,#ff6b6b,#ff8e53); }
-.pva-var { font-size:.85rem; font-weight:700; text-align:right; }
-.pva-legend { display:flex; gap:16px; margin-bottom:14px; }
-.pva-leg-item { display:flex; align-items:center; gap:6px; font-size:.72rem; color:#666; }
-.pva-leg-box { width:12px; height:6px; border-radius:2px; }
-
-.pva-sidebar { padding:24px 28px; display:flex; flex-direction:column; gap:16px; justify-content:center; }
-.pva-cumcard { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:20px; text-align:center; }
-.pva-cumcard .lbl { font-size:.7rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; }
-.pva-cumcard .val { font-size:2.4rem; font-weight:900; }
-.pva-cumcard .sub { font-size:.75rem; color:#666; margin-top:6px; }
-.pva-clinic-table { display:flex; flex-direction:column; gap:8px; }
-.pva-clinic-row { display:flex; justify-content:space-between; align-items:center; font-size:.82rem; padding:8px 12px; background:rgba(255,255,255,.02); border-radius:8px; border:1px solid rgba(255,255,255,.05); }
-.pva-clinic-row .dt { color:#666; } .pva-clinic-row .proj { color:#555; } .pva-clinic-row .act { font-weight:700; }
-.pva-clinic-row .diff.pos { color:#00e676; } .pva-clinic-row .diff.neg { color:#ff5252; }
-
-/* ════════════════════════════════════
-   SLIDE: NEW CLINICS
-════════════════════════════════════ */
-.slide-clinics { background:linear-gradient(160deg,#080c18,#0e1220,#080c18); }
-.clinics-body { flex:1; display:grid; grid-template-columns:1fr 1fr; }
-.nc-panel { padding:28px 40px; border-right:1px solid rgba(255,255,255,.06); display:flex; flex-direction:column; }
-.nc-panel:last-child { border-right:none; }
-.nc-panel .panel-title { font-size:.75rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:16px; }
-.nc-bar-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
-.nc-rep-name { font-size:.85rem; color:#ccc; font-weight:600; width:120px; flex-shrink:0; }
-.nc-bar-bg { flex:1; height:10px; background:rgba(255,255,255,.06); border-radius:99px; overflow:hidden; }
-.nc-bar-fill { height:100%; border-radius:99px; }
-.nc-val { font-size:.9rem; font-weight:700; width:36px; text-align:right; }
-
-.monthly-clinics { display:flex; flex-direction:column; gap:10px; flex:1; justify-content:center; }
-.mc-month { background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:14px 18px; }
-.mc-month-name { font-size:.7rem; color:#555; letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; }
-.mc-rep-bars { display:flex; flex-direction:column; gap:5px; }
-.mc-rep-row { display:flex; align-items:center; gap:10px; }
-.mc-rep-nm { font-size:.7rem; color:#888; width:80px; flex-shrink:0; }
-.mc-rep-bar { height:7px; border-radius:99px; }
-.mc-rep-val { font-size:.7rem; color:#aaa; margin-left:4px; }
-
-/* ════════════════════════════════════
+/* ══════════════════════════════════
    SLIDE: INDIVIDUAL REP
-════════════════════════════════════ */
-.slide-rep { }
+══════════════════════════════════ */
 .rep-body { flex:1; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
-
-.panel { padding:28px 42px; border-right:1px solid rgba(255,255,255,.055); border-bottom:1px solid rgba(255,255,255,.055); display:flex; flex-direction:column; justify-content:center; }
+.panel {
+  padding:28px 44px; border-right:1px solid rgba(201,168,76,.08); border-bottom:1px solid rgba(201,168,76,.08);
+  display:flex; flex-direction:column; justify-content:center;
+}
 .panel:nth-child(2n) { border-right:none; }
 .panel:nth-child(3),.panel:nth-child(4) { border-bottom:none; }
-.panel-title { font-size:.72rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:14px; }
-.panel.alt-bg { background:rgba(255,255,255,.015); }
-
-/* Name panel */
-.rank-badge { display:inline-flex; align-items:center; gap:7px; background:rgba(255,255,255,.05); border-radius:99px; padding:5px 16px; font-size:.8rem; color:#888; letter-spacing:.05em; margin-bottom:14px; width:fit-content; border:1px solid rgba(255,255,255,.08); }
-.rep-big-name { font-size:2.5rem; font-weight:900; line-height:1.08; letter-spacing:-.01em; }
-.period-tag { margin-top:12px; font-size:.8rem; color:#444; letter-spacing:.05em; }
-.platform-split { display:flex; gap:10px; margin-top:14px; }
-.ps-pill { display:flex; flex-direction:column; padding:8px 14px; border-radius:10px; }
-.ps-boom { background:rgba(0,212,255,.07); border:1px solid rgba(0,212,255,.15); }
-.ps-bulk { background:rgba(123,47,247,.07); border:1px solid rgba(123,47,247,.15); }
-.ps-lbl { font-size:.62rem; color:#666; letter-spacing:.08em; margin-bottom:3px; }
-.ps-val { font-size:1rem; font-weight:700; }
-.ps-boom .ps-val { color:#00d4ff; } .ps-bulk .ps-val { color:#a78bfa; }
-.ps-pct { font-size:.65rem; color:#555; margin-top:1px; }
-
-/* Revenue panel */
-.rev-label { font-size:.75rem; color:#666; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
-.rev-amount { font-size:4rem; font-weight:900; line-height:1; letter-spacing:-.02em; }
-.sub-stats { display:flex; gap:30px; margin-top:18px; flex-wrap:wrap; }
-.sub-stat .val { font-size:1.5rem; font-weight:800; }
-.sub-stat .lbl { font-size:.68rem; color:#555; letter-spacing:.07em; text-transform:uppercase; margin-top:2px; }
-.new-clinics-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(0,230,118,.07); border:1px solid rgba(0,230,118,.2); border-radius:99px; padding:5px 14px; font-size:.8rem; color:#00e676; font-weight:600; margin-top:16px; width:fit-content; }
-
-/* Weekly trend panel */
+.panel.alt-bg { background:rgba(201,168,76,.018); }
+.rank-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(201,168,76,.07); border:1px solid var(--border);
+  border-radius:2px; padding:5px 14px;
+  font-family:'Barlow Condensed',sans-serif; font-size:.82rem; color:var(--silver);
+  letter-spacing:.14em; margin-bottom:14px; width:fit-content; text-transform:uppercase;
+}
+.rep-big-name { font-family:'Barlow Condensed',sans-serif; font-size:2.8rem; font-weight:900; line-height:1.05; letter-spacing:.04em; color:var(--white); }
+.period-tag { margin-top:10px; font-size:.8rem; color:var(--silver); letter-spacing:.06em; }
+.platform-split { display:flex; gap:10px; margin-top:16px; }
+.ps-pill { display:flex; flex-direction:column; padding:10px 16px; border-radius:2px; border:1px solid; }
+.ps-boom { background:rgba(0,217,126,.04); border-color:rgba(0,217,126,.2); }
+.ps-bulk { background:rgba(201,168,76,.04); border-color:rgba(201,168,76,.18); }
+.ps-lbl { font-family:'Barlow Condensed',sans-serif; font-size:.68rem; color:var(--silver); letter-spacing:.14em; margin-bottom:4px; text-transform:uppercase; }
+.ps-val { font-family:'Barlow Condensed',sans-serif; font-size:1.12rem; font-weight:800; }
+.ps-boom .ps-val { color:var(--green); }
+.ps-bulk .ps-val { color:var(--gold2); }
+.ps-pct { font-size:.68rem; color:var(--muted); margin-top:2px; }
+.ws-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(201,168,76,.08); border:1px solid rgba(201,168,76,.28);
+  border-radius:2px; padding:7px 16px;
+  font-family:'Barlow Condensed',sans-serif; font-size:.92rem; color:var(--gold2);
+  font-weight:900; margin-top:16px; width:fit-content;
+  letter-spacing:.1em; text-transform:uppercase;
+  box-shadow:0 0 12px rgba(201,168,76,.1);
+}
+.rev-label { font-family:'Barlow Condensed',sans-serif; font-size:.8rem; color:var(--silver); letter-spacing:.18em; text-transform:uppercase; margin-bottom:8px; }
+.rev-amount { font-family:'Barlow Condensed',sans-serif; font-size:4.2rem; font-weight:900; line-height:1; letter-spacing:.02em; animation:gold-glow 4s ease-in-out infinite; }
+.sub-stats { display:flex; gap:24px; margin-top:18px; flex-wrap:wrap; }
+.sub-stat .val { font-family:'Barlow Condensed',sans-serif; font-size:1.7rem; font-weight:800; }
+.sub-stat .lbl { font-size:.68rem; color:var(--silver); letter-spacing:.1em; text-transform:uppercase; margin-top:3px; }
+.month-grid { display:flex; gap:10px; margin-top:18px; }
+.mg-box { flex:1; text-align:center; background:rgba(201,168,76,.03); border:1px solid rgba(201,168,76,.1); border-radius:2px; padding:11px 10px; }
+.mg-val { font-family:'Barlow Condensed',sans-serif; font-size:1.4rem; font-weight:900; }
+.mg-lbl { font-size:.64rem; color:var(--silver); margin-top:3px; letter-spacing:.1em; text-transform:uppercase; }
 .rep-weekly-bars { display:flex; align-items:flex-end; gap:5px; height:110px; }
 .rwk-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end; }
 .rwk-bar-wrap { flex:1; width:100%; display:flex; align-items:flex-end; }
-.rwk-bar { width:100%; border-radius:3px 3px 0 0; min-height:2px; }
-.rwk-bar.peak { opacity:1; }
-.rwk-lbl { font-size:.52rem; color:#444; writing-mode:vertical-rl; text-orientation:mixed; transform:rotate(180deg); height:28px; line-height:1; }
-
-/* Drug panel */
-.drug-row { display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px solid rgba(255,255,255,.045); }
+.rwk-bar { width:100%; border-radius:2px 2px 0 0; min-height:2px; }
+.rwk-lbl { font-size:.54rem; color:var(--muted); writing-mode:vertical-rl; text-orientation:mixed; transform:rotate(180deg); height:28px; line-height:1; }
+.drug-row { display:flex; align-items:center; gap:14px; padding:11px 0; border-bottom:1px solid rgba(201,168,76,.07); }
 .drug-row:last-child { border-bottom:none; }
-.drug-num { font-size:.8rem; color:#3a3a3a; font-weight:700; width:18px; }
-.drug-name { flex:1; font-size:.92rem; font-weight:600; color:#ccc; }
-.drug-rev { font-size:.95rem; font-weight:700; }
+.drug-num { font-family:'Barlow Condensed',sans-serif; font-size:.88rem; color:var(--muted); font-weight:700; width:20px; }
+.drug-name { flex:1; font-size:.92rem; font-weight:600; color:rgba(220,230,240,.8); }
+.drug-rev { font-family:'Barlow Condensed',sans-serif; font-size:1.08rem; font-weight:800; }
 
-/* ── THEME COLORS ── */
-.theme-0 { --ac:#ffd700; --ac2:#ff8c00; }
-.theme-1 { --ac:#00d4ff; --ac2:#7b2ff7; }
-.theme-2 { --ac:#00e676; --ac2:#00b0ff; }
-.theme-3 { --ac:#ff6b6b; --ac2:#ff8e53; }
-.theme-4 { --ac:#a78bfa; --ac2:#ec4899; }
-.theme-5 { --ac:#34d399; --ac2:#06b6d4; }
+/* THEME COLORS */
+.theme-0 .rep-big-name,.theme-0 .rev-amount,.theme-0 .sub-stat .val,.theme-0 .drug-rev,.theme-0 .mg-val { color:var(--gold2); }
+.theme-0 .rwk-bar { background:linear-gradient(180deg,var(--gold2),#3a2800); }
+.theme-1 .rep-big-name,.theme-1 .rev-amount,.theme-1 .sub-stat .val,.theme-1 .drug-rev,.theme-1 .mg-val { color:var(--silver); }
+.theme-1 .rwk-bar { background:linear-gradient(180deg,#b0c0d0,#1a2a3a); }
+.theme-2 .rep-big-name,.theme-2 .rev-amount,.theme-2 .sub-stat .val,.theme-2 .drug-rev,.theme-2 .mg-val { color:#00d4ff; }
+.theme-2 .rwk-bar { background:linear-gradient(180deg,#00d4ff,#003344); }
+.theme-3 .rep-big-name,.theme-3 .rev-amount,.theme-3 .sub-stat .val,.theme-3 .drug-rev,.theme-3 .mg-val { color:#a78bfa; }
+.theme-3 .rwk-bar { background:linear-gradient(180deg,#a78bfa,#2a0050); }
 
-.theme-0 .rep-big-name,.theme-0 .rev-amount,.theme-0 .sub-stat .val,.theme-0 .drug-rev { color:var(--ac); }
-.theme-0 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
-.theme-0 .rank-badge { border-color:rgba(255,215,0,.2); }
-.theme-0 .new-clinics-badge { border-color:rgba(255,215,0,.25); color:var(--ac); background:rgba(255,215,0,.06); }
-
-.theme-1 .rep-big-name,.theme-1 .rev-amount,.theme-1 .sub-stat .val,.theme-1 .drug-rev { color:var(--ac); }
-.theme-1 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
-.theme-1 .rank-badge { border-color:rgba(0,212,255,.2); }
-
-.theme-2 .rep-big-name,.theme-2 .rev-amount,.theme-2 .sub-stat .val,.theme-2 .drug-rev { color:var(--ac); }
-.theme-2 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
-.theme-2 .rank-badge { border-color:rgba(0,230,118,.2); }
-
-.theme-3 .rep-big-name,.theme-3 .rev-amount,.theme-3 .sub-stat .val,.theme-3 .drug-rev { color:var(--ac); }
-.theme-3 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
-
-.theme-4 .rep-big-name,.theme-4 .rev-amount,.theme-4 .sub-stat .val,.theme-4 .drug-rev { color:var(--ac); }
-.theme-4 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
-
-.theme-5 .rep-big-name,.theme-5 .rev-amount,.theme-5 .sub-stat .val,.theme-5 .drug-rev { color:var(--ac); }
-.theme-5 .rwk-bar { background:linear-gradient(180deg,var(--ac),var(--ac2)); }
-
-/* ════════════════════════════════════
+/* ══════════════════════════════════
    SLIDE: CLINIC LEADERBOARD
-════════════════════════════════════ */
-.slide-clb { background:linear-gradient(135deg,#080c18 0%,#0d1a2e 55%,#080c18 100%); }
-.clb-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:10px 56px 44px; gap:7px; }
-.clb-row { display:grid; grid-template-columns:46px 1fr 52px 120px 120px 170px 90px; align-items:center; gap:14px;
-  background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.05); border-radius:12px; padding:13px 22px; }
-.clb-row.cr1 { background:linear-gradient(90deg,rgba(255,215,0,.09),transparent); border-color:rgba(255,215,0,.22); }
-.clb-row.cr2 { background:linear-gradient(90deg,rgba(192,192,192,.07),transparent); border-color:rgba(192,192,192,.18); }
-.clb-row.cr3 { background:linear-gradient(90deg,rgba(205,127,50,.07),transparent); border-color:rgba(205,127,50,.18); }
-.clb-rank { font-size:1.5rem; text-align:center; }
-.clb-name { font-size:1.05rem; font-weight:700; }
-.clb-sub { font-size:.7rem; color:#555; margin-top:2px; }
-.clb-state { background:rgba(123,47,247,.15); border:1px solid rgba(123,47,247,.25); border-radius:6px;
-  font-size:.75rem; font-weight:700; color:#a78bfa; padding:4px 10px; text-align:center; }
-.clb-bar-bg { height:7px; background:rgba(255,255,255,.07); border-radius:99px; overflow:hidden; }
-.clb-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#00d4ff,#7b2ff7); }
-.cr1 .clb-bar-fill { background:linear-gradient(90deg,#ffd700,#ff8c00); }
-.cr2 .clb-bar-fill { background:linear-gradient(90deg,#a0a0a0,#606060); }
-.cr3 .clb-bar-fill { background:linear-gradient(90deg,#cd7f32,#8b4513); }
-.clb-rev { text-align:right; font-size:1.3rem; font-weight:800; }
-.cr1 .clb-rev { color:#ffd700; } .cr2 .clb-rev { color:#c0c0c0; } .cr3 .clb-rev { color:#cd7f32; }
-.clb-rx { text-align:right; font-size:.82rem; color:#888; }
-.clb-rx span { display:block; font-size:.6rem; color:#555; margin-top:1px; }
+══════════════════════════════════ */
+.slide-clb {
+  background: radial-gradient(ellipse at 60% 40%, #071528 0%, var(--bg) 65%);
+  background-image: repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,.018) 40px, rgba(201,168,76,.018) 41px);
+}
+.clb-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:14px 56px 50px; gap:9px; }
+.clb-row {
+  display:grid; grid-template-columns:52px 1fr 110px 200px 170px;
+  align-items:center; gap:18px;
+  background:rgba(201,168,76,.025); border:1px solid rgba(201,168,76,.08);
+  border-left:4px solid rgba(201,168,76,.15); border-radius:2px; padding:14px 24px;
+}
+.clb-row.cr1 {
+  background:linear-gradient(90deg,rgba(201,168,76,.09),rgba(201,168,76,.02));
+  border-left-color:var(--gold2); border-color:rgba(201,168,76,.28);
+  box-shadow:0 0 18px rgba(201,168,76,.06);
+}
+.clb-row.cr2 { border-left-color:var(--silver); border-color:rgba(128,144,168,.18); }
+.clb-row.cr3 { border-left-color:#cd7f32; border-color:rgba(205,127,50,.18); }
+.clb-rank { font-size:1.6rem; text-align:center; }
+.clb-name { font-family:'Barlow Condensed',sans-serif; font-size:1.08rem; font-weight:700; letter-spacing:.02em; color:var(--white); line-height:1.3; }
+.clb-meta { display:flex; align-items:center; gap:7px; margin-top:5px; flex-wrap:wrap; }
+.clb-rep-badge { background:rgba(0,217,126,.08); border:1px solid rgba(0,217,126,.2); border-radius:2px; font-family:'Barlow Condensed',sans-serif; font-size:.73rem; font-weight:800; color:var(--green); padding:3px 9px; white-space:nowrap; letter-spacing:.08em; text-transform:uppercase; }
+.clb-state-badge { background:rgba(201,168,76,.07); border:1px solid rgba(201,168,76,.18); border-radius:2px; font-family:'Barlow Condensed',sans-serif; font-size:.73rem; font-weight:800; color:var(--gold2); padding:3px 9px; white-space:nowrap; letter-spacing:.08em; }
+.clb-sub { font-size:.76rem; color:var(--silver); }
+.clb-bar-wrap { display:flex; flex-direction:column; gap:6px; }
+.clb-bar-bg { height:7px; background:rgba(201,168,76,.07); border-radius:2px; overflow:hidden; }
+.clb-bar-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,#6b4d0a,var(--gold2)); }
+.cr1 .clb-bar-fill { box-shadow:0 0 6px rgba(201,168,76,.4); }
+.cr2 .clb-bar-fill { background:linear-gradient(90deg,#3a4050,#8090a8); }
+.cr3 .clb-bar-fill { background:linear-gradient(90deg,#5a3010,#cd7f32); }
+.clb-bar-sub { font-size:.71rem; color:var(--silver); }
+.clb-rev-block { text-align:right; }
+.clb-rev { font-family:'Barlow Condensed',sans-serif; font-size:1.55rem; font-weight:900; letter-spacing:.02em; display:block; }
+.cr1 .clb-rev { color:var(--gold2); text-shadow:0 0 12px rgba(201,168,76,.35); }
+.cr2 .clb-rev { color:var(--silver); }
+.cr3 .clb-rev { color:#cd7f32; }
+.clb-profit { font-size:.84rem; color:var(--green); margin-top:3px; font-weight:700; }
+.clb-margin { font-size:.72rem; color:var(--silver); margin-top:2px; }
 
-/* ════════════════════════════════════
-   SLIDE: CLINIC PERFORMANCE CARDS
-════════════════════════════════════ */
-.slide-cpc { background:linear-gradient(160deg,#080c18,#0b1522,#080c18); }
-.cpc-body { flex:1; display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:1fr 1fr; gap:0; }
-.cpc-card { padding:20px 22px; border-right:1px solid rgba(255,255,255,.055); border-bottom:1px solid rgba(255,255,255,.055);
-  display:flex; flex-direction:column; gap:8px; }
-.cpc-card:nth-child(4n) { border-right:none; }
-.cpc-card:nth-child(5),.cpc-card:nth-child(6),.cpc-card:nth-child(7),.cpc-card:nth-child(8) { border-bottom:none; }
-.cpc-header { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
-.cpc-name { font-size:.88rem; font-weight:700; color:#ddd; line-height:1.25; flex:1; }
-.cpc-state-badge { background:rgba(0,212,255,.1); border:1px solid rgba(0,212,255,.2); border-radius:6px;
-  font-size:.68rem; font-weight:700; color:#00d4ff; padding:3px 8px; white-space:nowrap; flex-shrink:0; }
-.cpc-rev { font-size:1.7rem; font-weight:900; color:#00d4ff; line-height:1; }
-.cpc-stats-row { display:flex; gap:10px; }
-.cpc-stat { flex:1; background:rgba(255,255,255,.03); border-radius:8px; padding:7px 9px; }
-.cpc-stat-val { font-size:.95rem; font-weight:800; color:#fff; }
-.cpc-stat-lbl { font-size:.58rem; color:#555; letter-spacing:.07em; text-transform:uppercase; margin-top:2px; }
-.cpc-drug { font-size:.68rem; color:#888; padding:5px 8px; background:rgba(255,255,255,.025);
-  border-radius:6px; border:1px solid rgba(255,255,255,.05); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
-.cpc-drug strong { color:#a78bfa; }
-.cpc-bar-row { display:flex; align-items:center; gap:8px; margin-top:2px; }
-.cpc-bar-bg { flex:1; height:5px; background:rgba(255,255,255,.07); border-radius:99px; overflow:hidden; }
-.cpc-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#00d4ff,#7b2ff7); }
-.cpc-pct { font-size:.65rem; color:#555; white-space:nowrap; }
+/* ══════════════════════════════════
+   SLIDE: CLINIC CARDS
+══════════════════════════════════ */
+.slide-cpc {
+  background: radial-gradient(ellipse at 40% 60%, #071528 0%, var(--bg) 65%);
+  background-image: repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,.018) 40px, rgba(201,168,76,.018) 41px);
+}
+.cpc-body { flex:1; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:1fr 1fr; gap:0; }
+.cpc-card { padding:22px 28px; border-right:1px solid rgba(201,168,76,.09); border-bottom:1px solid rgba(201,168,76,.09); display:flex; flex-direction:column; gap:10px; }
+.cpc-card:nth-child(3n) { border-right:none; }
+.cpc-card:nth-child(4),.cpc-card:nth-child(5),.cpc-card:nth-child(6) { border-bottom:none; }
+.cpc-header { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+.cpc-name { font-family:'Barlow Condensed',sans-serif; font-size:.96rem; font-weight:700; letter-spacing:.02em; color:var(--white); line-height:1.3; flex:1; }
+.cpc-badges { display:flex; gap:5px; flex-shrink:0; flex-wrap:wrap; justify-content:flex-end; }
+.cpc-state-badge { background:rgba(201,168,76,.07); border:1px solid rgba(201,168,76,.18); border-radius:2px; font-family:'Barlow Condensed',sans-serif; font-size:.7rem; font-weight:800; color:var(--gold2); padding:3px 8px; white-space:nowrap; letter-spacing:.08em; }
+.cpc-rep-badge { background:rgba(0,217,126,.06); border:1px solid rgba(0,217,126,.18); border-radius:2px; font-family:'Barlow Condensed',sans-serif; font-size:.7rem; font-weight:800; color:var(--green); padding:3px 8px; white-space:nowrap; letter-spacing:.08em; }
+.cpc-rev { font-family:'Barlow Condensed',sans-serif; font-size:2.2rem; font-weight:900; line-height:1; letter-spacing:.02em; }
+.cpc-stats-row { display:flex; gap:8px; }
+.cpc-stat { flex:1; background:rgba(201,168,76,.03); border:1px solid rgba(201,168,76,.09); border-radius:2px; padding:9px 10px; }
+.cpc-stat-val { font-family:'Barlow Condensed',sans-serif; font-size:1.12rem; font-weight:800; color:var(--white); }
+.cpc-stat-lbl { font-size:.6rem; color:var(--silver); letter-spacing:.1em; text-transform:uppercase; margin-top:3px; }
+.cpc-drug { font-size:.74rem; color:rgba(201,168,76,.5); padding:7px 10px; background:rgba(201,168,76,.025); border-radius:2px; border:1px solid rgba(201,168,76,.09); }
+.cpc-drug strong { color:var(--gold2); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; }
+.cpc-bar-row { display:flex; align-items:center; gap:10px; }
+.cpc-bar-bg { flex:1; height:5px; background:rgba(201,168,76,.07); border-radius:2px; overflow:hidden; }
+.cpc-bar-fill { height:100%; border-radius:2px; }
+.cpc-pct { font-family:'Barlow Condensed',sans-serif; font-size:.76rem; color:var(--silver); white-space:nowrap; font-weight:700; }
 
-/* ════════════════════════════════════
+/* ══════════════════════════════════
    SLIDE: STATE BREAKDOWN
-════════════════════════════════════ */
-.slide-state { background:linear-gradient(160deg,#080c18,#0c1820,#080c18); }
-.state-body { flex:1; display:grid; grid-template-columns:1fr 320px; gap:0; }
-.state-chart { padding:22px 36px 44px 56px; display:flex; flex-direction:column; border-right:1px solid rgba(255,255,255,.06); }
-.state-chart .panel-title { font-size:.75rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:18px; }
+══════════════════════════════════ */
+.slide-state {
+  background: radial-gradient(ellipse at 50% 50%, #071528 0%, var(--bg) 65%);
+  background-image: repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,.018) 40px, rgba(201,168,76,.018) 41px);
+}
+.state-body { flex:1; display:grid; grid-template-columns:1fr 290px; }
+.state-chart { padding:18px 36px 50px 56px; display:flex; flex-direction:column; border-right:1px solid rgba(201,168,76,.1); }
 .state-bars { display:flex; flex-direction:column; gap:9px; flex:1; justify-content:center; }
-.state-row { display:grid; grid-template-columns:38px 1fr 90px 60px; align-items:center; gap:12px; }
-.state-name { font-size:.88rem; font-weight:700; color:#bbb; }
-.state-bar-bg { height:20px; background:rgba(255,255,255,.05); border-radius:5px; overflow:hidden; position:relative; }
-.state-bar-fill { height:100%; border-radius:5px; background:linear-gradient(90deg,#00d4ff,#7b2ff7); position:absolute; top:0; left:0; }
-.state-bar-label { position:absolute; left:8px; top:50%; transform:translateY(-50%); font-size:.67rem; color:rgba(255,255,255,.5); white-space:nowrap; }
-.state-rev { font-size:.9rem; font-weight:700; color:#fff; text-align:right; }
-.state-clinics { font-size:.72rem; color:#555; text-align:right; }
-.state-sidebar { padding:22px 28px; display:flex; flex-direction:column; gap:14px; justify-content:center; }
-.state-summary-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:18px 20px; }
-.ssc-label { font-size:.68rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
-.ssc-val { font-size:2rem; font-weight:900; }
-.ssc-sub { font-size:.72rem; color:#666; margin-top:4px; }
+.state-row { display:grid; grid-template-columns:44px 1fr 100px 76px; align-items:center; gap:14px; }
+.state-name { font-family:'Barlow Condensed',sans-serif; font-size:1.05rem; font-weight:800; color:var(--white); letter-spacing:.08em; }
+.state-bar-bg { height:28px; background:rgba(201,168,76,.04); border-radius:2px; overflow:hidden; position:relative; border:1px solid rgba(201,168,76,.09); }
+.state-bar-fill { height:100%; border-radius:2px; position:absolute; top:0; left:0; }
+.state-bar-label { position:absolute; left:10px; top:50%; transform:translateY(-50%); font-size:.74rem; color:rgba(255,255,255,.5); white-space:nowrap; font-weight:600; font-family:'Barlow Condensed',sans-serif; letter-spacing:.06em; }
+.state-rev { font-family:'Barlow Condensed',sans-serif; font-size:.98rem; font-weight:800; color:var(--white); text-align:right; }
+.state-margin { font-family:'Barlow Condensed',sans-serif; font-size:.82rem; font-weight:800; text-align:right; letter-spacing:.04em; }
+.state-sidebar { padding:20px 24px; display:flex; flex-direction:column; gap:12px; justify-content:center; }
+.state-summary-card {
+  background:rgba(201,168,76,.03); border:1px solid rgba(201,168,76,.1);
+  border-left:4px solid var(--gold); border-radius:2px; padding:16px 18px;
+}
+.ssc-label { font-family:'Barlow Condensed',sans-serif; font-size:.74rem; color:var(--silver); letter-spacing:.18em; text-transform:uppercase; margin-bottom:6px; }
+.ssc-val { font-family:'Barlow Condensed',sans-serif; font-size:1.95rem; font-weight:900; letter-spacing:.02em; }
+.ssc-sub { font-size:.74rem; color:var(--silver); margin-top:4px; }
+
+/* ══════════════════════════════════
+   SLIDE: MONTH-OVER-MONTH
+══════════════════════════════════ */
+.slide-mom {
+  background: radial-gradient(ellipse at 35% 55%, #071528 0%, var(--bg) 65%);
+  background-image: repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,.018) 40px, rgba(201,168,76,.018) 41px);
+}
+.mom-body { flex:1; display:grid; grid-template-columns:1fr 370px; }
+.mom-left { padding:14px 32px 50px 56px; display:flex; flex-direction:column; border-right:1px solid rgba(201,168,76,.1); }
+.mom-legend { display:flex; gap:20px; margin-bottom:14px; flex-wrap:wrap; }
+.mom-leg-item { display:flex; align-items:center; gap:7px; font-family:'Barlow Condensed',sans-serif; font-size:.82rem; color:var(--silver); letter-spacing:.06em; }
+.mom-leg-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+.mom-bars-row { display:flex; align-items:flex-end; gap:0; flex:1; }
+.mom-bar-group { display:flex; flex-direction:column; align-items:center; gap:8px; flex:2; }
+.mom-total { font-family:'Barlow Condensed',sans-serif; font-size:.92rem; font-weight:800; color:var(--gold2); letter-spacing:.02em; }
+.mom-bar { display:flex; flex-direction:column-reverse; width:85%; border-radius:3px 3px 0 0; overflow:hidden; border:1px solid rgba(255,255,255,.04); }
+.mom-month-lbl { font-family:'Barlow Condensed',sans-serif; font-size:1.05rem; font-weight:700; letter-spacing:.1em; color:var(--white); }
+.mom-arrow-col { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; padding-bottom:44px; gap:5px; }
+.mom-growth { font-family:'Barlow Condensed',sans-serif; font-size:.82rem; font-weight:900; border:1px solid; border-radius:2px; padding:5px 10px; white-space:nowrap; text-align:center; }
+
+.mom-right { padding:14px 20px 50px; display:flex; flex-direction:column; gap:9px; justify-content:center; }
+.mom-right-title { font-family:'Barlow Condensed',sans-serif; font-size:.74rem; font-weight:700; color:var(--silver); letter-spacing:.22em; text-transform:uppercase; margin-bottom:2px; }
+.mom-rep-card { background:rgba(201,168,76,.025); border:1px solid rgba(201,168,76,.08); border-left:4px solid; border-radius:2px; padding:11px 14px; }
+.mom-rep-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px; }
+.mom-rep-name { font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:800; letter-spacing:.04em; }
+.mom-rep-sym { font-family:'Barlow Condensed',sans-serif; font-size:.74rem; color:var(--muted); letter-spacing:.1em; }
+.mom-rep-row { display:flex; align-items:center; gap:6px; }
+.mom-rep-month { display:flex; flex-direction:column; align-items:center; flex:1; }
+.mom-rep-lbl { font-family:'Barlow Condensed',sans-serif; font-size:.64rem; color:var(--silver); letter-spacing:.1em; margin-bottom:2px; text-transform:uppercase; }
+.mom-rep-val { font-family:'Barlow Condensed',sans-serif; font-size:.95rem; font-weight:800; color:var(--white); }
+.mom-trend-arrow { font-family:'Barlow Condensed',sans-serif; font-size:.7rem; font-weight:900; text-align:center; line-height:1.35; padding:4px 7px; border-radius:2px; white-space:nowrap; }
+.mom-trend-arrow.up { color:var(--green); background:rgba(0,217,126,.08); border:1px solid rgba(0,217,126,.18); }
+.mom-trend-arrow.dn { color:var(--red); background:rgba(232,64,64,.06); border:1px solid rgba(232,64,64,.18); }
+.mom-footnote { font-size:.68rem; color:var(--muted); margin-top:4px; letter-spacing:.06em; }
+
+/* ══════════════════════════════════
+   SLIDE: REP EFFICIENCY SCORECARD
+══════════════════════════════════ */
+.slide-sc {
+  background: radial-gradient(ellipse at 50% 30%, #071528 0%, var(--bg) 65%);
+  background-image: repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,.018) 40px, rgba(201,168,76,.018) 41px);
+}
+.sc-body { flex:1; padding:14px 56px 50px; display:flex; flex-direction:column; }
+.sc-table {
+  flex:1; display:grid;
+  grid-template-columns:176px repeat(4,1fr);
+  border:1px solid rgba(201,168,76,.14); border-radius:3px; overflow:hidden;
+}
+.sc-cell {
+  padding:11px 16px; border-right:1px solid rgba(201,168,76,.07);
+  border-bottom:1px solid rgba(201,168,76,.07);
+  display:flex; flex-direction:column; justify-content:center;
+}
+.sc-cell:nth-child(5n) { border-right:none; }
+.sc-label-col { background:rgba(4,12,24,.6); }
+.sc-label-text { font-family:'Barlow Condensed',sans-serif; font-size:.8rem; font-weight:700; color:var(--silver); letter-spacing:.12em; text-transform:uppercase; }
+.sc-label-sub  { font-size:.63rem; color:var(--muted); margin-top:2px; letter-spacing:.04em; }
+.sc-rep-header { align-items:center; background:rgba(201,168,76,.03); }
+.sc-rep-name { font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; font-weight:900; letter-spacing:.04em; }
+.sc-rep-meta { font-family:'Barlow Condensed',sans-serif; font-size:.72rem; color:var(--muted); letter-spacing:.1em; margin-top:2px; }
+.sc-val { font-family:'Barlow Condensed',sans-serif; font-size:1.25rem; font-weight:800; color:var(--white); line-height:1; }
+.sc-winner-badge { font-family:'Barlow Condensed',sans-serif; font-size:.62rem; color:var(--gold); letter-spacing:.1em; margin-top:3px; }
+.sc-blank-badge  { font-size:.62rem; color:transparent; margin-top:3px; user-select:none; }
+.sc-winner { background:rgba(201,168,76,.07); }
+.sc-winner .sc-val { color:var(--gold2); }
+.sc-alt { background:rgba(255,255,255,.012); }
+.sc-alt.sc-label-col { background:rgba(4,12,24,.7); }
+.sc-up { color:var(--green) !important; }
+.sc-dn { color:var(--red)   !important; }
+.sc-footnote { font-size:.66rem; color:var(--muted); margin-top:8px; letter-spacing:.06em; }
+
+/* ══════════════════════════════════
+   PRODUCT MIX SLIDE
+══════════════════════════════════ */
+.pmx-row {
+  display:flex; align-items:center; gap:10px;
+  animation: fadeSlideIn .35s ease both;
+}
+@keyframes fadeSlideIn { from{opacity:0;transform:translateX(-12px)} to{opacity:1;transform:none} }
+.pmx-label {
+  width:180px; flex-shrink:0;
+  font-family:'Barlow Condensed',sans-serif; font-size:.82rem; font-weight:600;
+  color:var(--white); letter-spacing:.02em; line-height:1.2;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.pmx-bar-wrap { flex:1; min-width:0; }
+.pmx-stats { width:110px; flex-shrink:0; display:flex; justify-content:space-between; align-items:center; }
+.pmx-rev { font-family:'Barlow Condensed',sans-serif; font-size:.88rem; font-weight:700; color:var(--gold2); }
+.pmx-pct { font-size:.72rem; color:var(--silver); }
+.pmx-leg-item { display:flex; align-items:center; gap:5px; }
+
+/* ══════════════════════════════════
+   BATTLE BOARD SLIDE
+══════════════════════════════════ */
+.bb-live-badge {
+  background:rgba(0,217,126,.12) !important;
+  border:1px solid rgba(0,217,126,.35) !important;
+  color:var(--green) !important;
+  animation: live-pulse 1.8s ease-in-out infinite;
+}
+@keyframes live-pulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+
+/* Team block */
+.bb-team-block {
+  background:rgba(201,168,76,.04); border:1px solid rgba(201,168,76,.18);
+  border-radius:4px; padding:14px 18px 10px;
+}
+.bb-team-track {
+  position:relative; height:22px; background:rgba(255,255,255,.06);
+  border-radius:3px; overflow:visible;
+}
+.bb-team-fill {
+  height:100%; border-radius:3px;
+  background:linear-gradient(90deg,#c9a84c,#f0c040,#ffd700);
+  position:relative; overflow:hidden;
+  transition:width 1.2s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 0 16px rgba(240,192,64,.4);
+}
+.bb-team-glow {
+  position:absolute; top:0; right:0; width:40px; height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,215,0,.6));
+  animation:shimmer-r 1.6s ease-in-out infinite;
+}
+@keyframes shimmer-r { 0%,100%{opacity:.5} 50%{opacity:1} }
+.bb-team-milestone {
+  position:absolute; top:-3px; bottom:-3px; width:1px;
+  background:rgba(255,255,255,.15);
+}
+.bb-team-pct-label {
+  position:absolute; top:50%; transform:translate(-50%,-50%);
+  font-family:'Barlow Condensed',sans-serif; font-size:.8rem; font-weight:900;
+  color:var(--bg); background:var(--gold2); padding:0 5px; border-radius:2px;
+  pointer-events:none;
+}
+
+/* Rep battle rows */
+.bb-rep-row {
+  display:flex; align-items:center; gap:12px;
+  background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.06);
+  border-radius:3px; padding:9px 14px;
+  animation:fadeSlideIn .35s ease both;
+}
+.bb-rep-sym {
+  width:40px; height:40px; border-radius:3px; border:1.5px solid;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Barlow Condensed',sans-serif; font-size:.72rem; font-weight:900;
+  letter-spacing:.06em; flex-shrink:0;
+}
+.bb-rep-info { width:220px; flex-shrink:0; }
+.bb-rep-name { font-family:'Barlow Condensed',sans-serif; font-size:.92rem; font-weight:700; letter-spacing:.04em; }
+.bb-rep-sub  { font-size:.68rem; color:var(--silver); margin-top:2px; }
+.bb-rep-track { flex:1; min-width:0; }
+.bb-track-bg {
+  position:relative; height:16px; background:rgba(255,255,255,.06);
+  border-radius:2px; overflow:visible;
+}
+.bb-track-fill {
+  height:100%; border-radius:2px;
+  transition:width 1.1s cubic-bezier(.22,1,.36,1);
+  position:relative;
+}
+.bb-track-tip {
+  position:absolute; top:50%; transform:translate(-50%,-50%);
+  width:8px; height:8px; border-radius:50%;
+  box-shadow:0 0 8px currentColor;
+  animation:tip-pulse .9s ease-in-out infinite;
+}
+@keyframes tip-pulse { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.4)} }
+.bb-finish-line {
+  position:absolute; right:0; top:-3px; bottom:-3px; width:2px;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.3) 0,rgba(255,255,255,.3) 3px,transparent 3px,transparent 6px);
+}
+.bb-track-pct {
+  font-family:'Barlow Condensed',sans-serif; font-size:.8rem; font-weight:700;
+  text-align:right; margin-top:2px;
+}
+.bb-rep-status {
+  width:72px; flex-shrink:0; font-family:'Barlow Condensed',sans-serif;
+  font-size:.72rem; font-weight:700; letter-spacing:.06em; text-align:center;
+}
+
+/* Callout cards */
+.bb-callout {
+  background:rgba(255,255,255,.03); border:1px solid;
+  border-radius:3px; padding:10px 12px;
+}
+.bb-callout-icon { font-size:1.1rem; margin-bottom:4px; }
+.bb-callout-lbl  { font-family:'Barlow Condensed',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:4px; }
+.bb-callout-val  { font-family:'Barlow Condensed',sans-serif; font-size:.9rem; font-weight:700; color:var(--white); line-height:1.2; }
+.bb-callout-sub  { font-size:.67rem; color:var(--silver); margin-top:3px; }
+
+/* ══════════════════════════════════
+   NEW ACCOUNTS SLIDE
+══════════════════════════════════ */
+.na-summary {
+  display:flex; align-items:center; gap:0;
+  background:rgba(0,217,126,.04); border:1px solid rgba(0,217,126,.15);
+  border-radius:4px; padding:16px 28px; flex-shrink:0;
+}
+.na-summary-stat { flex:1; text-align:center; }
+.na-summary-val  { font-family:'Barlow Condensed',sans-serif; font-size:1.8rem; font-weight:900; letter-spacing:.02em; line-height:1; }
+.na-summary-lbl  { font-family:'Barlow Condensed',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.14em; color:var(--silver); text-transform:uppercase; margin-top:5px; }
+.na-summary-divider { width:1px; height:52px; background:rgba(0,217,126,.15); flex-shrink:0; }
+
+.na-cards {
+  flex:1; display:flex; gap:20px; align-items:stretch; overflow:hidden;
+}
+.na-card {
+  flex:1; position:relative; overflow:hidden;
+  background:rgba(255,255,255,.03); border:1px solid;
+  border-radius:4px; padding:22px 26px 20px;
+  display:flex; flex-direction:column; gap:14px;
+  animation:fadeSlideIn .45s ease both;
+}
+.na-card-top { display:flex; align-items:center; justify-content:space-between; }
+.na-badge {
+  font-family:'Barlow Condensed',sans-serif; font-size:.68rem; font-weight:900;
+  letter-spacing:.16em; border:1px solid; border-radius:2px; padding:3px 10px;
+  text-transform:uppercase;
+}
+.na-date { font-size:.72rem; color:var(--muted); letter-spacing:.06em; }
+.na-clinic {
+  font-family:'Barlow Condensed',sans-serif; font-size:1.9rem; font-weight:900;
+  color:var(--white); letter-spacing:.02em; line-height:1.1;
+}
+.na-meta { display:flex; align-items:center; gap:0; margin-top:auto; }
+.na-meta-item { flex:1; }
+.na-meta-divider { width:1px; height:36px; background:var(--border); flex-shrink:0; margin:0 18px; }
+.na-meta-lbl { font-family:'Barlow Condensed',sans-serif; font-size:.65rem; font-weight:700; letter-spacing:.16em; color:var(--muted); text-transform:uppercase; margin-bottom:4px; }
+.na-meta-val { font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; color:var(--white); }
+.na-rev { font-size:1.35rem !important; color:var(--green) !important; }
+.na-card-glow { position:absolute; inset:0; pointer-events:none; }
+.na-empty {
+  flex:1; display:flex; align-items:center; justify-content:center;
+  color:var(--muted); font-family:'Barlow Condensed',sans-serif;
+  font-size:1.1rem; letter-spacing:.14em;
+}
+
+/* ══════════════════════════════════
+   RETENTION SLIDE
+══════════════════════════════════ */
+.ret-rep-card {
+  background:rgba(255,255,255,.03); border:1px solid;
+  border-radius:4px; padding:14px 16px;
+  display:flex; flex-direction:column; gap:8px;
+  animation:fadeSlideIn .4s ease both;
+}
+.ret-sym {
+  width:36px; height:36px; border-radius:3px; border:1.5px solid;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Barlow Condensed',sans-serif; font-size:.68rem; font-weight:900;
+  letter-spacing:.05em; flex-shrink:0;
+}
+.ret-rate-wrap { text-align:center; padding:2px 0 4px; }
+.ret-rate { font-family:'Barlow Condensed',sans-serif; font-size:2.2rem; font-weight:900; line-height:1; }
+.ret-rate-lbl { font-family:'Barlow Condensed',sans-serif; font-size:.65rem; font-weight:700; letter-spacing:.16em; color:var(--muted); text-transform:uppercase; margin:3px 0 6px; }
+.ret-rate-bar-bg { height:4px; background:rgba(255,255,255,.08); border-radius:2px; overflow:hidden; }
+.ret-rate-bar   { height:100%; border-radius:2px; transition:width 1s ease; }
+.ret-stats { display:flex; gap:0; }
+.ret-stat  { flex:1; text-align:center; border-left:1px solid rgba(255,255,255,.06); }
+.ret-stat:first-child { border-left:none; }
+.ret-stat-val { font-family:'Barlow Condensed',sans-serif; font-size:1.15rem; font-weight:900; line-height:1; }
+.ret-stat-lbl { font-size:.6rem; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-top:2px; }
+.ret-velocity { font-size:.68rem; color:var(--silver); letter-spacing:.04em; text-align:center; padding-top:2px; border-top:1px solid rgba(255,255,255,.06); }
+
+/* Panels */
+.ret-panel { background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.07); border-radius:3px; padding:10px 12px; }
+.ret-panel-hdr { font-family:'Barlow Condensed',sans-serif; font-size:.76rem; font-weight:900; letter-spacing:.14em; text-transform:uppercase; margin-bottom:8px; }
+.ret-atrisk-row, .ret-loyal-row {
+  display:flex; align-items:center; gap:7px;
+  padding:5px 0; border-bottom:1px solid rgba(255,255,255,.04);
+  font-size:.72rem;
+}
+.ret-atrisk-row:last-child, .ret-loyal-row:last-child { border-bottom:none; }
+.ret-atrisk-dot  { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.ret-atrisk-clinic, .ret-loyal-clinic { flex:1; color:var(--white); font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ret-atrisk-rep, .ret-loyal-rep    { width:50px; flex-shrink:0; font-weight:700; font-size:.68rem; }
+.ret-atrisk-days { width:64px; flex-shrink:0; font-weight:700; font-size:.68rem; text-align:right; }
+.ret-atrisk-rev, .ret-loyal-rev  { width:52px; flex-shrink:0; text-align:right; color:var(--silver); font-weight:600; }
+.ret-loyal-star   { flex-shrink:0; font-size:.75rem; }
+.ret-loyal-orders { width:58px; flex-shrink:0; font-weight:700; font-size:.68rem; text-align:right; }
+
+/* ══════════════════════════════════
+   STATE MAP PANEL (replaces bar chart)
+══════════════════════════════════ */
+.state-map-panel {
+  padding:14px 20px 50px 56px;
+  display:flex; flex-direction:column;
+  border-right:1px solid rgba(201,168,76,.1);
+  overflow:hidden;
+}
+.state-map-panel svg { flex:1; width:100%; overflow:visible; }
 </style>
 </head>
 <body>
 
 <!-- PASSWORD GATE -->
 <div id="gate">
+  <div class="gate-scanline"></div>
+  <div class="gate-rule-top"></div>
   <div class="gate-brand">JMS SALES</div>
-  <div class="gate-sub">SALES FLOOR · LIVE STATS</div>
+  <div class="gate-tagline">Wall Street Intelligence Platform</div>
+  <div class="gate-rule"></div>
+  <div class="gate-sub">Authorized Personnel Only</div>
   <div class="gate-box">
-    <div class="gate-label">Enter Access Password</div>
-    <input class="gate-input" id="gateInput" type="password" placeholder="••••••••" autocomplete="off" />
-    <button class="gate-btn" onclick="checkPass()">ACCESS DASHBOARD →</button>
-    <div class="gate-error" id="gateError">Incorrect password. Try again.</div>
+    <div class="gate-label">Access Code</div>
+    <input class="gate-input" id="gateInput" type="password" placeholder="••••••••" autocomplete="off"/>
+    <button class="gate-btn" onclick="checkPass()">ENTER ▶</button>
+    <div class="gate-error" id="gateError">Access denied. Invalid credentials.</div>
   </div>
 </div>
 
-<div class="ticker"><div class="ticker-inner" id="tickerInner"></div></div>
+<div class="ticker">
+  <div class="ticker-scroll">
+    <div class="ticker-inner" id="tickerInner"></div>
+  </div>
+  <div id="tickerTimestamp">
+    <div class="ts-dot"></div>
+    <div class="ts-text" id="tsText">Loading…</div>
+  </div>
+</div>
 <div class="indicators" id="indicators"></div>
 <div class="progress-bar" id="progressBar"></div>
 <div class="slideshow" id="slideshow"></div>
+<div id="slideNameFlash"></div>
+<div id="slideCounter"></div>
+<div id="chartTip"></div>
+<button id="themeToggle" onclick="toggleTheme()" title="Toggle light/dark mode">☀️</button>
 
 <script>
-// ─── PASSWORD GATE ───────────────────────────────────────────────
+// ─── PASSWORD ─────────────────────────────────────────────────────
 function checkPass() {
-  const val = document.getElementById('gateInput').value;
-  if (val === 'LFGBOCA') {
+  if (document.getElementById('gateInput').value === 'LFGBOCA') {
     document.getElementById('gate').style.display = 'none';
-    render(); buildTicker();
+    render(); buildTicker(); loadGitHubTimestamp();
     total = document.querySelectorAll('.slide').length;
-    buildIndicators(total);
-    goTo(0);
+    buildIndicators(total); goTo(0);
   } else {
-    const err = document.getElementById('gateError');
-    err.classList.add('show');
+    document.getElementById('gateError').classList.add('show');
     document.getElementById('gateInput').value = '';
     document.getElementById('gateInput').focus();
   }
 }
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('gateInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') checkPass();
-  });
+  document.getElementById('gateInput').addEventListener('keydown', e => { if (e.key==='Enter') checkPass(); });
 });
 
-// ─── CONFIG ───────────────────────────────────────────────────────
-const DURATION = 10000; // ms per slide
+const DURATION = 10000;
 const PERIOD   = "Mar 1 – May 24, 2026";
 
-// ─── WEEKLY DATA ──────────────────────────────────────────────────
 const weeks = [
-  { lbl:"Mar 8",  wk:27, dylan:880,    erin:56817,  jon:360,  zach:12487,  ash:330, jack:168045, tot:238919 },
-  { lbl:"Mar 15", wk:28, dylan:755,    erin:66614,  jon:300,  zach:8624,   ash:120, jack:136156, tot:212569 },
-  { lbl:"Mar 22", wk:29, dylan:2401,   erin:38891,  jon:240,  zach:15390,  ash:210, jack:186998, tot:244130 },
-  { lbl:"Mar 29", wk:30, dylan:270,    erin:47126,  jon:270,  zach:48574,  ash:210, jack:177784, tot:274233 },
-  { lbl:"Apr 5",  wk:31, dylan:907,    erin:48066,  jon:120,  zach:26926,  ash:210, jack:173613, tot:249842 },
-  { lbl:"Apr 12", wk:32, dylan:2284,   erin:160178, jon:440,  zach:14891,  ash:330, jack:327928, tot:506050 },
-  { lbl:"Apr 19", wk:33, dylan:1348,   erin:37002,  jon:350,  zach:19528,  ash:630, jack:153156, tot:212013 },
-  { lbl:"Apr 26", wk:34, dylan:2758,   erin:54937,  jon:1175, zach:12894,  ash:990, jack:166479, tot:239233 },
-  { lbl:"May 3",  wk:35, dylan:1931,   erin:24759,  jon:835,  zach:8258,   ash:340, jack:149477, tot:185600 },
-  { lbl:"May 10", wk:36, dylan:5729,   erin:19502,  jon:381,  zach:16571,  ash:975, jack:152417, tot:195575 },
-  { lbl:"May 17", wk:37, dylan:3894,   erin:27824,  jon:1278, zach:8546,   ash:168, jack:143584, tot:185293 },
-  { lbl:"May 24", wk:38, dylan:4161,   erin:18551,  jon:1005, zach:14597,  ash:855, jack:158843, tot:198012 },
+  { lbl:"Mar 8",  wk:27, dylan:880,   erin:56817,  jon:360,  zach:12487, tot:70544  },
+  { lbl:"Mar 15", wk:28, dylan:755,   erin:66614,  jon:300,  zach:8624,  tot:76293  },
+  { lbl:"Mar 22", wk:29, dylan:2401,  erin:38891,  jon:240,  zach:15390, tot:56922  },
+  { lbl:"Mar 29", wk:30, dylan:270,   erin:47126,  jon:270,  zach:48574, tot:96240  },
+  { lbl:"Apr 5",  wk:31, dylan:907,   erin:48066,  jon:120,  zach:26926, tot:76019  },
+  { lbl:"Apr 12", wk:32, dylan:2284,  erin:160178, jon:440,  zach:14891, tot:177793 },
+  { lbl:"Apr 19", wk:33, dylan:1348,  erin:37002,  jon:350,  zach:19528, tot:58228  },
+  { lbl:"Apr 26", wk:34, dylan:2758,  erin:54937,  jon:1175, zach:12894, tot:71764  },
+  { lbl:"May 3",  wk:35, dylan:1931,  erin:24759,  jon:835,  zach:8258,  tot:35783  },
+  { lbl:"May 10", wk:36, dylan:5729,  erin:19502,  jon:381,  zach:16571, tot:42183  },
+  { lbl:"May 17", wk:37, dylan:3894,  erin:27824,  jon:1278, zach:8546,  tot:41542  },
+  { lbl:"May 24", wk:38, dylan:4161,  erin:18551,  jon:1005, zach:14597, tot:38314  },
 ];
 
-// ─── PROJECTION vs ACTUAL ────────────────────────────────────────
-const pva = [
-  { dt:"Apr 12", proj:240000, act:506461, clinicProj:240, clinicAct:270 },
-  { dt:"Apr 19", proj:250000, act:211098, clinicProj:250, clinicAct:236 },
-  { dt:"Apr 26", proj:260000, act:243380, clinicProj:260, clinicAct:260 },
-  { dt:"May 3",  proj:270000, act:185600, clinicProj:270, clinicAct:247 },
-  { dt:"May 10", proj:280000, act:195575, clinicProj:280, clinicAct:250 },
-  { dt:"May 17", proj:290000, act:185293, clinicProj:290, clinicAct:249 },
-  { dt:"May 24", proj:300000, act:198012, clinicProj:300, clinicAct:237 },
-];
-const cumRevVar = pva.reduce((s,w) => s + (w.act - w.proj), 0); // -164,581
-
-// ─── REPS ────────────────────────────────────────────────────────
 const reps = [
-  {
-    name:"Jack / Mark", rank:1, theme:0,
-    revenue:2099262, orders:12721, clinics:363,
-    boom:2000422, bulk:98840,
-    newClinics:{ mar:112, apr:79, may:22 },
-    activeClinics:{ mar:260, apr:290, may:258 },
-    weekly: weeks.map(w=>w.jack),
-    topDrugs:[
-      {name:"Tirzepatide Compound",      rev:485562},
-      {name:"Tirzepatide / Glycine",     rev:408168},
-      {name:"Tirzepatide / B12",         rev:214043},
-    ],
-  },
-  {
-    name:"Erin Ryan Snyder", rank:2, theme:1,
-    revenue:600496, orders:2131, clinics:133,
-    boom:393187, bulk:207309,
-    newClinics:{ mar:36, apr:42, may:8 },
-    activeClinics:{ mar:79, apr:101, may:62 },
-    weekly: weeks.map(w=>w.erin),
-    topDrugs:[
-      {name:"Tirzepatide Compound",  rev:107706},
-      {name:"Tirzepatide / B12",     rev:55708},
-      {name:"Tirzepatide / Glycine", rev:43890},
-    ],
-  },
-  {
-    name:"Zachary Salazar", rank:3, theme:2,
-    revenue:207641, orders:1007, clinics:39,
-    boom:136330, bulk:71310,
-    newClinics:{ mar:18, apr:7, may:2 },
-    activeClinics:{ mar:30, apr:31, may:25 },
-    weekly: weeks.map(w=>w.zach),
-    topDrugs:[
-      {name:"Tirzepatide / B12",       rev:39705},
-      {name:"Tirzepatide Compound",    rev:19252},
-      {name:"Bulk Tirzepatide 72mg",   rev:14868},
-    ],
-  },
-  {
-    name:"Dylan White", rank:4, theme:3,
-    revenue:27318, orders:188, clinics:22,
-    boom:24952, bulk:2366,
-    newClinics:{ mar:7, apr:12, may:0 },
-    activeClinics:{ mar:9, apr:18, may:15 },
-    weekly: weeks.map(w=>w.dylan),
-    topDrugs:[
-      {name:"Tirz / Glycine / MeCbl",  rev:5157},
-      {name:"Tirzepatide / B12",       rev:3775},
-      {name:"Tirzepatide / Glycine",   rev:3430},
-    ],
-  },
-  {
-    name:"Jonathan Izquierdo", rank:5, theme:4,
-    revenue:6753, orders:151, clinics:6,
-    boom:null, bulk:null,
-    newClinics:{ mar:0, apr:2, may:3 },
-    activeClinics:{ mar:1, apr:3, may:6 },
-    weekly: weeks.map(w=>w.jon),
-    topDrugs:[
-      {name:"Testosterone Cypionate", rev:1155},
-      {name:"Tirzepatide / Glycine",  rev:970},
-      {name:"GHK-Cu / Epithalon",     rev:600},
-    ],
-  },
-  {
-    name:"Ashlyn Smith", rank:6, theme:5,
-    revenue:5368, orders:34, clinics:2,
-    boom:null, bulk:null,
-    newClinics:{ mar:0, apr:1, may:0 },
-    activeClinics:{ mar:1, apr:2, may:1 },
-    weekly: weeks.map(w=>w.ash),
-    topDrugs:[
-      {name:"Tirzepatide / Glycine", rev:1275},
-      {name:"Tirzepatide / B12",     rev:1110},
-      {name:"Tirzepatide Compound",  rev:1050},
-    ],
-  },
+  { name:"Erin Ryan Snyder",   sym:"ERS", rank:1, theme:0, revenue:600496, orders:2131, clinics:133, boom:393187, bulk:207309, newClinics:{mar:36,apr:42,may:8},  activeClinics:{mar:79,apr:101,may:62}, weekly:weeks.map(w=>w.erin),  topDrugs:[{name:"Tirzepatide Compound",rev:107706},{name:"Tirzepatide / B12",rev:55708},{name:"Tirzepatide / Glycine",rev:43890}] },
+  { name:"Zachary Salazar",    sym:"ZSL", rank:2, theme:1, revenue:207641, orders:1007, clinics:39,  boom:136330, bulk:71310,  newClinics:{mar:18,apr:7, may:2},  activeClinics:{mar:30,apr:31, may:25}, weekly:weeks.map(w=>w.zach),  topDrugs:[{name:"Tirzepatide / B12",rev:39705},{name:"Tirzepatide Compound",rev:19252},{name:"Bulk Tirzepatide 72mg",rev:14868}] },
+  { name:"Dylan White",        sym:"DWH", rank:3, theme:2, revenue:27318,  orders:188,  clinics:22,  boom:24952,  bulk:2366,   newClinics:{mar:7, apr:12,may:0},  activeClinics:{mar:9, apr:18, may:15}, weekly:weeks.map(w=>w.dylan), topDrugs:[{name:"Tirz / Glycine / MeCbl",rev:5157},{name:"Tirzepatide / B12",rev:3775},{name:"Tirzepatide / Glycine",rev:3430}] },
+  { name:"Jonathan Izquierdo", sym:"JIQ", rank:4, theme:3, revenue:6753,   orders:151,  clinics:6,   boom:null,   bulk:null,   newClinics:{mar:0, apr:2, may:3},  activeClinics:{mar:1, apr:3,  may:6},  weekly:weeks.map(w=>w.jon),   topDrugs:[{name:"Testosterone Cypionate",rev:1155},{name:"Tirzepatide / Glycine",rev:970},{name:"GHK-Cu / Epithalon",rev:600}] },
+];
+
+const CLINIC_PERIOD = "May 25–27, 2026";
+
+// ── RETENTION MODEL (30-day window · Apr 27 – May 27 2026) ───────
+// Sourced from 30-day drug report · Excludes Jack/Mark, Ashlyn, Nick Clemens
+const retentionData = [
+  { name:'Erin Ryan Snyder',   sym:'ERS', color:'#f0c040', total:70, reordered:48, rate:68.6, atRisk:16, loyal:37, velocity:5.0 },
+  { name:'Zachary Salazar',    sym:'ZSL', color:'#8090a8', total:25, reordered:20, rate:80.0, atRisk:2,  loyal:15, velocity:3.9 },
+  { name:'Dylan White',        sym:'DWH', color:'#00d4ff', total:16, reordered:14, rate:87.5, atRisk:1,  loyal:9,  velocity:6.7 },
+  { name:'Jonathan Izquierdo', sym:'JIQ', color:'#a78bfa', total:6,  reordered:4,  rate:66.7, atRisk:0,  loyal:3,  velocity:3.5 },
+];
+const atRiskAccounts = [
+  { clinic:"Love Thy Neighbor Clinic",          rep:"Erin",    days:16, rev:5505.00 },
+  { clinic:"Rejuvenate at Lake Wylie",           rep:"Erin",    days:16, rev:1020.00 },
+  { clinic:"IV Wellness Infusion Services LLC",  rep:"Erin",    days:21, rev:760.00  },
+  { clinic:"GameDay Men's Health - Exton",       rep:"Erin",    days:30, rev:400.00  },
+  { clinic:"Bexar Longevity and Aesthetics",     rep:"Zachary", days:18, rev:185.00  },
+];
+const loyalAccounts = [
+  { clinic:"Sunmed Health and Weight Mgmt",      rep:"Zachary", orders:17, rev:14213.00 },
+  { clinic:"Lifestyle Physicians",               rep:"Erin",    orders:14, rev:10743.50 },
+  { clinic:"GameDay Men's Health - Egg Harbor",  rep:"Erin",    orders:17, rev:6112.00  },
+  { clinic:"Appalachian RevIVal",                rep:"Zachary", orders:21, rev:4249.00  },
+];
+
+// ── NEW FIRST-TIME ACCOUNTS (last 7 days · May 21–27 2026) ─────────
+// Sourced from first_order_date report × 30-day drug report
+// Excludes: Jack/Mark · Ashlyn Smith · Nick Clemens
+const newAccounts7d = [
+  { clinic:"Gameday Men's Health Collierville", rep:"Erin Ryan Snyder", state:"TN", firstOrderDate:"May 27, 2026", revenue:120.00 },
+  { clinic:"Revive Injection Clinic",           rep:"Erin Ryan Snyder", state:"CA", firstOrderDate:"May 27, 2026", revenue:100.00 },
+];
+const clinicData = { totalRevenue:9435.84, totalProfit:1589.62, totalRx:95, totalClinics:33 };
+const topClinics = [
+  { name:"Giddie Skin MedSpa",                   state:"MN", rep:"Erin",     rx:10, revenue:1850.00, profit:555.00, avgOrder:185.00, margin:30.0, topDrug:"Tirzepatide / Glycine" },
+  { name:"Center For Men",                        state:"OK", rep:"Zachary",  rx: 6, revenue: 836.20, profit: 94.30, avgOrder:139.37, margin:11.3, topDrug:"Tirz / Glycine / MeCbl" },
+  { name:"Xperience Health",                      state:"GA", rep:"Erin",     rx: 3, revenue: 420.00, profit: 42.00, avgOrder:140.00, margin:10.0, topDrug:"BPC-157 / TB-500 / GHK-Cu" },
+  { name:"Optimal Wellness Group LLC",            state:"FL", rep:"Zachary",  rx: 3, revenue: 420.00, profit: 96.00, avgOrder:140.00, margin:22.9, topDrug:"BPC-157 / KPV / TB-500" },
+  { name:"Dana M Goldberg, MD",                   state:"FL", rep:"Jonathan", rx: 3, revenue: 370.00, profit: 37.00, avgOrder:123.33, margin:10.0, topDrug:"Tirzepatide / L-Carnitine" },
+  { name:"Be Well Clinic of Mobile LLC",          state:"AL", rep:"Erin",     rx: 2, revenue: 365.00, profit: 73.00, avgOrder:182.50, margin:20.0, topDrug:"Tirzepatide / Glycine" },
+  { name:"GameDay Men's Health - Frederick",      state:"MD", rep:"Erin",     rx: 3, revenue: 360.00, profit: 36.00, avgOrder:120.00, margin:10.0, topDrug:"Tesamorelin" },
+  { name:"Synergy Integrative Medical Clinic",    state:"TX", rep:"Erin",     rx: 4, revenue: 350.00, profit: 35.00, avgOrder: 87.50, margin:10.0, topDrug:"Tirzepatide / Glycine" },
+  { name:"Golden Wellness and Aesthetics",        state:"GA", rep:"Erin",     rx: 2, revenue: 340.00, profit: 34.00, avgOrder:170.00, margin:10.0, topDrug:"Tirzepatide / Glycine" },
+  { name:"Appalachian RevIVal",                   state:"WV", rep:"Zachary",  rx: 2, revenue: 335.00, profit: 33.50, avgOrder:167.50, margin:10.0, topDrug:"Tirzepatide / Glycine / B12" },
+];
+const stateData = [
+  { state:"MN", revenue:1850.00, profit:555.00, rx:10, clinics: 1 },
+  { state:"FL", revenue:1045.00, profit:158.50, rx: 8, clinics: 4 },
+  { state:"OK", revenue: 836.20, profit: 94.30, rx: 6, clinics: 1 },
+  { state:"GA", revenue: 760.00, profit: 76.00, rx: 5, clinics: 2 },
+  { state:"TX", revenue: 634.62, profit:108.18, rx:14, clinics: 3 },
+  { state:"MD", revenue: 620.00, profit: 62.00, rx: 5, clinics: 3 },
+  { state:"WV", revenue: 570.00, profit: 57.00, rx: 4, clinics: 2 },
+  { state:"AL", revenue: 365.00, profit: 73.00, rx: 2, clinics: 1 },
+  { state:"TN", revenue: 330.00, profit: 66.00, rx: 2, clinics: 1 },
+  { state:"MO", revenue: 274.00, profit: 27.40, rx: 2, clinics: 1 },
+  { state:"MT", revenue: 260.25, profit: 26.03, rx: 3, clinics: 1 },
+  { state:"IA", revenue: 175.98, profit: 39.51, rx:11, clinics: 1 },
 ];
 
 const totalRevenue = reps.reduce((s,r)=>s+r.revenue,0);
-
-// ─── CLINIC DATA (May 25–26, 2026) ──────────────────────────────
-const CLINIC_PERIOD = "May 25–26, 2026";
-const clinicData = {
-  totalRevenue: 38761.29,
-  totalProfit:   5701.44,
-  totalRx:       340,
-  totalClinics:  109,
-};
-
-const topClinics = [
-  { name:"Revitalize You Weight Loss Center LLC", state:"NY", rx:16, revenue:2800.00, profit:560.00,  avgOrder:175.00, margin:20.0, topDrug:"Tirzepatide / Glycine" },
-  { name:"The DripBar Grand Forks",               state:"ND", rx:15, revenue:2250.00, profit:450.00,  avgOrder:150.00, margin:20.0, topDrug:"Tirzepatide / Glycine" },
-  { name:"JumpStartMD",                           state:"CA", rx:33, revenue:2118.33, profit:224.31,  avgOrder:64.19,  margin:10.6, topDrug:"Tirzepatide / Glycine" },
-  { name:"Giddie Skin MedSpa",                    state:"MN", rx:10, revenue:1850.00, profit:555.00,  avgOrder:185.00, margin:30.0, topDrug:"Tirzepatide / Glycine" },
-  { name:"Healthon",                              state:"CA", rx:12, revenue:1600.00, profit:187.00,  avgOrder:133.33, margin:11.7, topDrug:"Tirzepatide / Glycine" },
-  { name:"MedFIT Weight Loss and Wellness",       state:"NC", rx:13, revenue:1505.00, profit:150.50,  avgOrder:115.77, margin:10.0, topDrug:"Tirzepatide / Glycine" },
-  { name:"Holloway Health LLC",                   state:"OK", rx: 9, revenue:1495.00, profit:149.50,  avgOrder:166.11, margin:10.0, topDrug:"Tirzepatide / Glycine / MeCbl" },
-  { name:"Center For Men",                        state:"OK", rx: 6, revenue: 836.20, profit: 94.30,  avgOrder:139.37, margin:11.3, topDrug:"Tirzepatide / Glycine / MeCbl" },
-  { name:"New Beginnings Wellness Clinic",        state:"OH", rx: 7, revenue: 821.60, profit:110.66,  avgOrder:117.37, margin:13.5, topDrug:"Tirzepatide / Glycine" },
-  { name:"Apex Care & Wellness PLLC",             state:"TX", rx: 4, revenue: 670.00, profit:105.00,  avgOrder:167.50, margin:15.7, topDrug:"Tirzepatide / Glycine / MeCbl" },
-];
-
-const stateData = [
-  { state:"CA", revenue:5435.83, profit:663.81,  rx:60, clinics:10 },
-  { state:"FL", revenue:4932.00, profit:607.20,  rx:35, clinics:19 },
-  { state:"NY", revenue:2900.00, profit:580.00,  rx:17, clinics: 2 },
-  { state:"TX", revenue:2611.62, profit:454.88,  rx:26, clinics: 8 },
-  { state:"OK", revenue:2516.20, profit:262.30,  rx:16, clinics: 3 },
-  { state:"ND", revenue:2250.00, profit:450.00,  rx:15, clinics: 1 },
-  { state:"NC", revenue:2019.00, profit:211.90,  rx:17, clinics: 3 },
-  { state:"MN", revenue:1850.00, profit:555.00,  rx:10, clinics: 1 },
-  { state:"OH", revenue:1080.60, profit:150.36,  rx:10, clinics: 3 },
-  { state:"TN", revenue:1054.00, profit:199.80,  rx: 9, clinics: 3 },
-  { state:"WV", revenue: 930.00, profit: 93.00,  rx: 6, clinics: 3 },
-  { state:"MD", revenue: 875.00, profit:106.00,  rx: 7, clinics: 5 },
-];
-const rankEmoji = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣"];
-
-// ─── HELPERS ─────────────────────────────────────────────────────
-const fmt = n => n>=1e6 ? '$'+(n/1e6).toFixed(2)+'M' : n>=1e3 ? '$'+(n/1e3).toFixed(0)+'K' : '$'+Math.round(n).toLocaleString();
+const rankEmoji = ["🥇","🥈","🥉","4️⃣"];
+const fmt  = n => n>=1e6 ? '$'+(n/1e6).toFixed(2)+'M' : n>=1e3 ? '$'+(n/1e3).toFixed(1)+'K' : '$'+Math.round(n).toLocaleString();
 const fmtFull = n => '$'+Math.round(n).toLocaleString('en-US');
-const pct = (v,mx) => Math.max(3, (v/mx*100)).toFixed(1);
+const pct  = (v,mx) => Math.max(3,(v/mx*100)).toFixed(1);
 
-// ─── BUILD TICKER ────────────────────────────────────────────────
+const SLIDE_NAMES = [
+  'Overview', 'Leaderboard', 'Weekly Trend', 'MoM Trajectory', 'Rep Scorecard',
+  'Erin Ryan Snyder', 'Zachary Salazar', 'Dylan White', 'Jonathan Izquierdo',
+  'Top Accounts', 'Account Detail', 'Territory Map', 'Retention Model', 'Product Mix', 'Battle Board', 'New Accounts'
+];
+
 function buildTicker() {
-  const items = reps.map(r => {
-    const lastWk = r.weekly[r.weekly.length-1];
-    const prevWk = r.weekly[r.weekly.length-2];
-    const arrow = lastWk >= prevWk ? '<span class="ti-up">▲</span>' : '<span class="ti-dn">▼</span>';
-    return `<span class="ticker-item"><strong>${r.name}</strong> ${fmtFull(r.revenue)} &nbsp;${arrow} ${r.orders.toLocaleString()} orders &nbsp;·&nbsp; ${r.clinics} clinics</span>`;
+  const now = new Date();
+  const updated = now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) + ' · ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const repItems = reps.map(r => {
+    const last = r.weekly[r.weekly.length-1], prev = r.weekly[r.weekly.length-2];
+    const up = last >= prev;
+    return `<span class="ticker-item"><span class="sym">${r.sym}</span><strong>${r.name}</strong> &nbsp;${fmtFull(r.revenue)}&nbsp; <span class="${up?'ti-up':'ti-dn'}">${up?'▲':'▼'} ${fmt(Math.abs(last-prev))}</span> &nbsp;·&nbsp; ${r.orders.toLocaleString()} orders &nbsp;·&nbsp; ${r.clinics} accounts</span>`;
   });
-  const all = [...items,...items].join('');
-  document.getElementById('tickerInner').innerHTML = all;
+  const clinicItems = topClinics.slice(0,5).map(c =>
+    `<span class="ticker-item">🏥 <strong>${c.name}</strong> &nbsp;${c.state}&nbsp; ${fmtFull(c.revenue)} &nbsp;·&nbsp; ${c.rx} Rx &nbsp;·&nbsp; <span style="color:var(--gold2)">${c.rep}</span></span>`
+  );
+  const refreshItem = `<span class="ticker-item" style="color:var(--gold);opacity:.7">⟳ Last Updated: ${updated}</span>`;
+  const all = [...repItems, ...clinicItems, refreshItem];
+  document.getElementById('tickerInner').innerHTML = [...all,...all].join('');
 }
 
-// ─── SLIDE: LEADERBOARD ──────────────────────────────────────────
+// ── COVER SLIDE ───────────────────────────────────────────────────
+function slideCover() {
+  const totalOrders     = reps.reduce((s,r)=>s+r.orders,0);
+  const totalAccounts   = reps.reduce((s,r)=>s+r.clinics,0);
+  const newAccountsYTD  = reps.reduce((s,r)=>s+r.newClinics.mar+r.newClinics.apr+r.newClinics.may,0);
+  const newAccounts7Day = newAccounts7d.length;
+  const peakWeek = Math.max(...weeks.map(w=>w.tot));
+  const peakLbl  = weeks.find(w=>w.tot===peakWeek).lbl;
+  const REP_COLORS = ['#f0c040','#8090a8','#00d4ff','#a78bfa'];
+
+  const kpis = [
+    { lbl:'YTD Revenue',      sub:PERIOD,                          val:totalRevenue,    col:'var(--gold2)',  plain:false },
+    { lbl:'Total Orders',     sub:'Across all active reps',        val:totalOrders,     col:'var(--silver)', plain:true  },
+    { lbl:'Active Accounts',  sub:'Unique clinics served',         val:totalAccounts,   col:'#00d4ff',       plain:true  },
+    { lbl:'First-Time Orders',sub:`${newAccountsYTD} YTD · last 7 days`,val:newAccounts7Day, col:'#00d97e', plain:true },
+    { lbl:'Peak Week',        sub:`${peakLbl} · All-time high`,    val:peakWeek,        col:'#a78bfa',       plain:false },
+  ];
+
+  const cards = kpis.map(k=>{
+    const display = k.plain ? Math.round(k.val).toLocaleString('en-US') : (k.val>=1000?fmt(k.val):k.val.toLocaleString());
+    return `
+    <div class="cover-kpi">
+      <div class="cover-kpi-val" style="color:${k.col}" data-cu="${k.val}"${k.plain?' data-cu-plain':''}>` + display + `</div>
+      <div class="cover-kpi-lbl">${k.lbl}</div>
+      <div class="cover-kpi-sub">${k.sub}</div>
+    </div>`;
+  }).join('');
+
+  const pills = reps.map((r,i)=>`<span class="cover-rep-pill" style="color:${REP_COLORS[i]};border-color:${REP_COLORS[i]}40">${r.name}</span>`).join('');
+
+  return `
+  <div class="slide slide-cover" id="s-cover">
+    <div class="cover-body">
+      <div class="cover-eyebrow">Boca Raton · Sales Intelligence</div>
+      <div class="cover-rule-top"></div>
+      <div class="cover-brand">JMS Sales</div>
+      <div class="cover-tagline">Performance Dashboard</div>
+      <div class="cover-period">${PERIOD}</div>
+      <div class="cover-rule"></div>
+      <div class="cover-kpis">${cards}</div>
+      <div class="cover-reps">${pills}</div>
+      <div class="cover-hint">← → Arrow keys or click dots to navigate &nbsp;·&nbsp; Hover to pause</div>
+    </div>
+  </div>`;
+}
+
+// ── SPARKLINE HELPER ──────────────────────────────────────────────
+function sparkline(data, color, idx, w=138, h=30) {
+  const maxV = Math.max(...data), minV = Math.min(...data);
+  const range = maxV - minV || 1;
+  const pad = 3, iW = w - pad*2, iH = h - pad*2;
+  const coords = data.map((v,i) => ({
+    x: (i/(data.length-1))*iW + pad,
+    y: h - pad - ((v-minV)/range*iH)
+  }));
+  const line  = coords.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  const area  = line + ` ${coords[coords.length-1].x.toFixed(1)},${h-1} ${coords[0].x.toFixed(1)},${h-1}`;
+  const last  = coords[coords.length-1];
+  const gid   = `spk${idx}`;
+  return `<svg viewBox="0 0 ${w} ${h}" style="width:${w}px;height:${h}px;overflow:visible;vertical-align:middle;display:block">
+    <defs>
+      <linearGradient id="${gid}" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="${color}" stop-opacity="0.28"/>
+        <stop offset="100%" stop-color="${color}" stop-opacity="0.02"/>
+      </linearGradient>
+    </defs>
+    <polygon points="${area}" fill="url(#${gid})"/>
+    <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.6"
+              stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${last.x.toFixed(1)}" cy="${last.y.toFixed(1)}" r="2.8" fill="${color}"/>
+  </svg>`;
+}
+
+// ── LEADERBOARD ───────────────────────────────────────────────────
 function slideLeaderboard() {
-  const maxRev = reps[0].revenue;
+  const REP_COLORS = ['#f0c040','#8090a8','#00d4ff','#a78bfa'];
   const rows = reps.map((r,i) => {
-    const boomPct = r.boom ? (r.boom/r.revenue*100).toFixed(0) : null;
+    const up = r.weekly[r.weekly.length-1] >= r.weekly[r.weekly.length-2];
+    const boomPct = r.boom ? (r.boom/r.revenue*100).toFixed(0)+'% BoomRx' : '—';
     return `
     <div class="lb-row r${i+1}">
       <div class="rank-ico">${rankEmoji[i]}</div>
       <div>
-        <div class="rep-name">${r.name}</div>
-        <div class="rep-sub">${r.orders.toLocaleString()} orders &nbsp;·&nbsp; ${r.clinics} clinics &nbsp;·&nbsp; ${(r.newClinics.mar+r.newClinics.apr+r.newClinics.may)} new</div>
+        <div class="rep-name">${r.name} <span style="font-family:'Barlow Condensed',sans-serif;font-size:.84rem;color:var(--gold);letter-spacing:.12em;margin-left:8px">${r.sym}</span></div>
+        <div class="rep-sub">${r.orders.toLocaleString()} orders &nbsp;·&nbsp; ${r.clinics} accounts &nbsp;·&nbsp; ${r.newClinics.mar+r.newClinics.apr+r.newClinics.may} new closed &nbsp;·&nbsp; ${boomPct} &nbsp;·&nbsp; <span class="${up?'g':'r'}">${up?'▲ Up':'▼ Down'} WoW</span></div>
       </div>
-      <div class="plat-pill plat-boom" title="BoomRx">${boomPct ? boomPct+'%<br>Boom' : '—'}</div>
-      <div class="plat-pill plat-bulk" title="Bulk">${boomPct ? (100-+boomPct)+'%<br>Bulk' : '—'}</div>
-      <div>
-        <div class="bar-bg"><div class="bar-fill" style="width:${pct(r.revenue,maxRev)}%"></div></div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        ${sparkline(r.weekly, REP_COLORS[i], i)}
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;color:var(--muted);letter-spacing:.08em;text-align:center">12-week trend</div>
       </div>
-      <div class="lb-rev">${fmt(r.revenue)}</div>
-      <div class="lb-ord">${r.orders.toLocaleString()}<span>orders</span></div>
+      <div class="lb-rev" data-cu="${r.revenue}">${fmt(r.revenue)}</div>
+      <div class="lb-ord"><div class="ord-num">${r.orders.toLocaleString()}</div><div class="ord-lbl">orders</div></div>
     </div>`;
   }).join('');
-
   return `
   <div class="slide slide-lb" id="s0">
     <div class="slide-header">
       <div class="brand">JMS SALES</div>
-      <div class="hdr-center">${PERIOD} &nbsp;·&nbsp; Full Team</div>
-      <div class="hdr-badge">Team Total &nbsp; ${fmt(totalRevenue)}</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="hdr-center">${PERIOD}</div>
+        <div class="period-badge">RANKINGS</div>
+      </div>
+      <div class="hdr-badge">Total Revenue &nbsp; ${fmt(totalRevenue)}</div>
     </div>
     <div class="lb-body">${rows}</div>
   </div>`;
 }
 
-// ─── SLIDE: WEEKLY TEAM TREND ────────────────────────────────────
 function slideWeeklyTrend() {
-  const maxTot = Math.max(...weeks.map(w=>w.tot));
+  const maxTot  = Math.max(...weeks.map(w=>w.tot));
   const peakIdx = weeks.findIndex(w=>w.tot===maxTot);
   const lastTot = weeks[weeks.length-1].tot;
   const prevTot = weeks[weeks.length-2].tot;
-  const avgTot = Math.round(weeks.reduce((s,w)=>s+w.tot,0)/weeks.length);
-  const trend = lastTot > prevTot;
-
+  const avgTot  = Math.round(weeks.reduce((s,w)=>s+w.tot,0)/weeks.length);
+  const up = lastTot > prevTot;
   const bars = weeks.map((w,i) => {
     const h = pct(w.tot, maxTot);
-    const cls = i===peakIdx ? 'peak' : (i===weeks.length-1 ? 'current' : '');
-    const color = i===peakIdx ? 'background:linear-gradient(180deg,#ffd700,#ff8c00)' :
-                  i===weeks.length-1 ? 'background:linear-gradient(180deg,#00d4ff,#7b2ff7)' :
-                  'background:linear-gradient(180deg,#334,#223)';
-    return `
-    <div class="wk-col">
+    const isPeak = i===peakIdx, isCur = i===weeks.length-1;
+    const shade = Math.round(40 + (i/weeks.length)*140);
+    const color = isPeak   ? 'background:linear-gradient(180deg,var(--gold3),#6b4d0a)' :
+                  isCur    ? 'background:linear-gradient(180deg,var(--green),#003a20)' :
+                  `background:linear-gradient(180deg,rgba(${shade},${shade+30},${shade+60},.85),rgba(${Math.round(shade*.4)},${Math.round((shade+30)*.4)},${Math.round((shade+60)*.4)},.5))`;
+    const repBreakdown = `Erin $${(w.erin/1000).toFixed(1)}K · Zachary $${(w.zach/1000).toFixed(1)}K · Dylan $${(w.dylan/1000).toFixed(1)}K · Jon $${(w.jon/1000).toFixed(1)}K`;
+    return `<div class="wk-col">
       <div class="wk-val">${fmt(w.tot)}</div>
-      <div class="wk-bar-wrap"><div class="wk-bar ${cls}" style="height:${h}%;${color}"></div></div>
-      <div class="wk-lbl${i===weeks.length-1?' hl':''}">${w.lbl}</div>
+      <div class="wk-bar-wrap"><div class="wk-bar ${isPeak?'peak':''} ${isCur?'current':''}" style="height:${h}%;${color}" data-tip="${w.lbl} · ${fmt(w.tot)} total | ${repBreakdown}"></div></div>
+      <div class="wk-lbl${isCur?' hl':''}">${w.lbl}</div>
     </div>`;
   }).join('');
-
   return `
   <div class="slide slide-trend" id="s1">
     <div class="slide-header">
       <div class="brand-sm">JMS SALES</div>
-      <div class="hdr-center">Weekly Team Revenue — 12 Weeks</div>
-      <div class="brand-sm">${PERIOD}</div>
+      <div class="hdr-center">Weekly Revenue — 12-Week Trend</div>
+      <div class="period-badge">${PERIOD}</div>
     </div>
     <div class="trend-body">
       <div class="trend-chart-panel">
-        <div class="panel-title">Total Team Revenue by Week &nbsp; <span style="color:#ffd700">★ Peak week highlighted</span></div>
+        <div class="panel-title">Team Revenue by Week &nbsp;<span style="color:var(--gold)">★ Peak week</span></div>
         <div class="weekly-bars">${bars}</div>
       </div>
       <div class="trend-stats-panel">
-        <div class="trend-stat-card">
-          <div class="tsc-label">Peak Week</div>
-          <div class="tsc-val gold">${fmt(maxTot)}</div>
-          <div class="tsc-sub">${weeks[peakIdx].lbl} (Week ${weeks[peakIdx].wk})</div>
-        </div>
-        <div class="trend-stat-card">
-          <div class="tsc-label">Most Recent Week</div>
-          <div class="tsc-val cyan">${fmt(lastTot)}</div>
-          <div class="tsc-sub">May 24 &nbsp; <span class="${trend?'green':'red'}">${trend?'▲':'▼'} ${fmt(Math.abs(lastTot-prevTot))} vs prior wk</span></div>
-        </div>
-        <div class="trend-stat-card">
-          <div class="tsc-label">12-Week Average</div>
-          <div class="tsc-val" style="color:#a78bfa">${fmt(avgTot)}</div>
-          <div class="tsc-sub">Per week</div>
-        </div>
-        <div class="trend-stat-card">
-          <div class="tsc-label">3-Month Total</div>
-          <div class="tsc-val" style="color:#00e676">${fmt(totalRevenue)}</div>
-          <div class="tsc-sub">All reps combined</div>
-        </div>
+        <div class="trend-stat-card"><div class="tsc-label">★ Peak Week</div><div class="tsc-val gd" data-cu="${maxTot}">${fmt(maxTot)}</div><div class="tsc-sub">${weeks[peakIdx].lbl} · Week ${weeks[peakIdx].wk}</div></div>
+        <div class="trend-stat-card"><div class="tsc-label">Most Recent</div><div class="tsc-val ${up?'g':'r'}" data-cu="${lastTot}">${fmt(lastTot)}</div><div class="tsc-sub">May 24 &nbsp;<span class="${up?'g':'r'}">${up?'▲':('▼')} ${fmt(Math.abs(lastTot-prevTot))} WoW</span></div></div>
+        <div class="trend-stat-card"><div class="tsc-label">12-Week Average</div><div class="tsc-val wh" data-cu="${avgTot}">${fmt(avgTot)}</div><div class="tsc-sub">Weekly mean</div></div>
+        <div class="trend-stat-card"><div class="tsc-label">Total Revenue</div><div class="tsc-val gd" data-cu="${totalRevenue}">${fmt(totalRevenue)}</div><div class="tsc-sub">All active reps, YTD</div></div>
       </div>
     </div>
   </div>`;
 }
 
-// ─── SLIDE: PROJECTION vs ACTUAL ─────────────────────────────────
-function slidePVA() {
-  const maxVal = Math.max(...pva.map(w=>Math.max(w.proj,w.act)));
-
-  const rows = pva.map(w => {
-    const projW = (w.proj/maxVal*100).toFixed(1);
-    const actW  = (w.act /maxVal*100).toFixed(1);
-    const diff  = w.act - w.proj;
-    const cls   = diff >= 0 ? 'over' : 'under';
-    const sign  = diff >= 0 ? '+' : '';
-    return `
-    <div class="pva-row">
-      <div class="pva-date">${w.dt}</div>
-      <div class="pva-bar-wrap">
-        <div class="pva-bar-proj" style="width:${projW}%"></div>
-        <div class="pva-bar-act ${cls}" style="width:${actW}%"></div>
-      </div>
-      <div style="font-size:.75rem;color:#666">${fmt(w.proj)} proj &nbsp;→&nbsp; <strong style="color:${diff>=0?'#00e676':'#ff6b6b'}">${fmt(w.act)}</strong></div>
-      <div class="pva-var ${diff>=0?'green':'red'}">${sign}${fmt(diff)}</div>
-    </div>`;
-  }).join('');
-
-  const clinicRows = pva.map(w => {
-    const d = w.clinicAct - w.clinicProj;
-    const cls = d>=0 ? 'pos' : 'neg';
-    const sign = d>=0 ? '+' : '';
-    return `
-    <div class="pva-clinic-row">
-      <span class="dt">${w.dt}</span>
-      <span class="proj">${w.clinicProj} target</span>
-      <span class="act">${w.clinicAct} actual</span>
-      <span class="diff ${cls}">${sign}${d}</span>
-    </div>`;
-  }).join('');
-
-  return `
-  <div class="slide slide-pva" id="s2">
-    <div class="slide-header">
-      <div class="brand-sm">JMS SALES</div>
-      <div class="hdr-center">Q2 Projection vs. Actual</div>
-      <div class="brand-sm">Apr 12 – May 24</div>
-    </div>
-    <div class="pva-body">
-      <div class="pva-chart">
-        <div class="panel-title">Weekly Revenue — Projection vs. Actual</div>
-        <div class="pva-legend">
-          <div class="pva-leg-item"><div class="pva-leg-box" style="background:rgba(255,255,255,.25)"></div>Projection</div>
-          <div class="pva-leg-item"><div class="pva-leg-box" style="background:linear-gradient(90deg,#00e676,#00b0ff)"></div>Over Target</div>
-          <div class="pva-leg-item"><div class="pva-leg-box" style="background:linear-gradient(90deg,#ff6b6b,#ff8e53)"></div>Under Target</div>
-        </div>
-        <div class="pva-weeks">${rows}</div>
-      </div>
-      <div class="pva-sidebar">
-        <div class="pva-cumcard">
-          <div class="lbl">Cumulative Variance</div>
-          <div class="val ${cumRevVar>=0?'green':'red'}">${cumRevVar>=0?'+':''}${fmt(cumRevVar)}</div>
-          <div class="sub">vs. Q2 projection to date</div>
-        </div>
-        <div style="margin-top:4px">
-          <div class="panel-title">Ordering Clinics per Week</div>
-          <div class="pva-clinic-table">${clinicRows}</div>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
-// ─── SLIDE: INDIVIDUAL REP ───────────────────────────────────────
 function slideRep(r, idx) {
-  const maxWk = Math.max(...r.weekly);
+  const maxWk   = Math.max(...r.weekly);
   const peakIdx = r.weekly.findIndex(v=>v===maxWk);
-  const lastWk = r.weekly[r.weekly.length-1];
-  const prevWk = r.weekly[r.weekly.length-2];
-  const wkTrend = lastWk >= prevWk;
+  const lastWk  = r.weekly[r.weekly.length-1];
+  const prevWk  = r.weekly[r.weekly.length-2];
+  const up = lastWk >= prevWk;
   const newTotal = r.newClinics.mar + r.newClinics.apr + r.newClinics.may;
   const shareStr = (r.revenue/totalRevenue*100).toFixed(1);
-  const avgOrd = fmt(r.revenue/r.orders);
-
-  // Platform split
   let platformHTML = '';
   if (r.boom !== null) {
     const boomPct = (r.boom/r.revenue*100).toFixed(0);
-    const bulkPct = (r.bulk/r.revenue*100).toFixed(0);
-    platformHTML = `
-    <div class="platform-split">
+    platformHTML = `<div class="platform-split">
       <div class="ps-pill ps-boom"><div class="ps-lbl">BOOMRX</div><div class="ps-val">${fmt(r.boom)}</div><div class="ps-pct">${boomPct}% of revenue</div></div>
-      <div class="ps-pill ps-bulk"><div class="ps-lbl">BULK</div><div class="ps-val">${fmt(r.bulk)}</div><div class="ps-pct">${bulkPct}% of revenue</div></div>
+      <div class="ps-pill ps-bulk"><div class="ps-lbl">BULK</div><div class="ps-val">${fmt(r.bulk)}</div><div class="ps-pct">${100-+boomPct}% of revenue</div></div>
     </div>`;
   }
-
-  // Weekly bars
   const wkBars = weeks.map((w,i) => {
-    const h = maxWk > 0 ? Math.max(2, (r.weekly[i]/maxWk*100)).toFixed(1) : 2;
-    const extra = i === peakIdx ? ' peak' : '';
-    return `<div class="rwk-col">
-      <div class="rwk-bar-wrap"><div class="rwk-bar${extra}" style="height:${h}%"></div></div>
-      <div class="rwk-lbl">${w.lbl}</div>
-    </div>`;
+    const h = maxWk > 0 ? Math.max(2,(r.weekly[i]/maxWk*100)).toFixed(1) : 2;
+    return `<div class="rwk-col"><div class="rwk-bar-wrap"><div class="rwk-bar${i===peakIdx?' peak':''}" style="height:${h}%"></div></div><div class="rwk-lbl">${w.lbl}</div></div>`;
   }).join('');
-
-  // Drug rows
-  const drugRows = r.topDrugs.map((d,di) => `
-  <div class="drug-row">
-    <div class="drug-num">${di+1}</div>
-    <div class="drug-name">${d.name}</div>
-    <div class="drug-rev">${fmt(d.rev)}</div>
-  </div>`).join('');
-
+  const drugRows = r.topDrugs.map((d,di) =>
+    `<div class="drug-row"><div class="drug-num">${di+1}</div><div class="drug-name">${d.name}</div><div class="drug-rev">${fmt(d.rev)}</div></div>`
+  ).join('');
   return `
-  <div class="slide slide-rep theme-${r.theme}" id="s${idx+3}">
+  <div class="slide slide-rep theme-${r.theme}" id="s${idx+2}" style="background:radial-gradient(ellipse at 20% 50%,#071528 0%,var(--bg) 70%);background-image:repeating-linear-gradient(-60deg,transparent,transparent 40px,rgba(201,168,76,.018) 40px,rgba(201,168,76,.018) 41px);">
     <div class="slide-header">
       <div class="brand-sm">JMS SALES</div>
-      <div class="hdr-center">${PERIOD}</div>
-      <div class="brand-sm">Rank #${r.rank} of ${reps.length}</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="hdr-center">${PERIOD}</div>
+        <div class="period-badge">${r.sym}</div>
+      </div>
+      <div class="brand-sm">RANK #${r.rank} / ${reps.length}</div>
     </div>
     <div class="rep-body">
-
       <div class="panel">
-        <div class="rank-badge">${rankEmoji[r.rank-1]} &nbsp; Rank #${r.rank}</div>
+        <div class="rank-badge">${rankEmoji[r.rank-1]} &nbsp; Rank #${r.rank} of ${reps.length}</div>
         <div class="rep-big-name">${r.name}</div>
-        <div class="period-tag">${shareStr}% of team revenue</div>
+        <div class="period-tag">${shareStr}% of total team revenue</div>
         ${platformHTML}
-        <div class="new-clinics-badge">✦ ${newTotal} new clinics onboarded</div>
+        <div class="ws-badge">▲ ${newTotal} New Accounts Closed</div>
       </div>
-
       <div class="panel alt-bg">
         <div class="rev-label">Total Revenue</div>
-        <div class="rev-amount">${fmt(r.revenue)}</div>
+        <div class="rev-amount" data-cu="${r.revenue}">${fmt(r.revenue)}</div>
         <div class="sub-stats">
           <div class="sub-stat"><div class="val">${r.orders.toLocaleString()}</div><div class="lbl">Orders</div></div>
-          <div class="sub-stat"><div class="val">${r.clinics}</div><div class="lbl">Clinics</div></div>
-          <div class="sub-stat"><div class="val">${avgOrd}</div><div class="lbl">Avg Order</div></div>
-          <div class="sub-stat"><div class="val ${wkTrend?'green':'red'}">${wkTrend?'▲':'▼'}</div><div class="lbl">Wk Trend</div></div>
+          <div class="sub-stat"><div class="val">${r.clinics}</div><div class="lbl">Accounts</div></div>
+          <div class="sub-stat"><div class="val">${fmt(r.revenue/r.orders)}</div><div class="lbl">Avg Order</div></div>
+          <div class="sub-stat"><div class="val ${up?'g':'r'}">${up?'▲':'▼'}</div><div class="lbl">Trend</div></div>
         </div>
-        <div style="margin-top:16px;display:flex;gap:18px">
-          <div style="text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 16px">
-            <div style="font-size:1.2rem;font-weight:800;color:#a78bfa">${r.activeClinics.mar}</div>
-            <div style="font-size:.65rem;color:#555;margin-top:2px">Mar Clinics</div>
-          </div>
-          <div style="text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 16px">
-            <div style="font-size:1.2rem;font-weight:800;color:#a78bfa">${r.activeClinics.apr}</div>
-            <div style="font-size:.65rem;color:#555;margin-top:2px">Apr Clinics</div>
-          </div>
-          <div style="text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 16px">
-            <div style="font-size:1.2rem;font-weight:800;color:#a78bfa">${r.activeClinics.may}</div>
-            <div style="font-size:.65rem;color:#555;margin-top:2px">May Clinics</div>
-          </div>
+        <div class="month-grid">
+          <div class="mg-box"><div class="mg-val">${r.activeClinics.mar}</div><div class="mg-lbl">Mar Active</div></div>
+          <div class="mg-box"><div class="mg-val">${r.activeClinics.apr}</div><div class="mg-lbl">Apr Active</div></div>
+          <div class="mg-box"><div class="mg-val">${r.activeClinics.may}</div><div class="mg-lbl">May Active</div></div>
         </div>
       </div>
-
       <div class="panel">
-        <div class="panel-title">12-Week Revenue Trend &nbsp; <span style="font-size:.65rem;color:#555">${fmt(lastWk)} this week</span></div>
+        <div class="panel-title">12-Week Revenue Chart &nbsp;<span style="font-size:.7rem;color:var(--muted)">${fmt(lastWk)} last week &nbsp;<span class="${up?'g':'r'}">${up?'▲ Up':'▼ Down'}</span></span></div>
         <div class="rep-weekly-bars">${wkBars}</div>
       </div>
-
       <div class="panel alt-bg">
         <div class="panel-title">Top Products by Revenue</div>
         ${drugRows}
-        <div style="margin-top:16px;display:flex;gap:16px">
-          <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 14px;text-align:center">
-            <div style="font-size:1.1rem;font-weight:800;color:#00e676">${r.newClinics.mar}</div>
-            <div style="font-size:.6rem;color:#555;margin-top:2px">New Mar</div>
-          </div>
-          <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 14px;text-align:center">
-            <div style="font-size:1.1rem;font-weight:800;color:#00e676">${r.newClinics.apr}</div>
-            <div style="font-size:.6rem;color:#555;margin-top:2px">New Apr</div>
-          </div>
-          <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 14px;text-align:center">
-            <div style="font-size:1.1rem;font-weight:800;color:#00e676">${r.newClinics.may}</div>
-            <div style="font-size:.6rem;color:#555;margin-top:2px">New May</div>
-          </div>
-          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;text-align:center">
-            <div style="font-size:1.1rem;font-weight:800;color:#00e676">${newTotal}</div>
-            <div style="font-size:.6rem;color:#555;margin-top:2px">Total New</div>
-          </div>
+        <div class="month-grid" style="margin-top:18px">
+          <div class="mg-box"><div class="mg-val">${r.newClinics.mar}</div><div class="mg-lbl">New Mar</div></div>
+          <div class="mg-box"><div class="mg-val">${r.newClinics.apr}</div><div class="mg-lbl">New Apr</div></div>
+          <div class="mg-box"><div class="mg-val">${r.newClinics.may}</div><div class="mg-lbl">New May</div></div>
+          <div class="mg-box" style="border-color:var(--gold);background:rgba(201,168,76,.05)"><div class="mg-val gd">${newTotal}</div><div class="mg-lbl">Total</div></div>
         </div>
       </div>
-
     </div>
   </div>`;
 }
 
-// ─── SLIDE: CLINIC LEADERBOARD ───────────────────────────────────
 function slideClinicLeaderboard() {
   const rankIco = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"];
   const maxRev = topClinics[0].revenue;
   const rows = topClinics.map((c,i) => {
     const crCls = i < 3 ? ` cr${i+1}` : '';
-    const barW = Math.max(4, (c.revenue / maxRev * 100)).toFixed(1);
-    const marginColor = c.margin >= 20 ? '#00e676' : c.margin >= 15 ? '#ffd700' : '#00d4ff';
-    return `
-    <div class="clb-row${crCls}">
+    const barW = Math.max(4,(c.revenue/maxRev*100)).toFixed(1);
+    return `<div class="clb-row${crCls}">
       <div class="clb-rank">${rankIco[i]}</div>
       <div>
         <div class="clb-name">${c.name}</div>
-        <div class="clb-sub">${c.rx} Rx &nbsp;·&nbsp; Avg ${fmt(c.avgOrder)}/order &nbsp;·&nbsp; <span style="color:${marginColor}">${c.margin}% margin</span></div>
+        <div class="clb-meta">
+          <span class="clb-rep-badge">${c.rep}</span>
+          <span class="clb-state-badge">${c.state}</span>
+          <span class="clb-sub">${c.rx} Rx &nbsp;·&nbsp; Avg ${fmt(c.avgOrder)} / order</span>
+        </div>
       </div>
-      <div class="clb-state">${c.state}</div>
-      <div style="font-size:.68rem;color:#666;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${c.topDrug}</div>
-      <div class="clb-bar-bg"><div class="clb-bar-fill" style="width:${barW}%"></div></div>
-      <div class="clb-rev">${fmt(c.revenue)}</div>
-      <div class="clb-rx">${fmt(c.profit)}<span>profit</span></div>
+      <div class="clb-bar-wrap">
+        <div class="clb-bar-bg"><div class="clb-bar-fill" style="width:${barW}%"></div></div>
+        <div class="clb-bar-sub" style="color:var(--muted)">Top Rx: ${c.topDrug}</div>
+      </div>
+      <div class="clb-rev-block">
+        <span class="clb-rev" data-cu="${c.revenue}">${fmt(c.revenue)}</span>
+        <div class="clb-profit" style="color:var(--muted)">${c.rx} scripts &nbsp;·&nbsp; ${fmt(c.avgOrder)} avg</div>
+      </div>
     </div>`;
   }).join('');
-
   return `
   <div class="slide slide-clb" id="sc0">
     <div class="slide-header">
       <div class="brand">JMS SALES</div>
-      <div class="hdr-center">Top Clinic Rankings &nbsp;·&nbsp; ${CLINIC_PERIOD}</div>
-      <div class="hdr-badge">${clinicData.totalClinics} Active Clinics &nbsp; ${fmt(clinicData.totalRevenue)} Rev</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="hdr-center">Top Accounts by Revenue &nbsp;·&nbsp; ${CLINIC_PERIOD}</div>
+        <div class="period-badge">TOP 10</div>
+      </div>
+      <div class="hdr-badge">${clinicData.totalClinics} Active Accounts &nbsp;·&nbsp; ${fmt(clinicData.totalRevenue)}</div>
     </div>
     <div class="clb-body">${rows}</div>
   </div>`;
 }
 
-// ─── SLIDE: CLINIC PERFORMANCE CARDS ─────────────────────────────
 function slideClinicCards() {
   const maxRev = topClinics[0].revenue;
-  const cards = topClinics.slice(0,8).map((c,i) => {
-    const barW = Math.max(4, (c.revenue / maxRev * 100)).toFixed(1);
-    const marginColor = c.margin >= 20 ? '#00e676' : c.margin >= 15 ? '#ffd700' : '#00d4ff';
-    const rankColors = ['#ffd700','#c0c0c0','#cd7f32','#00d4ff','#00d4ff','#a78bfa','#a78bfa','#34d399'];
-    return `
-    <div class="cpc-card">
+  const rankColors = ['var(--gold2)','var(--silver)','#cd7f32','#00d4ff','rgba(201,168,76,.7)','#a78bfa'];
+  const cards = topClinics.slice(0,6).map((c,i) => {
+    const barW = Math.max(4,(c.revenue/maxRev*100)).toFixed(1);
+    return `<div class="cpc-card">
       <div class="cpc-header">
         <div class="cpc-name">${c.name}</div>
-        <div class="cpc-state-badge">${c.state}</div>
+        <div class="cpc-badges">
+          <span class="cpc-state-badge">${c.state}</span>
+          <span class="cpc-rep-badge">${c.rep}</span>
+        </div>
       </div>
-      <div class="cpc-rev" style="color:${rankColors[i]}">${fmt(c.revenue)}</div>
+      <div class="cpc-rev" style="color:${rankColors[i]}" data-cu="${c.revenue}">${fmt(c.revenue)}</div>
       <div class="cpc-stats-row">
-        <div class="cpc-stat">
-          <div class="cpc-stat-val">${c.rx}</div>
-          <div class="cpc-stat-lbl">Rx Orders</div>
-        </div>
-        <div class="cpc-stat">
-          <div class="cpc-stat-val">${fmt(c.profit)}</div>
-          <div class="cpc-stat-lbl">Profit</div>
-        </div>
-        <div class="cpc-stat">
-          <div class="cpc-stat-val" style="color:${marginColor}">${c.margin}%</div>
-          <div class="cpc-stat-lbl">Margin</div>
-        </div>
+        <div class="cpc-stat"><div class="cpc-stat-val">${c.rx}</div><div class="cpc-stat-lbl">Rx Scripts</div></div>
+        <div class="cpc-stat"><div class="cpc-stat-val">${fmt(c.avgOrder)}</div><div class="cpc-stat-lbl">Avg Order</div></div>
       </div>
-      <div class="cpc-drug"><strong>Top Rx:</strong> ${c.topDrug}</div>
+      <div class="cpc-drug"><strong>Top Rx:</strong> &nbsp;${c.topDrug}</div>
       <div class="cpc-bar-row">
-        <div class="cpc-bar-bg"><div class="cpc-bar-fill" style="width:${barW}%;background:linear-gradient(90deg,${rankColors[i]},${rankColors[Math.min(i+1,7)]})"></div></div>
+        <div class="cpc-bar-bg"><div class="cpc-bar-fill" style="width:${barW}%;background:linear-gradient(90deg,${rankColors[i]},${rankColors[Math.min(i+1,5)]})"></div></div>
         <div class="cpc-pct">${barW}%</div>
       </div>
     </div>`;
   }).join('');
-
   return `
   <div class="slide slide-cpc" id="sc1">
     <div class="slide-header">
       <div class="brand-sm">JMS SALES</div>
-      <div class="hdr-center">Clinic Performance Deep Dive &nbsp;·&nbsp; ${CLINIC_PERIOD}</div>
-      <div class="hdr-badge">Top 8 by Revenue</div>
+      <div class="hdr-center">Account Performance Detail &nbsp;·&nbsp; ${CLINIC_PERIOD}</div>
+      <div class="hdr-badge">Top 6 Accounts</div>
     </div>
     <div class="cpc-body">${cards}</div>
   </div>`;
 }
 
-// ─── SLIDE: STATE BREAKDOWN ───────────────────────────────────────
 function slideStateBreakdown() {
-  const maxRev = stateData[0].revenue;
-  const totalStateRev = stateData.reduce((s,d)=>s+d.revenue,0);
+  // ── US tile grid (col, row) ──────────────────────────────────────
+  const TILES = [
+    {s:'ME',c:11,r:0},
+    {s:'VT',c:9,r:1},  {s:'NH',c:10,r:1},
+    {s:'WA',c:0,r:2},  {s:'MT',c:2,r:2},  {s:'ND',c:3,r:2},  {s:'MN',c:4,r:2},
+    {s:'WI',c:5,r:2},  {s:'MI',c:6,r:2},  {s:'NY',c:8,r:2},  {s:'MA',c:10,r:2}, {s:'RI',c:11,r:2},
+    {s:'OR',c:0,r:3},  {s:'ID',c:1,r:3},  {s:'WY',c:2,r:3},  {s:'SD',c:3,r:3},
+    {s:'IA',c:4,r:3},  {s:'IL',c:5,r:3},  {s:'IN',c:6,r:3},  {s:'OH',c:7,r:3},
+    {s:'PA',c:8,r:3},  {s:'NJ',c:9,r:3},  {s:'CT',c:10,r:3}, {s:'DE',c:11,r:3},
+    {s:'CA',c:0,r:4},  {s:'NV',c:1,r:4},  {s:'UT',c:2,r:4},  {s:'CO',c:3,r:4},
+    {s:'NE',c:4,r:4},  {s:'MO',c:5,r:4},  {s:'KY',c:6,r:4},  {s:'WV',c:7,r:4},
+    {s:'VA',c:8,r:4},  {s:'MD',c:9,r:4},  {s:'DC',c:10,r:4},
+    {s:'AZ',c:1,r:5},  {s:'NM',c:2,r:5},  {s:'KS',c:3,r:5},  {s:'AR',c:4,r:5},
+    {s:'TN',c:5,r:5},  {s:'NC',c:7,r:5},  {s:'SC',c:8,r:5},
+    {s:'TX',c:2,r:6},  {s:'OK',c:3,r:6},  {s:'LA',c:4,r:6},  {s:'MS',c:5,r:6},
+    {s:'AL',c:6,r:6},  {s:'GA',c:7,r:6},  {s:'FL',c:9,r:6},
+    {s:'AK',c:0,r:7},  {s:'HI',c:2,r:7},
+  ];
 
-  const bars = stateData.map((d,i) => {
-    const barW = Math.max(3, (d.revenue / maxRev * 100)).toFixed(1);
-    const gradients = [
-      'linear-gradient(90deg,#ffd700,#ff8c00)',
-      'linear-gradient(90deg,#00d4ff,#7b2ff7)',
-      'linear-gradient(90deg,#00e676,#00b0ff)',
-      'linear-gradient(90deg,#a78bfa,#ec4899)',
-      'linear-gradient(90deg,#ff6b6b,#ff8e53)',
-      'linear-gradient(90deg,#34d399,#06b6d4)',
-    ];
-    const grad = gradients[i % gradients.length];
-    const marginColor = (d.profit/d.revenue*100) >= 15 ? '#00e676' : '#00d4ff';
-    return `
-    <div class="state-row">
-      <div class="state-name">${d.state}</div>
-      <div class="state-bar-bg">
-        <div class="state-bar-fill" style="width:${barW}%;background:${grad}"></div>
-        <div class="state-bar-label">${d.clinics} clinic${d.clinics>1?'s':''} &nbsp;·&nbsp; ${d.rx} Rx</div>
-      </div>
-      <div class="state-rev">${fmt(d.revenue)}</div>
-      <div class="state-clinics" style="color:${marginColor}">${(d.profit/d.revenue*100).toFixed(0)}% mgn</div>
-    </div>`;
+  // Revenue lookup
+  const revMap = {};
+  stateData.forEach(d => { revMap[d.state] = d; });
+  const maxRev = stateData[0].revenue;
+
+  // Color scale: dark navy → deep gold → bright gold
+  function tileColor(abbr) {
+    const d = revMap[abbr];
+    if (!d) return '#0a1628';
+    const t = Math.pow(d.revenue / maxRev, 0.5);
+    return `rgb(${Math.round(13+t*227)},${Math.round(30+t*162)},${Math.round(48-t*38)})`;
+  }
+
+  // Tile geometry
+  const TW=50, TH=36, GAP=4, SX=TW+GAP, SY=TH+GAP;
+  const SVG_W = 11*SX + TW + 4;   // 12 cols
+  const SVG_H = 7*SY + TH + 48;   // 8 rows + legend
+
+  const svgTiles = TILES.map(t => {
+    const x = t.c * SX, y = t.r * SY;
+    const d = revMap[t.s];
+    const active = !!d;
+    const fill   = tileColor(t.s);
+    const stroke = active ? 'rgba(201,168,76,.35)' : 'rgba(255,255,255,.04)';
+    const tCol   = active ? '#ffffff' : '#1e3350';
+    const tW     = active ? '800' : '600';
+    const revTxt = active ? fmt(d.revenue) : '';
+    return `<g>
+      <rect x="${x}" y="${y}" width="${TW}" height="${TH}" rx="3" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
+      <text x="${x+TW/2}" y="${y+(active?TH/2-3.5:TH/2+4)}" text-anchor="middle" dominant-baseline="middle"
+            font-family="'Barlow Condensed',sans-serif" font-size="11" font-weight="${tW}" fill="${tCol}">${t.s}</text>
+      ${active ? `<text x="${x+TW/2}" y="${y+TH/2+9}" text-anchor="middle"
+            font-family="'Barlow Condensed',sans-serif" font-size="8" font-weight="700"
+            fill="rgba(255,255,255,.72)">${revTxt}</text>` : ''}
+    </g>`;
   }).join('');
+
+  // Legend
+  const lgY = 7*SY + TH + 10;
+  const legend = `
+    <defs>
+      <linearGradient id="revGrad" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0%"   stop-color="#0a1628"/>
+        <stop offset="35%"  stop-color="#3a2800"/>
+        <stop offset="100%" stop-color="#f0c040"/>
+      </linearGradient>
+    </defs>
+    <text x="0" y="${lgY-2}" font-family="'Barlow Condensed',sans-serif" font-size="8.5"
+          font-weight="700" fill="#2d4060" letter-spacing="1.5">REVENUE INTENSITY</text>
+    <rect x="0" y="${lgY+5}" width="200" height="9" rx="2" fill="url(#revGrad)"/>
+    <text x="0"   y="${lgY+24}" font-family="'Barlow Condensed',sans-serif" font-size="8.5" fill="#2d4060">No activity</text>
+    <text x="200" y="${lgY+24}" font-family="'Barlow Condensed',sans-serif" font-size="8.5" fill="#c9a84c" text-anchor="end">$1,850 peak (MN)</text>`;
 
   return `
   <div class="slide slide-state" id="sc2">
     <div class="slide-header">
       <div class="brand-sm">JMS SALES</div>
-      <div class="hdr-center">Revenue by State &nbsp;·&nbsp; ${CLINIC_PERIOD}</div>
-      <div class="brand-sm">12 States Active</div>
+      <div class="hdr-center">Geographic Market Coverage &nbsp;·&nbsp; ${CLINIC_PERIOD}</div>
+      <div class="period-badge">${stateData.length} Active Markets</div>
     </div>
     <div class="state-body">
-      <div class="state-chart">
-        <div class="panel-title">Top States by Revenue — ${CLINIC_PERIOD}</div>
-        <div class="state-bars">${bars}</div>
+      <div class="state-map-panel">
+        <div class="panel-title" style="margin-bottom:10px">US Revenue Map — ${CLINIC_PERIOD}</div>
+        <svg viewBox="0 0 ${SVG_W} ${SVG_H}" preserveAspectRatio="xMinYMin meet">
+          ${svgTiles}${legend}
+        </svg>
       </div>
       <div class="state-sidebar">
-        <div class="state-summary-card">
-          <div class="ssc-label">2-Day Total Revenue</div>
-          <div class="ssc-val green">${fmt(clinicData.totalRevenue)}</div>
-          <div class="ssc-sub">May 25 + May 26, 2026</div>
+        <div class="state-summary-card"><div class="ssc-label">Session Revenue</div><div class="ssc-val gd" data-cu="${clinicData.totalRevenue}">${fmt(clinicData.totalRevenue)}</div><div class="ssc-sub">${CLINIC_PERIOD}</div></div>
+        <div class="state-summary-card"><div class="ssc-label">States Covered</div><div class="ssc-val g" data-cu="${stateData.length}" data-cu-plain>${stateData.length}</div><div class="ssc-sub">${stateData.length} active territories</div></div>
+        <div class="state-summary-card"><div class="ssc-label">Rx Volume</div><div class="ssc-val wh" data-cu="${clinicData.totalRx}">${clinicData.totalRx}</div><div class="ssc-sub">${clinicData.totalClinics} active accounts</div></div>
+        <div class="state-summary-card"><div class="ssc-label">Avg / Account</div><div class="ssc-val gd" data-cu="${clinicData.totalRevenue/clinicData.totalClinics}">${fmt(clinicData.totalRevenue/clinicData.totalClinics)}</div><div class="ssc-sub">Revenue per active account</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function slideMoM() {
+  const COLORS = ['#f0c040','#8090a8','#00d4ff','#a78bfa'];
+  const SHORT  = ['Erin','Zachary','Dylan','Jonathan'];
+
+  // Monthly totals per rep (weeks 0-3=Mar, 4-7=Apr, 8-11=May)
+  const rm = reps.map((r,i) => {
+    const mar = r.weekly.slice(0,4).reduce((s,v)=>s+v,0);
+    const apr = r.weekly.slice(4,8).reduce((s,v)=>s+v,0);
+    const may = r.weekly.slice(8,12).reduce((s,v)=>s+v,0);
+    return { ...r, mar, apr, may, color:COLORS[i], short:SHORT[i] };
+  });
+
+  const teamMar = rm.reduce((s,r)=>s+r.mar,0);
+  const teamApr = rm.reduce((s,r)=>s+r.apr,0);
+  const teamMay = rm.reduce((s,r)=>s+r.may,0);
+  const maxTeam = Math.max(teamMar,teamApr,teamMay);
+  const BAR_H   = 215;
+
+  const bh = v => Math.max(10, v/maxTeam*BAR_H);
+
+  function buildBar(monthTotal, key, label) {
+    const h = bh(monthTotal);
+    const segs = rm.map(r => {
+      const rv = r[key];
+      const sh = Math.max(2, rv/monthTotal*h);
+      return `<div style="height:${sh.toFixed(1)}px;background:${r.color};flex-shrink:0;"></div>`;
+    }).join('');
+    return `<div class="mom-bar-group">
+      <div class="mom-total" data-cu="${monthTotal}">${fmt(monthTotal)}</div>
+      <div class="mom-bar" style="height:${h.toFixed(1)}px;">${segs}</div>
+      <div class="mom-month-lbl">${label}</div>
+    </div>`;
+  }
+
+  function arrow(a, b) {
+    const p = ((b-a)/a*100);
+    const up = p >= 0;
+    const c  = up ? 'var(--green)' : 'var(--red)';
+    const bc = up ? 'rgba(0,217,126,.22)' : 'rgba(232,64,64,.18)';
+    return `<div class="mom-arrow-col">
+      <div class="mom-growth" style="color:${c};border-color:${bc};">${up?'▲':'▼'} ${up?'+':''}${p.toFixed(1)}%</div>
+    </div>`;
+  }
+
+  const chart = `
+    <div class="panel-title" style="margin-bottom:0">Team Revenue — Stacked by Rep &nbsp;<span style="color:var(--silver);font-size:.7rem">* May through May 24</span></div>
+    <div class="mom-legend" style="margin-top:10px">
+      ${rm.map(r=>`<span class="mom-leg-item"><span class="mom-leg-dot" style="background:${r.color}"></span>${r.short}</span>`).join('')}
+    </div>
+    <div class="mom-bars-row">
+      ${buildBar(teamMar,'mar','March')}
+      ${arrow(teamMar,teamApr)}
+      ${buildBar(teamApr,'apr','April')}
+      ${arrow(teamApr,teamMay)}
+      ${buildBar(teamMay,'may','May*')}
+    </div>`;
+
+  const cards = rm.map(r => {
+    const maUp = r.apr >= r.mar, amUp = r.may >= r.apr;
+    const maPct = ((r.apr-r.mar)/r.mar*100).toFixed(1);
+    const amPct = ((r.may-r.apr)/r.apr*100).toFixed(1);
+    return `<div class="mom-rep-card" style="border-left-color:${r.color}">
+      <div class="mom-rep-header">
+        <span class="mom-rep-name" style="color:${r.color}">${r.name}</span>
+        <span class="mom-rep-sym">${r.sym}</span>
+      </div>
+      <div class="mom-rep-row">
+        <div class="mom-rep-month"><div class="mom-rep-lbl">Mar</div><div class="mom-rep-val">${fmt(r.mar)}</div></div>
+        <div class="mom-trend-arrow ${maUp?'up':'dn'}">${maUp?'▲':'▼'}<br>${maUp?'+':''}${maPct}%</div>
+        <div class="mom-rep-month"><div class="mom-rep-lbl">Apr</div><div class="mom-rep-val">${fmt(r.apr)}</div></div>
+        <div class="mom-trend-arrow ${amUp?'up':'dn'}">${amUp?'▲':'▼'}<br>${amUp?'+':''}${amPct}%</div>
+        <div class="mom-rep-month"><div class="mom-rep-lbl">May*</div><div class="mom-rep-val">${fmt(r.may)}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="slide slide-mom" id="smom">
+    <div class="slide-header">
+      <div class="brand">JMS SALES</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="hdr-center">Month-over-Month Trajectory</div>
+        <div class="period-badge">MAR – MAY 2026</div>
+      </div>
+      <div class="hdr-badge" data-cu="${totalRevenue}">YTD &nbsp; ${fmt(totalRevenue)}</div>
+    </div>
+    <div class="mom-body">
+      <div class="mom-left">${chart}</div>
+      <div class="mom-right">
+        <div class="mom-right-title">Rep Trajectories</div>
+        ${cards}
+        <div class="mom-footnote">* May data through May 24, 2026 · 4 weeks recorded</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function slideScorecard() {
+  const COLORS = ['#f0c040','#8090a8','#00d4ff','#a78bfa'];
+
+  // Compute Apr & May totals for trend
+  const rm = reps.map((r,i) => {
+    const apr = r.weekly.slice(4,8).reduce((s,v)=>s+v,0);
+    const may = r.weekly.slice(8,12).reduce((s,v)=>s+v,0);
+    const trend = (may - apr) / apr * 100;
+    return { ...r, apr, may, trend, color:COLORS[i] };
+  });
+
+  // Metric definitions: label, sub-label, value extractor, format fn, isTrend flag
+  const metrics = [
+    { label:'YTD Revenue',       sub:'Total billed Mar–May',
+      get:(r)=>r.revenue,        fmt_:(v)=>fmt(v),      cu:true,  trend:false },
+    { label:'Revenue / Account', sub:'Avg revenue per clinic',
+      get:(r)=>r.revenue/r.clinics, fmt_:(v)=>fmt(v),   cu:true,  trend:false },
+    { label:'Revenue / Order',   sub:'Average ticket size',
+      get:(r)=>r.revenue/r.orders,  fmt_:(v)=>fmt(v),   cu:true,  trend:false },
+    { label:'Orders / Account',  sub:'Account engagement depth',
+      get:(r)=>r.orders/r.clinics,  fmt_:(v)=>v.toFixed(1)+'x', cu:false, trend:false },
+    { label:'New Accounts',      sub:'Total closed YTD',
+      get:(r)=>r.newClinics.mar+r.newClinics.apr+r.newClinics.may,
+      fmt_:(v)=>v.toString(),    cu:false, trend:false },
+    { label:'May Active',        sub:'Accounts active in May',
+      get:(r)=>r.activeClinics.may, fmt_:(v)=>v.toString(), cu:false, trend:false },
+    { label:'Apr → May',         sub:'* May through May 24',
+      get:(r)=>r.trend,
+      fmt_:(v)=>(v>=0?'+':'')+v.toFixed(1)+'%',         cu:false, trend:true  },
+  ];
+
+  // Header row: blank label cell + 4 rep cells
+  const headerRow = `
+    <div class="sc-cell sc-label-col" style="border-bottom:2px solid rgba(201,168,76,.25);">
+      <div class="sc-label-text" style="color:var(--gold2);font-size:.88rem;">Metric</div>
+    </div>
+    ${rm.map((r,i)=>`
+    <div class="sc-cell sc-rep-header" style="border-bottom:2px solid ${r.color};">
+      <div class="sc-rep-name" style="color:${r.color}">${r.name.split(' ')[0]}</div>
+      <div class="sc-rep-meta">${r.sym} &nbsp;·&nbsp; Rank #${r.rank}</div>
+    </div>`).join('')}`;
+
+  // Metric rows
+  const metricRows = metrics.map((m,mi) => {
+    const vals = rm.map(r => m.get(r));
+    const best = m.trend ? Math.max(...vals) : Math.max(...vals);
+    const isAlt = mi % 2 === 1;
+
+    const labelCell = `<div class="sc-cell sc-label-col ${isAlt?'sc-alt':''}">
+      <div class="sc-label-text">${m.label}</div>
+      <div class="sc-label-sub">${m.sub}</div>
+    </div>`;
+
+    const dataCells = vals.map((v,i) => {
+      const winner = m.trend ? (v === best && v > 0) : (v === best);
+      const trendCls = m.trend ? (v >= 0 ? 'sc-up' : 'sc-dn') : '';
+      const cuAttr = (m.cu && !m.trend) ? `data-cu="${v}"` : '';
+      return `<div class="sc-cell ${winner?'sc-winner':''} ${isAlt?'sc-alt':''}">
+        <div class="sc-val ${trendCls}" ${cuAttr}>${m.fmt_(v)}</div>
+        <div class="${winner?'sc-winner-badge':'sc-blank-badge'}">${winner?'★ Leader':'—'}</div>
+      </div>`;
+    }).join('');
+
+    return labelCell + dataCells;
+  }).join('');
+
+  return `
+  <div class="slide slide-sc" id="ssc">
+    <div class="slide-header">
+      <div class="brand">JMS SALES</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="hdr-center">Rep Efficiency Scorecard</div>
+        <div class="period-badge">MAR – MAY 2026</div>
+      </div>
+      <div class="hdr-badge">4 Active Reps</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-table">${headerRow}${metricRows}</div>
+      <div class="sc-footnote">* Apr → May trend uses weeks 35–38 vs weeks 31–34 · May data through May 24, 2026</div>
+    </div>
+  </div>`;
+}
+
+// ─── BATTLE BOARD SLIDE ──────────────────────────────────────────
+function slideBattleBoard() {
+  const TEAM_TARGET = 45000;
+  const TEAM_ACTUAL = 9435.84;
+  const LAST_WEEK   = 38314;
+  const DAYS_IN     = 3;
+  const DAYS_LEFT   = 2;
+  const PROJECTED   = Math.round(TEAM_ACTUAL / DAYS_IN * 5);
+
+  const repData = [
+    { name:'Erin Ryan Snyder',   sym:'ERS', color:'#f0c040', actual:6483,  target:25000, best:27824,  ytd:600496, newMay:8,  newYTD:86 },
+    { name:'Zachary Salazar',    sym:'ZSL', color:'#8090a8', actual:1727,  target:14000, best:16571,  ytd:207641, newMay:2,  newYTD:27 },
+    { name:'Dylan White',        sym:'DWH', color:'#00d4ff', actual:963,   target:5500,  best:5729,   ytd:27318,  newMay:0,  newYTD:19 },
+    { name:'Jonathan Izquierdo', sym:'JIQ', color:'#a78bfa', actual:264,   target:2500,  best:1278,   ytd:6753,   newMay:3,  newYTD:5  },
+  ];
+  const totalNewMay = repData.reduce((s,r)=>s+r.newMay,0);
+  const totalNewYTD = repData.reduce((s,r)=>s+r.newYTD,0);
+
+  const teamPct  = Math.min(TEAM_ACTUAL / TEAM_TARGET * 100, 100).toFixed(1);
+  const vsLastWk = ((PROJECTED - LAST_WEEK) / LAST_WEEK * 100).toFixed(1);
+  const vsArrow  = PROJECTED >= LAST_WEEK ? '▲' : '▼';
+  const vsColor  = PROJECTED >= LAST_WEEK ? 'var(--green)' : 'var(--red)';
+
+  const teamBarW = Math.min(teamPct / 100 * 100, 100);
+
+  // Rep battle bars
+  const repRows = repData.map((r, i) => {
+    const pct    = Math.min(r.actual / r.target * 100, 100);
+    const pace   = Math.round(r.actual / DAYS_IN * 5);
+    const onTrack = pace >= r.target * 0.85;
+    const statusColor = onTrack ? 'var(--green)' : '#e8a040';
+    const statusTxt   = onTrack ? '✓ ON PACE' : '⚡ PUSH';
+    const firstN = r.name.split(' ')[0];
+    return `
+    <div class="bb-rep-row" style="animation-delay:${0.15 + i*0.08}s">
+      <div class="bb-rep-sym" style="border-color:${r.color};color:${r.color}">${r.sym}</div>
+      <div class="bb-rep-info">
+        <div class="bb-rep-name">${r.name}</div>
+        <div class="bb-rep-sub">3-day: <strong style="color:${r.color}">$${fmt(r.actual)}</strong> &nbsp;·&nbsp; target: $${fmt(r.target)} &nbsp;·&nbsp; projected: $${fmt(pace)} &nbsp;·&nbsp; <span style="color:var(--green)">🆕 ${r.newMay} new accts this month</span></div>
+      </div>
+      <div class="bb-rep-track">
+        <div class="bb-track-bg">
+          <div class="bb-track-fill" style="width:${pct.toFixed(1)}%;background:linear-gradient(90deg,${r.color}aa,${r.color});box-shadow:0 0 10px ${r.color}55"></div>
+          <div class="bb-track-tip" style="left:${pct.toFixed(1)}%;background:${r.color}"></div>
+          <div class="bb-finish-line"></div>
         </div>
-        <div class="state-summary-card">
-          <div class="ssc-label">Total Profit</div>
-          <div class="ssc-val cyan">${fmt(clinicData.totalProfit)}</div>
-          <div class="ssc-sub">${(clinicData.totalProfit/clinicData.totalRevenue*100).toFixed(1)}% blended margin</div>
+        <div class="bb-track-pct" style="color:${r.color}">${pct.toFixed(0)}%</div>
+      </div>
+      <div class="bb-rep-status" style="color:${statusColor}">${statusTxt}</div>
+    </div>`;
+  }).join('');
+
+  // Fire callout cards
+  const callouts = [
+    { icon:'🔥', label:'TOP CLINIC',       val:'Giddie Skin MedSpa',                         sub:'$1,850 · 10 Rx · Erin',          color:'#f0c040' },
+    { icon:'🏆', label:'YTD LEADER',        val:'Erin Ryan Snyder',                           sub:'$600K · 133 active clinics',     color:'#f0c040' },
+    { icon:'🆕', label:'NEW ACCOUNTS',      val:`${newAccounts7d.length} this week`,          sub:`${newAccounts7d.map(a=>a.clinic.split(' ')[0]).join(' · ')} → see slide`, color:'#00d97e' },
+    { icon:'⚡', label:'DAYS LEFT',         val:DAYS_LEFT.toString(),                         sub:'Close strong. Finish the week.', color:'#00d97e' },
+  ];
+  const calloutHTML = callouts.map(c => `
+    <div class="bb-callout" style="border-color:${c.color}22">
+      <div class="bb-callout-icon">${c.icon}</div>
+      <div class="bb-callout-lbl" style="color:${c.color}">${c.label}</div>
+      <div class="bb-callout-val">${c.val}</div>
+      <div class="bb-callout-sub">${c.sub}</div>
+    </div>`).join('');
+
+  return `
+  <div class="slide ws-bg" id="slide-battle">
+    <div class="slide-hdr">
+      <div class="hdr-left">
+        <div class="hdr-eyebrow">STEP 7</div>
+        <div class="hdr-center">⚡ Battle Board</div>
+        <div class="period-badge">MAY 25–27 · 3 DAYS IN</div>
+      </div>
+      <div class="hdr-badge bb-live-badge">● LIVE WEEK</div>
+    </div>
+
+    <div style="flex:1;display:flex;flex-direction:column;padding:14px 28px 14px;gap:14px;overflow:hidden">
+
+      <!-- TEAM MISSION BAR -->
+      <div class="bb-team-block">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:.2em;color:var(--gold2);text-transform:uppercase">
+            ⚡ Team Mission — $${fmt(TEAM_TARGET)} Weekly Target
+          </div>
+          <div style="display:flex;gap:20px;align-items:center">
+            <span style="font-size:.78rem;color:var(--silver)">3-DAY: <strong style="color:var(--gold2);font-size:.92rem">$${fmt(TEAM_ACTUAL)}</strong></span>
+            <span style="font-size:.78rem;color:var(--silver)">PACE: <strong style="color:var(--white);font-size:.92rem">$${fmt(PROJECTED)}</strong></span>
+            <span style="font-size:.78rem;color:var(--silver)">vs LAST WK: <strong style="color:${vsColor}">${vsArrow} ${Math.abs(Number(vsLastWk))}%</strong></span>
+          </div>
         </div>
-        <div class="state-summary-card">
-          <div class="ssc-label">Rx Volume</div>
-          <div class="ssc-val" style="color:#a78bfa">${clinicData.totalRx}</div>
-          <div class="ssc-sub">Across ${clinicData.totalClinics} clinics</div>
+        <div class="bb-team-track">
+          <div class="bb-team-fill" style="width:${teamBarW}%">
+            <div class="bb-team-glow"></div>
+          </div>
+          <div class="bb-team-milestone" style="left:33.3%" title="⅓ of goal"></div>
+          <div class="bb-team-milestone" style="left:66.6%" title="⅔ of goal"></div>
+          <div class="bb-team-pct-label" style="left:${Math.min(teamBarW, 95)}%">${teamPct}%</div>
         </div>
-        <div class="state-summary-card">
-          <div class="ssc-label">Avg Rev / Clinic</div>
-          <div class="ssc-val gold">${fmt(clinicData.totalRevenue/clinicData.totalClinics)}</div>
-          <div class="ssc-sub">Per ordering clinic</div>
+        <div style="display:flex;justify-content:space-between;margin-top:5px">
+          <span style="font-size:.65rem;color:var(--muted)">$0</span>
+          <span style="font-size:.65rem;color:var(--muted)">$${fmt(TEAM_TARGET/2)} halfway</span>
+          <span style="font-size:.65rem;color:var(--muted)">$${fmt(TEAM_TARGET)} 🏁</span>
+        </div>
+      </div>
+
+      <!-- REP BATTLE BARS -->
+      <div style="display:flex;flex-direction:column;gap:8px;flex:1;justify-content:space-evenly">
+        ${repRows}
+      </div>
+
+      <!-- FIRE CALLOUTS -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+        ${calloutHTML}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── RETENTION SLIDE ─────────────────────────────────────────────
+function slideRetention() {
+  // Rep retention cards
+  const repCards = retentionData.map((r,i) => {
+    const rateColor = r.rate >= 80 ? 'var(--green)' : r.rate >= 70 ? 'var(--gold2)' : 'var(--red)';
+    const rateLabel = r.rate >= 80 ? '● STRONG' : r.rate >= 70 ? '● SOLID' : '● NEEDS WORK';
+    return `
+    <div class="ret-rep-card" style="border-color:${r.color}22;animation-delay:${i*0.08}s">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div class="ret-sym" style="border-color:${r.color};color:${r.color}">${r.sym}</div>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:700;color:var(--white);letter-spacing:.04em">${r.name.split(' ')[0]} ${r.name.split(' ').slice(-1)[0]}</div>
+          <div style="font-size:.65rem;color:${rateColor};letter-spacing:.1em;font-weight:700">${rateLabel}</div>
+        </div>
+      </div>
+      <div class="ret-rate-wrap">
+        <div class="ret-rate" style="color:${rateColor}">${r.rate}%</div>
+        <div class="ret-rate-lbl">Reorder Rate</div>
+        <div class="ret-rate-bar-bg">
+          <div class="ret-rate-bar" style="width:${r.rate}%;background:${rateColor};box-shadow:0 0 8px ${rateColor}66"></div>
+        </div>
+      </div>
+      <div class="ret-stats">
+        <div class="ret-stat"><div class="ret-stat-val" style="color:var(--white)">${r.total}</div><div class="ret-stat-lbl">Total Accts</div></div>
+        <div class="ret-stat"><div class="ret-stat-val" style="color:${r.color}">${r.reordered}</div><div class="ret-stat-lbl">Reordered</div></div>
+        <div class="ret-stat"><div class="ret-stat-val" style="color:${r.atRisk>0?'var(--red)':'var(--green)'}">${r.atRisk}</div><div class="ret-stat-lbl">At-Risk</div></div>
+        <div class="ret-stat"><div class="ret-stat-val" style="color:var(--gold2)">${r.loyal}</div><div class="ret-stat-lbl">Loyal (3+)</div></div>
+      </div>
+      <div class="ret-velocity">⚡ Avg reorder velocity: <strong style="color:${r.color}">${r.velocity}d</strong></div>
+    </div>`;
+  }).join('');
+
+  // At-risk rows
+  const atRiskRows = atRiskAccounts.map(a => {
+    const urgency = a.days >= 21 ? 'var(--red)' : 'var(--gold2)';
+    return `
+    <div class="ret-atrisk-row">
+      <div class="ret-atrisk-dot" style="background:${urgency}"></div>
+      <div class="ret-atrisk-clinic">${a.clinic}</div>
+      <div class="ret-atrisk-rep" style="color:#f0c040">${a.rep}</div>
+      <div class="ret-atrisk-days" style="color:${urgency}">${a.days}d silent</div>
+      <div class="ret-atrisk-rev">${fmt(a.rev)}</div>
+    </div>`;
+  }).join('');
+
+  // Loyal rows
+  const loyalRows = loyalAccounts.map(a => `
+    <div class="ret-loyal-row">
+      <div class="ret-loyal-star">⭐</div>
+      <div class="ret-loyal-clinic">${a.clinic}</div>
+      <div class="ret-loyal-rep" style="color:${a.rep==='Erin'?'#f0c040':'#8090a8'}">${a.rep}</div>
+      <div class="ret-loyal-orders" style="color:var(--green)">${a.orders} orders</div>
+      <div class="ret-loyal-rev">${fmt(a.rev)}</div>
+    </div>`).join('');
+
+  const totalAtRisk = retentionData.reduce((s,r)=>s+r.atRisk,0);
+  const totalLoyal  = retentionData.reduce((s,r)=>s+r.loyal,0);
+  const teamRate    = (retentionData.reduce((s,r)=>s+(r.rate*r.total),0) / retentionData.reduce((s,r)=>s+r.total,0)).toFixed(1);
+
+  return `
+  <div class="slide ws-bg" id="slide-retention">
+    <div class="slide-hdr">
+      <div class="hdr-left">
+        <div class="hdr-eyebrow">RETENTION MODEL</div>
+        <div class="hdr-center">♻️ Reorder Rate &amp; Account Health</div>
+        <div class="period-badge">APR 27 – MAY 27, 2026 · 30 DAYS</div>
+      </div>
+      <div class="hdr-badge">Team Rate: ${teamRate}%</div>
+    </div>
+
+    <div style="flex:1;display:flex;gap:18px;padding:12px 24px 12px;overflow:hidden">
+
+      <!-- LEFT: rep cards (2x2) -->
+      <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;min-width:0">
+        ${repCards}
+      </div>
+
+      <!-- RIGHT: at-risk + loyal panels -->
+      <div style="width:320px;flex-shrink:0;display:flex;flex-direction:column;gap:10px">
+
+        <!-- At-risk -->
+        <div class="ret-panel ret-panel-risk">
+          <div class="ret-panel-hdr" style="color:var(--red)">⚠️ AT-RISK &nbsp;<span style="color:var(--muted);font-size:.7rem">${totalAtRisk} accounts · 14+ days silent</span></div>
+          ${atRiskRows}
+        </div>
+
+        <!-- Loyal -->
+        <div class="ret-panel ret-panel-loyal">
+          <div class="ret-panel-hdr" style="color:var(--gold2)">⭐ TOP LOYAL &nbsp;<span style="color:var(--muted);font-size:.7rem">${totalLoyal} accounts · 3+ reorders</span></div>
+          ${loyalRows}
+        </div>
+
+        <div style="font-size:.62rem;color:var(--muted);letter-spacing:.05em">
+          * Reorder = 2+ distinct order days in 30-day window · At-risk = 1 order, 14+ days elapsed
+        </div>
+      </div>
+
+    </div>
+  </div>`;
+}
+
+// ─── NEW ACCOUNTS SLIDE ──────────────────────────────────────────
+function slideNewAccounts() {
+  const REP_COLORS = { 'Erin Ryan Snyder':'#f0c040', 'Zachary Salazar':'#8090a8', 'Dylan White':'#00d4ff', 'Jonathan Izquierdo':'#a78bfa' };
+
+  const cards = newAccounts7d.length === 0
+    ? `<div class="na-empty">No new first-time accounts in the last 7 days.</div>`
+    : newAccounts7d.map((a, i) => {
+        const repColor = REP_COLORS[a.rep] || 'var(--gold2)';
+        const firstName = a.rep.split(' ')[0];
+        return `
+        <div class="na-card" style="animation-delay:${i*0.12}s;border-color:${repColor}22">
+          <div class="na-card-top">
+            <div class="na-badge" style="background:${repColor}18;border-color:${repColor}44;color:${repColor}">🆕 FIRST ORDER</div>
+            <div class="na-date">${a.firstOrderDate}</div>
+          </div>
+          <div class="na-clinic">${a.clinic}</div>
+          <div class="na-meta">
+            <div class="na-meta-item">
+              <div class="na-meta-lbl">REP</div>
+              <div class="na-meta-val" style="color:${repColor}">${a.rep}</div>
+            </div>
+            <div class="na-meta-divider"></div>
+            <div class="na-meta-item">
+              <div class="na-meta-lbl">STATE</div>
+              <div class="na-meta-val">${a.state}</div>
+            </div>
+            <div class="na-meta-divider"></div>
+            <div class="na-meta-item">
+              <div class="na-meta-lbl">FIRST-DAY REVENUE</div>
+              <div class="na-meta-val na-rev">$${a.revenue.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+            </div>
+          </div>
+          <div class="na-card-glow" style="background:radial-gradient(ellipse at 50% 100%,${repColor}10,transparent 70%)"></div>
+        </div>`;
+      }).join('');
+
+  const totalNewRev = newAccounts7d.reduce((s,a)=>s+a.revenue, 0);
+
+  return `
+  <div class="slide ws-bg" id="slide-newaccts">
+    <div class="slide-hdr">
+      <div class="hdr-left">
+        <div class="hdr-eyebrow">NEW BUSINESS</div>
+        <div class="hdr-center">🆕 First-Time Ordering Accounts</div>
+        <div class="period-badge">MAY 21–27, 2026 · LAST 7 DAYS</div>
+      </div>
+      <div class="hdr-badge">${newAccounts7d.length} New Account${newAccounts7d.length !== 1 ? 's' : ''}</div>
+    </div>
+
+    <div style="flex:1;display:flex;flex-direction:column;padding:20px 36px 16px;gap:16px;overflow:hidden">
+
+      <!-- Summary bar -->
+      <div class="na-summary">
+        <div class="na-summary-stat">
+          <div class="na-summary-val" style="color:var(--green)">${newAccounts7d.length}</div>
+          <div class="na-summary-lbl">New Accounts<br>This Week</div>
+        </div>
+        <div class="na-summary-divider"></div>
+        <div class="na-summary-stat">
+          <div class="na-summary-val" style="color:var(--gold2)">$${totalNewRev.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
+          <div class="na-summary-lbl">Combined<br>First-Day Revenue</div>
+        </div>
+        <div class="na-summary-divider"></div>
+        <div class="na-summary-stat">
+          <div class="na-summary-val" style="color:#f0c040">Erin Ryan Snyder</div>
+          <div class="na-summary-lbl">Closed Both<br>New Accounts</div>
+        </div>
+        <div class="na-summary-divider"></div>
+        <div class="na-summary-stat">
+          <div class="na-summary-val" style="color:var(--silver)">${reps.reduce((s,r)=>s+r.newClinics.mar+r.newClinics.apr+r.newClinics.may,0)}</div>
+          <div class="na-summary-lbl">New Accounts<br>YTD</div>
+        </div>
+      </div>
+
+      <!-- Account cards -->
+      <div class="na-cards">
+        ${cards}
+      </div>
+
+      <div style="font-size:.65rem;color:var(--muted);letter-spacing:.06em;text-align:center">
+        * First-time ordering accounts only · Identified via all-time first_order_date report · Excludes Jack/Mark, Ashlyn Smith, Nick Clemens
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── PRODUCT MIX SLIDE ───────────────────────────────────────────
+function slideProductMix() {
+  const REP_COLORS = { Erin:'#f0c040', Zachary:'#8090a8', Dylan:'#00d4ff', Jonathan:'#a78bfa' };
+  const REP_ORDER  = ['Erin','Zachary','Dylan','Jonathan'];
+
+  const drugs = [
+    { drug:'Tirzepatide / Glycine',           total:8660.25, Erin:7715.25, Zachary:720.0,  Dylan:225.0, Jonathan:0    },
+    { drug:'Tirz / Glycine / MeCbl',          total:1414.00, Erin:190.00,  Zachary:380.0,  Dylan:844.0, Jonathan:0    },
+    { drug:'MOTS-c',                          total: 720.00, Erin:240.00,  Zachary:360.0,  Dylan:0,     Jonathan:120  },
+    { drug:'Tirzepatide / L-Carnitine',       total: 680.00, Erin:500.00,  Zachary:0,      Dylan:0,     Jonathan:180  },
+    { drug:'BPC-157 / TB-500 / GHK-Cu',       total: 660.00, Erin:660.00,  Zachary:0,      Dylan:0,     Jonathan:0    },
+    { drug:'CJC-1295 / Ipamorelin',           total: 480.00, Erin:480.00,  Zachary:0,      Dylan:0,     Jonathan:0    },
+    { drug:'Tesamorelin',                     total: 480.00, Erin:360.00,  Zachary:120.0,  Dylan:0,     Jonathan:0    },
+    { drug:'BPC-157 / KPV / TB-500',          total: 420.00, Erin:0,       Zachary:420.0,  Dylan:0,     Jonathan:0    },
+    { drug:'Semaglutide / Glycine',           total: 334.40, Erin:159.40,  Zachary:135.0,  Dylan:40.0,  Jonathan:0    },
+  ];
+
+  const totalRev = drugs.reduce((s,d)=>s+d.total, 0);
+  const maxVal   = drugs[0].total;
+  const BAR_W    = 520; // px wide for 100%
+
+  const rows = drugs.map((d, i) => {
+    const barTotal = (d.total / maxVal * BAR_W).toFixed(1);
+    // stacked segments
+    let segments = '';
+    let cx = 0;
+    REP_ORDER.forEach(rep => {
+      const v = d[rep] || 0;
+      if (v <= 0) return;
+      const w = (v / maxVal * BAR_W);
+      segments += `<rect x="${cx.toFixed(1)}" y="0" width="${w.toFixed(1)}" height="22" rx="1" fill="${REP_COLORS[rep]}" opacity="0.88"/>`;
+      cx += w;
+    });
+
+    const pct = (d.total / totalRev * 100).toFixed(1);
+    const label = d.drug.length > 28 ? d.drug.substring(0,27)+'…' : d.drug;
+    const rank  = i === 0 ? `<span style="color:var(--gold2);font-size:.7rem;margin-left:5px">▲ #1</span>` : '';
+
+    const tipParts = REP_ORDER.filter(r=>d[r]>0).map(r=>`${r} $${(d[r]/1000).toFixed(1)}K`).join(' · ');
+    return `
+    <div class="pmx-row" style="animation-delay:${i*0.06}s">
+      <div class="pmx-label">${label}${rank}</div>
+      <div class="pmx-bar-wrap" data-tip="${d.drug} · $${fmt(d.total)} (${pct}%) | ${tipParts}">
+        <svg width="${BAR_W}" height="22" style="display:block;border-radius:2px;overflow:visible;pointer-events:none">
+          <rect x="0" y="0" width="${BAR_W}" height="22" rx="2" fill="rgba(255,255,255,0.04)"/>
+          ${segments}
+        </svg>
+      </div>
+      <div class="pmx-stats">
+        <span class="pmx-rev">$${fmt(d.total)}</span>
+        <span class="pmx-pct">${pct}%</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  const legend = REP_ORDER.map(rep => `
+    <div class="pmx-leg-item">
+      <div style="width:10px;height:10px;border-radius:1px;background:${REP_COLORS[rep]};opacity:.88;flex-shrink:0"></div>
+      <span style="color:var(--silver);font-size:.75rem;letter-spacing:.04em">${rep}</span>
+    </div>`).join('');
+
+  // Donut chart — category grouping
+  const cats = [
+    { label:'GLP-1 / Weight Loss', rev: drugs.filter(d=>d.drug.includes('Tirzep')||d.drug.includes('Sema')).reduce((s,d)=>s+d.total,0), color:'#f0c040' },
+    { label:'Peptides',            rev: drugs.filter(d=>d.drug.includes('BPC')||d.drug.includes('CJC')||d.drug.includes('MOTS')||d.drug.includes('IGF')||d.drug.includes('Tesa')).reduce((s,d)=>s+d.total,0), color:'#00d4ff' },
+    { label:'Hormone Support',     rev: drugs.filter(d=>d.drug.includes('Carnitine')||d.drug.includes('Enclom')||d.drug.includes('Testosterone')||d.drug.includes('Progesterone')).reduce((s,d)=>s+d.total,0), color:'#a78bfa' },
+    { label:'Other',               rev: 0, color:'#8090a8' },
+  ];
+  cats[3].rev = Math.max(0, totalRev - cats[0].rev - cats[1].rev - cats[2].rev);
+  const cx2=80, cy2=80, r2=62, r2i=40;
+  let donut = ''; let angle=-Math.PI/2;
+  cats.forEach(cat => {
+    const frac = cat.rev / totalRev;
+    if (frac <= 0) return;
+    const sweep = frac * 2 * Math.PI;
+    const x1=cx2+r2*Math.cos(angle), y1=cy2+r2*Math.sin(angle);
+    const x2=cx2+r2*Math.cos(angle+sweep), y2=cy2+r2*Math.sin(angle+sweep);
+    const xi1=cx2+r2i*Math.cos(angle), yi1=cy2+r2i*Math.sin(angle);
+    const xi2=cx2+r2i*Math.cos(angle+sweep), yi2=cy2+r2i*Math.sin(angle+sweep);
+    const lg = sweep > Math.PI ? 1 : 0;
+    donut += `<path d="M${x1.toFixed(2)},${y1.toFixed(2)} A${r2},${r2} 0 ${lg},1 ${x2.toFixed(2)},${y2.toFixed(2)} L${xi2.toFixed(2)},${yi2.toFixed(2)} A${r2i},${r2i} 0 ${lg},0 ${xi1.toFixed(2)},${yi1.toFixed(2)} Z" fill="${cat.color}" opacity="0.85" stroke="var(--bg)" stroke-width="1.5"/>`;
+    angle += sweep;
+  });
+
+  const catLegend = cats.filter(c=>c.rev>0).map(c=>
+    `<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+      <div style="width:9px;height:9px;border-radius:1px;background:${c.color};opacity:.85;flex-shrink:0"></div>
+      <span style="font-size:.71rem;color:var(--silver)">${c.label}</span>
+      <span style="font-size:.71rem;color:var(--white);margin-left:auto;font-weight:600">$${fmt(c.rev)}</span>
+    </div>`).join('');
+
+  return `
+  <div class="slide ws-bg" id="slide-pmx">
+    <div class="slide-hdr">
+      <div class="hdr-left">
+        <div class="hdr-eyebrow">STEP 6</div>
+        <div class="hdr-center">Product Mix &amp; Drug Revenue</div>
+        <div class="period-badge">MAY 25–27, 2026</div>
+      </div>
+      <div class="hdr-badge">9 Compounds</div>
+    </div>
+    <div style="flex:1;display:flex;gap:24px;padding:18px 28px 16px;overflow:hidden">
+
+      <!-- LEFT: stacked bar chart -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:0;min-width:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.18em;color:var(--gold);text-transform:uppercase">Revenue by Compound — Per Rep Breakdown</span>
+          <div style="display:flex;gap:10px;align-items:center">${legend}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;flex:1;justify-content:space-evenly">
+          ${rows}
+        </div>
+        <div style="margin-top:8px;font-size:.65rem;color:var(--muted);letter-spacing:.04em">
+          * Excludes syringes/supplies · Total compound revenue: <strong style="color:var(--silver)">$${fmt(totalRev)}</strong> across ${drugs.length} top compounds
+        </div>
+      </div>
+
+      <!-- RIGHT: donut + category breakdown -->
+      <div style="width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:0;padding-left:16px;border-left:1px solid var(--border)">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.76rem;font-weight:700;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:12px">Category Split</div>
+        <div style="display:flex;justify-content:center;margin-bottom:14px">
+          <svg width="160" height="160" viewBox="0 0 160 160">
+            ${donut}
+            <text x="80" y="75" text-anchor="middle" fill="var(--gold2)" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="900">$${fmt(totalRev)}</text>
+            <text x="80" y="92" text-anchor="middle" fill="var(--silver)" font-family="Barlow Condensed,sans-serif" font-size="9" letter-spacing="1">TOTAL REV</text>
+          </svg>
+        </div>
+        <div>${catLegend}</div>
+        <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.14em;color:var(--silver);text-transform:uppercase;margin-bottom:8px">Top Performer</div>
+          <div style="font-size:.82rem;color:var(--gold2);font-weight:600;line-height:1.3">Tirzepatide / Glycine</div>
+          <div style="font-size:.7rem;color:var(--silver);margin-top:3px">$8,660 · 54.8% of total</div>
+          <div style="font-size:.68rem;color:var(--muted);margin-top:5px">Driven primarily by Erin ($7,715)</div>
+        </div>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.14em;color:var(--silver);text-transform:uppercase;margin-bottom:8px">Diversification</div>
+          <div style="font-size:.7rem;color:var(--white)">GLP-1 compounds represent <span style="color:var(--gold2);font-weight:600">${((cats[0].rev/totalRev)*100).toFixed(0)}%</span> of revenue</div>
+          <div style="font-size:.68rem;color:var(--muted);margin-top:4px">Peptide pipeline growing — ${((cats[1].rev/totalRev)*100).toFixed(0)}% revenue share</div>
         </div>
       </div>
     </div>
   </div>`;
 }
 
-// ─── RENDER ───────────────────────────────────────────────────────
 function render() {
-  let html = slideLeaderboard() + slideWeeklyTrend() + slidePVA();
+  let html = slideCover() + slideLeaderboard() + slideWeeklyTrend() + slideMoM() + slideScorecard();
   reps.forEach((r,i) => html += slideRep(r,i));
-  html += slideClinicLeaderboard() + slideClinicCards() + slideStateBreakdown();
+  html += slideClinicLeaderboard() + slideClinicCards() + slideStateBreakdown() + slideRetention() + slideProductMix() + slideBattleBoard() + slideNewAccounts();
   document.getElementById('slideshow').innerHTML = html;
 }
 
-// ─── SLIDESHOW LOGIC ──────────────────────────────────────────────
-let cur=0, total=0, timer=null;
+// ─── COUNT-UP ENGINE ──────────────────────────────────────────────
+function countUp(el, target, duration=950) {
+  const start    = performance.now();
+  const isSmall  = target < 100;   // treat as integer (Rx counts etc.)
+  const isPlain  = el.hasAttribute('data-cu-plain'); // no $ sign
+  const fmtVal   = v => isPlain
+    ? Math.round(v).toLocaleString('en-US')
+    : (isSmall ? Math.round(v).toString() : fmt(v));
+  function update(now) {
+    const p    = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = fmtVal(target * ease);
+    if (p < 1) requestAnimationFrame(update);
+    else el.textContent = fmtVal(target);
+  }
+  requestAnimationFrame(update);
+}
+function triggerCountUps(slide) {
+  slide.querySelectorAll('[data-cu]').forEach(el => {
+    countUp(el, parseFloat(el.getAttribute('data-cu')));
+  });
+}
+
+// ─── SLIDESHOW CONTROLS ───────────────────────────────────────────
+let cur=0, total=0, timer=null, paused=false;
 
 function goTo(n) {
-  document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===n));
+  const slides = document.querySelectorAll('.slide');
+  slides.forEach((s,i) => {
+    const becoming = i === n;
+    s.classList.toggle('active', becoming);
+    s.classList.remove('exit');
+    if (!becoming && s.classList.contains('active')) s.classList.add('exit');
+    if (becoming) triggerCountUps(s);
+  });
   document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===n));
-  cur=n; startProgress();
+  // slide counter
+  const sc = document.getElementById('slideCounter');
+  if (sc) sc.textContent = `${n+1} / ${total}`;
+  // slide name flash
+  const name = SLIDE_NAMES[n] || '';
+  if (name) {
+    const fl = document.getElementById('slideNameFlash');
+    fl.textContent = name.toUpperCase();
+    fl.classList.remove('snf-hide'); fl.classList.add('snf-show');
+    clearTimeout(fl._t);
+    fl._t = setTimeout(() => { fl.classList.remove('snf-show'); fl.classList.add('snf-hide'); }, 1400);
+  }
+  cur=n;
+  if (!paused) startProgress();
 }
 function next() { goTo((cur+1)%total); }
 function prev() { clearTimeout(timer); goTo((cur-1+total)%total); }
-
 function startProgress() {
   clearTimeout(timer);
   const bar = document.getElementById('progressBar');
   bar.style.transition='none'; bar.style.width='0%';
-  bar.offsetWidth; // reflow
+  bar.offsetWidth;
   bar.style.transition=`width ${DURATION}ms linear`; bar.style.width='100%';
   timer = setTimeout(next, DURATION);
+}
+function pauseProgress() {
+  paused = true;
+  clearTimeout(timer);
+  const bar = document.getElementById('progressBar');
+  const computed = getComputedStyle(bar).width;
+  const parentW  = bar.parentElement.offsetWidth;
+  const pct      = parseFloat(computed) / parentW * 100;
+  bar.style.transition = 'none';
+  bar.style.width = pct + '%';
+}
+function resumeProgress() {
+  paused = false;
+  startProgress();
 }
 
 function buildIndicators(n) {
   document.getElementById('indicators').innerHTML =
-    Array.from({length:n},(_,i)=>`<div class="dot" onclick="goTo(${i})"></div>`).join('');
+    Array.from({length:n},(_,i)=>`<div class="dot" onclick="goTo(${i})" data-name="${SLIDE_NAMES[i]||'Slide '+(i+1)}"></div>`).join('');
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────
-// Slideshow is initialized after password is entered (see checkPass above)
+// ─── LIGHT MODE ───────────────────────────────────────────────────
+let lightMode = false;
+function toggleTheme() {
+  lightMode = !lightMode;
+  document.body.classList.toggle('light-mode', lightMode);
+  document.getElementById('themeToggle').textContent = lightMode ? '🌙' : '☀️';
+}
+
+// ─── CHART TOOLTIPS ───────────────────────────────────────────────
+(function initTooltips() {
+  const tip = document.getElementById('chartTip');
+  document.addEventListener('mouseover', e => {
+    const el = e.target.closest('[data-tip]');
+    if (!el) return;
+    tip.textContent = el.getAttribute('data-tip');
+    tip.classList.add('ct-show');
+  });
+  document.addEventListener('mousemove', e => {
+    tip.style.left = (e.clientX + 14) + 'px';
+    tip.style.top  = (e.clientY - 10) + 'px';
+  });
+  document.addEventListener('mouseout', e => {
+    if (!e.target.closest('[data-tip]')) return;
+    tip.classList.remove('ct-show');
+  });
+})();
+
+// ─── GITHUB TIMESTAMP ────────────────────────────────────────────
+// Fetches the exact moment index.html was last pushed to GitHub.
+// Falls back to the build timestamp embedded below if the API is unavailable.
+const BUILD_TIMESTAMP = "2026-05-28"; // updated each time file is generated
+
+function loadGitHubTimestamp() {
+  const el = document.getElementById('tsText');
+  const REPO = 'flbocateam/JMS-Dashboard';
+  const FILE = 'index.html';
+  fetch(`https://api.github.com/repos/${REPO}/commits?path=${FILE}&per_page=1`)
+    .then(r => {
+      if (!r.ok) throw new Error('API error');
+      return r.json();
+    })
+    .then(data => {
+      if (!data || !data[0]) throw new Error('No commits');
+      const pushed = new Date(data[0].commit.committer.date);
+      const formatted = pushed.toLocaleDateString('en-US', {
+        month:'short', day:'numeric', year:'numeric'
+      }) + ' · ' + pushed.toLocaleTimeString('en-US', {
+        hour:'2-digit', minute:'2-digit', timeZoneName:'short'
+      });
+      el.innerHTML = `Data updated <strong>${formatted}</strong>`;
+    })
+    .catch(() => {
+      // Fallback: show build timestamp embedded at generation time
+      el.innerHTML = `Data updated <strong>${BUILD_TIMESTAMP}</strong>`;
+    });
+}
+
+// Auto-pause on hover
+document.addEventListener('DOMContentLoaded', () => {
+  const ss = document.getElementById('slideshow');
+  ss.addEventListener('mouseenter', pauseProgress);
+  ss.addEventListener('mouseleave', resumeProgress);
+});
 
 document.addEventListener('keydown', e => {
-  if (e.key==='ArrowRight'||e.key===' ') next();
-  if (e.key==='ArrowLeft') prev();
+  if (e.key==='ArrowRight'||e.key===' ') { paused=false; next(); }
+  if (e.key==='ArrowLeft')               { paused=false; prev(); }
 });
 </script>
 </body>
