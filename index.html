@@ -460,7 +460,7 @@ const REPS = [
   {name:'Zachary Salazar',    short:'Zach',   rank:'🥇', theme:0, col:'#c9a227'},
   {name:'Dylan White',        short:'Dylan',  rank:'🥈', theme:1, col:'#4a9eca'},
   {name:'Jonathan Izquierdo', short:'Jon',    rank:'🥉', theme:2, col:'#3dba6d'},
-  {name:'Darryl Fleming',     short:'Darryl', rank:'4️⃣', theme:3, col:'#c47a3e'},
+  {name:'Darryl Fleming',     short:'Darryl', rank:'4', theme:3, col:'#c47a3e'},
 ];
 
 // ── SLIDE DEFINITIONS ──────────────────────────────────────────────
@@ -513,7 +513,7 @@ let newAccounts30d = DATA.new_accounts_30d;
     if(r._mom_pct >  0) r._scores += 1;
   });
   reps.sort((a,b) => b._scores - a._scores);
-  const medals = ['🥇','🥈','🥉','4️⃣'];
+  const medals = ['🥇','🥈','🥉','4'];
   reps.forEach((r,i) => { r.rank = medals[i] || String(i+1); });
 })();
 
