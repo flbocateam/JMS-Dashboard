@@ -11,7 +11,7 @@
   --gold:#c9a227;--gold2:#a07c10;--gold3:#f0d060;
   --cream:#ede8dc;--cream2:#c8c0ae;
   --orange:#ff8c3a;--orange2:#e06010;
-  --c0:#c9a227;--c1:#4a9eca;--c2:#3dba6d;--c3:#c47a3e;--c4:#8b5cf6;--c4:#8b5cf6;
+  --c0:#c9a227;--c1:#4a9eca;--c2:#3dba6d;--c3:#c47a3e;
   --up:#27ae60;--dn:#ff5252;
   --border:rgba(201,162,39,.13);
   --glass:rgba(201,162,39,.04);
@@ -22,84 +22,37 @@ body.light{
   --border:rgba(100,80,20,.18);
   --glass:rgba(100,80,20,.06);
 }
-body.light #ticker{background:rgba(30,20,10,.88);border-bottom:1px solid rgba(100,80,20,.3);}
-body.light .map-sidebar{background:rgba(20,14,4,.82);}
-body.light .map-state-name{color:#e8d9b0;}
-body.light .map-state-rank{color:#c8b888;}
-body.light .ticker-item{color:#e8d9b0;}
-body.light .ticker-item strong{color:#fff;}
-body.light .ticker-label{color:var(--orange);}
-/* ── Light mode: Monthly Revenue Trajectory ── */
-body.light .mom-rc-lbl{color:rgba(60,40,0,.55);}
-body.light .mom-rc-bar{background:rgba(0,0,0,.1);}
-body.light .mom-legend-item{color:#3a3020;}
-body.light .slide-badge{color:#7a5500;border-color:rgba(100,70,0,.3);}
-.gold-text{color:var(--gold);}
-body.light .gold-text{color:#7a5500;}
-/* ── Light mode: Momentum Board gold → dark amber for readability ── */
-body.light .mb-team-lbl{color:#7a5500;}
-body.light .mb-tc-val{color:#7a5500;}
-body.light .mb-team-strip{border-color:rgba(100,70,0,.35);}
-body.light .mb-row.on-fire{border-color:rgba(100,70,0,.55);box-shadow:0 0 16px rgba(100,70,0,.1);}
-body.light .mb-fire-badge{background:linear-gradient(135deg,#7a5500,#a07020);color:#fff;}
-body.light .mb-team-spark-lbl{color:rgba(60,40,0,.5);}
-body.light .mb-spark-lbl{color:rgba(60,40,0,.5);}
-body.light .mb-metric-lbl{color:rgba(60,40,0,.5);}
-body.light .mb-tc-lbl{color:rgba(60,40,0,.5);}
-body.light .mb-tc-sub{color:#4a3510;}
-body.light .mb-metric-sub{color:#4a3510;}
-body.light .mb-prog-lbl{color:#4a3510;}
-body.light .mb-row-rep{filter:brightness(.7);}
-body.light .mb-team-spark svg polyline{stroke:#7a5500 !important;}
-body.light .mb-team-spark svg circle{fill:#7a5500 !important;}
 html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--cream);font-family:'Segoe UI',system-ui,sans-serif;}
 
 /* ── GATE ─────────────────────────────────────── */
-#gate{position:fixed;inset:0;z-index:9000;display:flex;align-items:stretch;background:#0b0d14;}
-.gate-left{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(150deg,#0e101a 0%,#080a12 60%,#0b0d14 100%);position:relative;overflow:hidden;}
-.gate-left-bg{position:absolute;inset:0;pointer-events:none;}
-/* animated orange orb */
-.gate-orb{position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,100,30,.18) 0%,rgba(255,100,30,.06) 45%,transparent 70%);animation:orbPulse 4s ease-in-out infinite;top:50%;left:50%;transform:translate(-50%,-50%);}
-@keyframes orbPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.8}50%{transform:translate(-50%,-50%) scale(1.12);opacity:1}}
-/* grid lines */
-.gate-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,100,30,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,100,30,.04) 1px,transparent 1px);background-size:48px 48px;}
-.gate-brand{display:flex;flex-direction:column;align-items:center;gap:20px;z-index:1;}
-.gate-brand-logo{width:220px;filter:brightness(0) invert(1);}
-.gate-brand-divider{width:48px;height:2px;background:linear-gradient(90deg,transparent,#ff6a1e,transparent);border-radius:2px;}
-.gate-brand-tagline{font-size:.78rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.3);}
-.gate-brand-pill{display:flex;align-items:center;gap:8px;background:rgba(255,106,30,.1);border:1px solid rgba(255,106,30,.25);border-radius:30px;padding:6px 18px;margin-top:8px;}
-.gate-brand-pill-dot{width:7px;height:7px;border-radius:50%;background:#ff6a1e;box-shadow:0 0 8px #ff6a1e;animation:blink 2s ease-in-out infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
-.gate-brand-pill span{font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);}
-/* right panel */
-.gate-right{width:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 44px;background:#0d0f18;border-left:1px solid rgba(255,106,30,.1);position:relative;}
-.gate-right::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#ff6a1e,transparent);}
-.gate-panel-icon{width:52px;height:52px;border-radius:14px;background:rgba(255,106,30,.1);border:1px solid rgba(255,106,30,.2);display:flex;align-items:center;justify-content:center;margin-bottom:24px;}
-.gate-panel-icon svg{width:24px;height:24px;}
-.gate-title{font-size:1.25rem;font-weight:800;letter-spacing:.04em;color:#fff;margin-bottom:6px;text-align:center;}
-.gate-sub{font-size:.75rem;color:rgba(255,255,255,.3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:40px;text-align:center;}
-.gate-input-wrap{width:100%;margin-bottom:14px;position:relative;}
-.gate-input-wrap input{width:100%;padding:15px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;font-size:1.1rem;font-weight:700;letter-spacing:.3em;text-align:center;color:#fff;outline:none;transition:border-color .2s,background .2s;}
-.gate-input-wrap input:focus{border-color:rgba(255,106,30,.6);background:rgba(255,106,30,.05);}
-.gate-input-wrap input::placeholder{letter-spacing:.1em;color:rgba(255,255,255,.2);font-weight:400;font-size:.85rem;}
-#gateBtn{width:100%;padding:15px;background:linear-gradient(135deg,#ff6a1e,#e04a00);border:none;border-radius:10px;font-size:.9rem;font-weight:900;letter-spacing:.2em;color:#fff;cursor:pointer;transition:opacity .2s,transform .1s;text-transform:uppercase;}
-#gateBtn:hover{opacity:.9;}
-#gateBtn:active{transform:scale(.98);}
-#gateErr{color:#ff5252;font-size:.8rem;margin-top:12px;height:20px;text-align:center;}
-.gate-footer{position:absolute;bottom:24px;font-size:.68rem;color:rgba(255,255,255,.15);letter-spacing:.1em;text-transform:uppercase;}
+#gate{position:fixed;inset:0;z-index:9000;display:flex;align-items:stretch;background:#050508;}
+.gate-left{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0c14 0%,#060810 100%);position:relative;overflow:hidden;}
+.gate-right{width:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;background:#08080f;border-left:1px solid rgba(201,162,39,.12);}
+.sunburst{width:320px;height:320px;opacity:.18;animation:spin 60s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
+.gate-logo{position:absolute;font-size:2.8rem;font-weight:900;letter-spacing:.04em;color:#c9a227;text-shadow:0 0 40px rgba(201,162,39,.5);}
+.gate-logo span{color:#ff8c3a;}
+.gate-title{font-size:1.1rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(201,162,39,.7);margin-bottom:8px;}
+.gate-sub{font-size:.75rem;color:rgba(200,180,130,.35);letter-spacing:.1em;margin-bottom:48px;}
+.gate-input-wrap{width:100%;margin-bottom:16px;position:relative;}
+.gate-input-wrap input{width:100%;padding:16px 20px;background:rgba(201,162,39,.06);border:1px solid rgba(201,162,39,.2);border-radius:10px;font-size:1.2rem;font-weight:700;letter-spacing:.3em;text-align:center;color:#c9a227;outline:none;transition:border-color .2s;}
+.gate-input-wrap input:focus{border-color:rgba(201,162,39,.6);}
+.gate-input-wrap input::placeholder{letter-spacing:.1em;color:rgba(201,162,39,.25);font-weight:400;font-size:.85rem;}
+#gateBtn{width:100%;padding:16px;background:linear-gradient(135deg,#c9a227,#a07c10);border:none;border-radius:10px;font-size:1rem;font-weight:900;letter-spacing:.2em;color:#09090d;cursor:pointer;transition:opacity .2s;}
+#gateBtn:hover{opacity:.85;}
+#gateErr{color:#ff5252;font-size:.8rem;margin-top:12px;height:20px;text-align:center;}
 
 /* ── APP ──────────────────────────────────────── */
 #app{display:none;flex-direction:column;width:100vw;height:100vh;}
 
 /* ── TICKER ───────────────────────────────────── */
-#ticker{height:54px;background:rgba(0,0,0,.6);border-bottom:1px solid var(--border);display:flex;align-items:center;flex-shrink:0;overflow:hidden;}
-.ticker-label{padding:0 16px;font-size:.82rem;font-weight:800;letter-spacing:.18em;color:var(--orange);white-space:nowrap;border-right:1px solid var(--border);}
+#ticker{height:38px;background:rgba(0,0,0,.6);border-bottom:1px solid var(--border);display:flex;align-items:center;flex-shrink:0;overflow:hidden;}
+.ticker-label{padding:0 16px;font-size:.65rem;font-weight:800;letter-spacing:.2em;color:var(--orange);white-space:nowrap;border-right:1px solid var(--border);}
 .ticker-scroll{flex:1;overflow:hidden;position:relative;}
-.ticker-inner{display:flex;gap:60px;white-space:nowrap;width:max-content;animation:tick 110s linear infinite;}
+.ticker-inner{display:flex;gap:60px;white-space:nowrap;width:max-content;animation:tick 24s linear infinite;}
 .ticker-inner:hover{animation-play-state:paused;}
 @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.ticker-item{font-size:1.05rem;font-weight:600;letter-spacing:.03em;color:var(--cream2);}
+.ticker-item{font-size:.72rem;font-weight:600;letter-spacing:.03em;color:var(--cream2);}
 .ticker-item strong{color:var(--cream);}
 .ti-up{color:var(--up);}.ti-dn{color:var(--dn);}
 
@@ -112,9 +65,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 /* ── SLIDE HEADER ─────────────────────────────── */
 .slide-hdr{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;border-bottom:1px solid var(--border);flex-shrink:0;}
 .slide-hdr-left{display:flex;align-items:center;gap:14px;}
-.slide-title{font-size:1.05rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--cream2);}
-.slide-badge{background:var(--glass);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.8rem;font-weight:700;letter-spacing:.1em;color:var(--gold);}
-.slide-hdr-right{display:flex;gap:20px;font-size:.85rem;color:var(--cream2);}
+.slide-title{font-size:.9rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--cream2);}
+.slide-badge{background:var(--glass);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.63rem;font-weight:700;letter-spacing:.12em;color:var(--gold);}
+.slide-hdr-right{display:flex;gap:20px;font-size:.68rem;color:var(--cream2);}
 .slide-hdr-right span{display:flex;align-items:center;gap:5px;}
 .slide-hdr-right strong{color:var(--cream);}
 
@@ -122,224 +75,145 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .slide-body{flex:1;display:flex;overflow:hidden;}
 
 /* ── OVERVIEW SLIDE ───────────────────────────── */
-.ov-wrap{flex:1;display:flex;flex-direction:column;padding:24px 40px 110px;gap:14px;}
+.ov-wrap{flex:1;display:grid;grid-template-rows:auto 1fr;padding:24px 40px;gap:20px;}
 .ov-kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
 .ov-kpi{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:18px 16px;text-align:center;}
-.ov-kpi-lbl{font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream2);margin-bottom:8px;}
+.ov-kpi-lbl{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream2);margin-bottom:8px;}
 .ov-kpi-val{font-size:1.6rem;font-weight:900;color:var(--cream);}
 .ov-kpi-val.gold{color:var(--gold);}
-.ov-kpi-chg{font-size:.9rem;margin-top:6px;}
+.ov-kpi-chg{font-size:.7rem;margin-top:6px;}
 .ov-kpi-chg.up{color:var(--up);}.ov-kpi-chg.dn{color:var(--dn);}
 .ov-reps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
 .ov-rep{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:20px 18px;display:flex;flex-direction:column;gap:10px;}
-.ov-rep-name{font-size:1rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
+.ov-rep-name{font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;}
 .ov-rep-rev{font-size:1.8rem;font-weight:900;}
-.ov-rep-stats{display:flex;gap:12px;font-size:.88rem;color:var(--cream2);}
+.ov-rep-stats{display:flex;gap:12px;font-size:.7rem;color:var(--cream2);}
 .ov-rep-stats span{display:flex;flex-direction:column;gap:2px;}
-.ov-rep-stats strong{color:var(--cream);font-size:1rem;}
+.ov-rep-stats strong{color:var(--cream);font-size:.82rem;}
 .ov-bar-bg{background:rgba(255,255,255,.07);border-radius:4px;height:6px;width:100%;}
 .ov-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;}
-.ov-share{font-size:.82rem;color:var(--cream2);margin-top:2px;}
+.ov-share{font-size:.65rem;color:var(--cream2);margin-top:2px;}
 
 /* ── MOMENTUM BOARD ───────────────────────────── */
-.mb-wrap{flex:1;display:flex;flex-direction:column;padding:12px 32px 110px;gap:10px;min-height:0;}
-/* Team pulse strip */
-.mb-team-strip{background:var(--glass);border:1px solid rgba(201,162,39,.4);border-radius:12px;display:grid;grid-template-columns:180px 1fr 1fr 1fr 1.6fr;overflow:hidden;flex-shrink:0;}
-.mb-team-spark{display:flex;flex-direction:column;justify-content:center;padding:8px 16px;gap:6px;border-left:1px solid var(--border);}
-.mb-team-spark-lbl{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,180,130,.4);}
-.mb-team-spark-svg{width:100%;height:40px;display:block;}
-.mb-team-lbl{display:flex;align-items:center;justify-content:center;padding:12px 18px;font-size:1.05rem;font-weight:900;color:var(--gold);letter-spacing:.08em;border-right:1px solid var(--border);}
-.mb-team-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 10px;gap:2px;border-right:1px solid var(--border);}
-.mb-team-cell:last-child{border-right:none;}
-.mb-tc-lbl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,180,130,.45);}
-.mb-tc-val{font-size:1.55rem;font-weight:900;color:var(--gold);}
-.mb-tc-chg{font-size:.88rem;font-weight:700;}
-.mb-tc-chg.up{color:var(--up);}.mb-tc-chg.dn{color:var(--dn);}
-.mb-tc-sub{font-size:.82rem;color:var(--cream2);}
-/* Rep rows */
-.mb-rows{flex:1;display:flex;flex-direction:column;gap:8px;min-height:0;}
-.mb-row{flex:1;min-height:0;background:var(--glass);border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:200px 1fr 1fr 1fr 1.6fr;overflow:hidden;transition:border-color .3s;}
-.mb-row.on-fire{border-color:rgba(201,162,39,.65);box-shadow:0 0 16px rgba(201,162,39,.12);}
-/* Name cell */
-.mb-row-name{display:flex;flex-direction:column;justify-content:center;padding:0 18px;gap:6px;border-right:1px solid var(--border);}
-.mb-row-rep{font-size:1.1rem;font-weight:900;}
-.mb-fire-badge{font-size:.68rem;font-weight:800;letter-spacing:.06em;background:linear-gradient(135deg,#c9a227,#e8c84a);color:#09090d;padding:3px 9px;border-radius:20px;align-self:flex-start;}
-/* Metric cells */
-.mb-metric{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px;gap:4px;border-right:1px solid var(--border);}
-.mb-metric:last-of-type{border-right:1px solid var(--border);}
-.mb-metric-lbl{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,180,130,.45);text-align:center;}
-.mb-metric-val{font-size:1.5rem;font-weight:900;}
-.mb-metric-chg{font-size:.85rem;font-weight:700;}
-.mb-metric-chg.up{color:var(--up);}.mb-metric-chg.dn{color:var(--dn);}
-.mb-metric-sub{font-size:.82rem;color:var(--cream2);text-align:center;}
-/* Spark + progress cell */
-.mb-spark-cell{display:flex;flex-direction:column;justify-content:center;padding:10px 18px;gap:8px;border-left:none;}
-.mb-spark-lbl{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,180,130,.4);}
-.mb-spark-svg{width:100%;flex:1;min-height:0;display:block;}
-.mb-prog-wrap{display:flex;flex-direction:column;gap:4px;}
-.mb-prog-lbl{display:flex;justify-content:space-between;font-size:.82rem;color:var(--cream2);}
-.mb-prog-track{height:7px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden;}
-.mb-prog-fill{height:100%;border-radius:4px;}
+.mb-wrap{flex:1;display:grid;grid-template-rows:1fr 1fr;padding:20px 40px;gap:16px;}
+.mb-section{display:flex;flex-direction:column;gap:8px;}
+.mb-section-title{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cream2);padding-bottom:6px;border-bottom:1px solid var(--border);}
+.mb-row{display:grid;grid-template-columns:160px 1fr 1fr 1fr;gap:0;align-items:center;background:var(--glass);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.mb-row.header{background:transparent;border:none;border-radius:0;}
+.mb-name{padding:12px 16px;font-size:.78rem;font-weight:700;border-right:1px solid var(--border);}
+.mb-name.team{font-size:.85rem;font-weight:900;color:var(--gold);}
+.mb-cell{padding:12px 16px;text-align:center;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:4px;}
+.mb-cell:last-child{border-right:none;}
+.mb-cell-lbl{font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,180,130,.4);}
+.mb-cell-val{font-size:1.4rem;font-weight:900;}
+.mb-cell-val.team-val{font-size:1.8rem;color:var(--gold);}
+.mb-cell-chg{font-size:.72rem;font-weight:700;}
+.mb-cell-chg.up{color:var(--up);}.mb-cell-chg.dn{color:var(--dn);}
 
 /* ── LEADERBOARD ──────────────────────────────── */
 .lb-wrap{flex:1;display:flex;flex-direction:column;padding:20px 40px;gap:10px;}
 .lb-row{display:grid;grid-template-columns:52px 1fr 110px 110px 1fr 160px 110px;gap:0;align-items:center;}
 .lb-row.header{background:transparent!important;border:none!important;}
-.lb-row.header .lb-cell{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,180,130,.4);padding:8px 14px;}
+.lb-row.header .lb-cell{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,180,130,.4);padding:8px 14px;}
 .lb-row:not(.header){background:var(--glass);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:background .2s;}
 .lb-row:not(.header):hover{background:rgba(201,162,39,.07);}
 .lb-cell{padding:14px 14px;}
 .lb-rank{font-size:1.6rem;text-align:center;}
 .lb-name{display:flex;flex-direction:column;gap:3px;}
-.lb-name-main{font-size:1rem;font-weight:800;}
-.lb-name-sub{font-size:.8rem;color:var(--cream2);}
-.lb-wow,.lb-avg,.lb-rev,.lb-ord{font-size:1rem;font-weight:700;text-align:right;}
+.lb-name-main{font-size:.88rem;font-weight:800;}
+.lb-name-sub{font-size:.63rem;color:var(--cream2);}
+.lb-wow,.lb-avg,.lb-rev,.lb-ord{font-size:.88rem;font-weight:700;text-align:right;}
 .lb-bar-cell{padding:14px 14px;}
 .lb-bar-bg{background:rgba(255,255,255,.07);border-radius:4px;height:8px;}
 .lb-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;}
-.lb-rev{font-size:1.15rem;font-weight:900;}
+.lb-rev{font-size:1.05rem;font-weight:900;}
 
 /* ── REP SPOTLIGHT ────────────────────────────── */
 .theme-0{--ac:var(--c0);--ac2:#a07c10;}
 .theme-1{--ac:var(--c1);--ac2:#1f6fa0;}
 .theme-2{--ac:var(--c2);--ac2:#1a8a45;}
-.theme-3{--ac:var(--c3);--ac2:#8a4e1a;}.theme-4{--ac:var(--c4);--ac2:#5b2fc6;}
-.rep-body{flex:1;display:flex;flex-direction:column;padding:0 32px 110px;gap:10px;}
-/* Name + 4 stat boxes row */
-.rep-name-bar{display:flex;align-items:center;gap:20px;padding:10px 0 12px;border-bottom:1px solid var(--border);}
-.rep-name-left{display:flex;align-items:center;gap:12px;flex:1;}
-.rep-rank-badge{font-size:2.2rem;line-height:1;}
-.rep-hero-name{font-size:2rem;font-weight:900;color:var(--ac);line-height:1;}
-.rep-name-stats{display:flex;gap:10px;flex-shrink:0;}
-.rep-ns-box{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:10px 18px;display:flex;flex-direction:column;gap:3px;min-width:110px;text-align:right;}
-.rep-ns-lbl{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2);}
-.rep-ns-val{font-size:1.45rem;font-weight:900;color:var(--cream);line-height:1;}
-.rep-ns-val.gold{color:var(--ac);}
-/* Main 2-col layout */
-.rep-main{flex:1;display:grid;grid-template-columns:1.55fr 1fr;gap:16px;min-height:0;}
-/* Chart column */
-.rep-chart-col{display:flex;flex-direction:column;justify-content:flex-start;gap:6px;flex:1;padding-bottom:28px;}
-.rep-spark-title{font-size:.82rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream2);}
-.spark-svg{width:100%;}
-.spark-xlabels{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;color:var(--cream2);padding:0 2px;margin-top:2px;}
-/* Right column */
-.rep-right-col{display:flex;flex-direction:column;gap:0;min-height:0;overflow:hidden;height:100%;}
-.rep-prod-section{flex:1;display:flex;flex-direction:column;min-height:0;}
-.rep-prod-list{flex:1;display:flex;flex-direction:column;min-height:0;}
-.rep-prod-row{flex:1;}
-.rep-health-section{flex:1;display:flex;flex-direction:column;min-height:0;}
-.rep-health-list{flex:1;display:flex;flex-direction:column;min-height:0;}
-.rep-health-row{flex:1;}
-/* Top products */
-.rep-prod-title{font-size:.82rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream2);padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:4px;}
-.rep-prod-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);}
-.rep-prod-rank{font-size:.88rem;color:var(--cream2);width:20px;flex-shrink:0;}
-.rep-prod-name{flex:1;font-size:1rem;font-weight:600;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.rep-prod-rev{font-size:1.05rem;font-weight:900;color:var(--ac);white-space:nowrap;}
-/* Account health */
-.rep-health-title{font-size:.82rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream2);padding:12px 0 8px;border-bottom:1px solid var(--border);margin-bottom:4px;}
-.rep-health-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);}
-.rep-health-lbl{font-size:.92rem;color:var(--cream2);}
-.rep-health-val{font-size:1.05rem;font-weight:700;color:var(--cream);}
-.rep-health-val.gold{color:var(--ac);}
-.rep-health-val.up{color:var(--up);}
-.rep-health-val.dn{color:var(--dn);}
-/* 3-card KPI row */
-.rep-kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;flex-shrink:0;}
-.rep-kpi-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:14px;padding:14px 20px;position:relative;overflow:hidden;}
+.theme-3{--ac:var(--c3);--ac2:#8a4e1a;}
+.rep-body{flex:1;display:flex;flex-direction:column;padding:0 40px 16px;gap:0;}
+.rep-hero{display:flex;align-items:center;gap:16px;padding:14px 0 14px;border-bottom:1px solid var(--border);}
+.rep-rank-badge{font-size:2rem;}
+.rep-hero-name{font-size:1.7rem;font-weight:900;color:var(--ac);}
+.rep-hero-stats{display:flex;gap:20px;margin-left:auto;}
+.rep-hero-stat{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.rep-hero-stat-lbl{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream2);}
+.rep-hero-stat-val{font-size:1.1rem;font-weight:900;color:var(--cream);}
+.rep-kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;padding:14px 0;}
+.rep-kpi-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:14px;padding:16px 20px;position:relative;overflow:hidden;}
 .rep-kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ac);}
-.rep-kpi-lbl{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2);margin-bottom:6px;}
-.rep-kpi-val{font-size:2.1rem;font-weight:900;line-height:1;margin-bottom:5px;color:var(--cream);}
-.rep-kpi-chg{font-size:.92rem;font-weight:700;}
+.rep-kpi-lbl{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream2);margin-bottom:6px;}
+.rep-kpi-val{font-size:2rem;font-weight:900;line-height:1;margin-bottom:6px;color:var(--cream);}
+.rep-kpi-chg{font-size:.8rem;font-weight:700;}
 .rep-kpi-chg.up{color:var(--up);}.rep-kpi-chg.dn{color:var(--dn);}
-.rep-kpi-sub{font-size:.82rem;color:var(--cream2);margin-top:4px;}
-/* legacy hidden */
-.rep-details-row{display:none;}
-.rep-hero{display:none;}
-.rep-drugs{display:none;}
-.rep-meta{display:none;}
+.rep-kpi-sub{font-size:.65rem;color:var(--cream2);margin-top:4px;}
+.rep-details-row{flex:1;display:grid;grid-template-columns:1.6fr 1fr;gap:14px;border-top:1px solid var(--border);padding-top:14px;min-height:0;}
+.rep-spark-wrap{display:flex;flex-direction:column;gap:8px;}
+.rep-spark-title{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream2);}
+.spark-svg{width:100%;height:80px;}
+.rep-drugs{display:flex;flex-direction:column;gap:6px;}
+.rep-drug{display:flex;align-items:center;gap:8px;}
+.rep-drug-rank{font-size:.65rem;color:var(--cream2);width:16px;text-align:right;}
+.rep-drug-name{font-size:.72rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rep-drug-rev{font-size:.72rem;font-weight:700;color:var(--ac);white-space:nowrap;}
+.rep-drug-bar-bg{height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:2px;}
+.rep-drug-bar-fill{height:100%;border-radius:2px;background:var(--ac);}
+.rep-meta{display:flex;flex-direction:column;gap:8px;}
+.rep-meta-item{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);}
+.rep-meta-lbl{font-size:.65rem;letter-spacing:.08em;color:var(--cream2);}
+.rep-meta-val{font-size:.82rem;font-weight:700;}
+.rep-meta-val.good{color:var(--up);}.rep-meta-val.bad{color:var(--dn);}
 
 /* ── WEEKLY TREND ─────────────────────────────── */
 .chart-wrap{flex:1;padding:16px 40px;display:flex;flex-direction:column;gap:10px;}
 .chart-legend{display:flex;gap:20px;flex-wrap:wrap;}
-.chart-legend-item{display:flex;align-items:center;gap:6px;font-size:.9rem;color:var(--cream2);}
+.chart-legend-item{display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--cream2);}
 .chart-legend-dot{width:10px;height:10px;border-radius:50%;}
 .chart-svg{flex:1;width:100%;min-height:0;}
 
 /* ── MoM ──────────────────────────────────────── */
-.mom-wrap{flex:1;padding:12px 32px 14px;display:flex;flex-direction:column;gap:12px;min-height:0;}
-.mom-rep-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex-shrink:0;}
-.mom-rep-card{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
-.mom-rep-name{font-size:.95rem;font-weight:900;padding-bottom:6px;border-bottom:1px solid var(--border);}
-.mom-rep-cols{display:flex;gap:0;}
-.mom-rep-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 4px;}
-.mom-rc-lbl{font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;color:rgba(200,180,130,.5);text-align:center;}
-.mom-rc-val{font-size:1.1rem;font-weight:900;}
-.mom-rc-chg{font-size:.75rem;font-weight:700;}
-.mom-rc-chg.up{color:var(--up);}.mom-rc-chg.dn{color:var(--dn);}
-.mom-rc-bar{width:85%;height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-top:2px;}
-.mom-rc-fill{height:100%;border-radius:3px;}
-.mom-rc-div{width:1px;background:var(--border);margin:4px 0;align-self:stretch;flex-shrink:0;}
-.mom-chart-area{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;}
-.mom-chart-svg{flex:1;width:100%;min-height:0;display:block;}
-.mom-legend{display:flex;justify-content:center;gap:28px;flex-shrink:0;padding-bottom:2px;}
-.mom-legend-item{display:flex;align-items:center;gap:7px;font-size:.82rem;color:var(--cream2);}
-.mom-legend-dot{width:13px;height:13px;border-radius:3px;flex-shrink:0;}
+.mom-wrap{flex:1;padding:16px 40px;display:flex;flex-direction:column;gap:10px;}
+.mom-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex-shrink:0;}
+.mom-kpi{background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-align:center;}
+.mom-kpi-lbl{font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--cream2);margin-bottom:6px;}
+.mom-kpi-val{font-size:1.3rem;font-weight:900;}
+.mom-chart-svg{flex:1;width:100%;}
 
 /* ── TERRITORY MAP ────────────────────────────── */
-.map-wrap{flex:1;display:grid;grid-template-columns:1fr 320px;gap:0;}
+.map-wrap{flex:1;display:grid;grid-template-columns:1fr 280px;gap:0;}
 .map-svg-wrap{flex:1;padding:10px 20px;}
 #map-svg{width:100%;height:100%;}
-.map-sidebar{padding:16px;border-left:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;gap:6px;background:rgba(0,0,0,.18);}
+.map-sidebar{padding:16px;border-left:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;gap:6px;}
 .map-state-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(201,162,39,.05);}
-.map-state-rank{font-size:.82rem;color:var(--cream2);width:22px;font-weight:700;}
-.map-state-name{font-size:.9rem;flex:1;color:var(--cream);}
-.map-state-rev{font-size:.9rem;font-weight:700;color:var(--gold);}
-.map-state-bar{height:4px;background:rgba(201,162,39,.18);border-radius:2px;margin-top:3px;}
+.map-state-rank{font-size:.6rem;color:var(--cream2);width:18px;}
+.map-state-name{font-size:.72rem;flex:1;}
+.map-state-rev{font-size:.72rem;font-weight:700;color:var(--gold);}
+.map-state-bar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin-top:2px;}
 .map-state-fill{height:100%;border-radius:2px;background:var(--gold);}
 
 /* ── TOP ACCOUNTS ─────────────────────────────── */
-.acct-wrap{flex:1;padding:10px 24px 10px;display:grid;grid-template-columns:1fr 1fr 1fr;grid-auto-rows:1fr;gap:6px;width:100%;}
-.acct-row{display:flex;align-items:center;gap:12px;background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:0 16px;height:100%;}
-.acct-rank{font-size:.95rem;font-weight:900;color:var(--cream2);width:22px;}
+.acct-wrap{flex:1;padding:16px 40px;display:grid;grid-template-columns:1fr 1fr;gap:12px;overflow-y:auto;}
+.acct-row{display:flex;align-items:center;gap:10px;background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:10px 14px;}
+.acct-rank{font-size:.8rem;font-weight:900;color:var(--cream2);width:22px;}
 .acct-info{flex:1;min-width:0;}
-.acct-name{font-size:1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.acct-sub{font-size:.8rem;color:var(--cream2);margin-top:2px;}
-.acct-rev{font-size:1.1rem;font-weight:900;color:var(--gold);white-space:nowrap;}
-.acct-rx{font-size:.82rem;color:var(--cream2);}
-
-/* ── TOP ACCOUNTS PANEL ──────────────────────── */
-.top-accts-panel{background:rgba(201,162,39,.06);border:1px solid rgba(201,162,39,.22);border-radius:12px;padding:14px 20px;margin:10px 0 6px;flex:1;display:flex;flex-direction:column;}
-.top-accts-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.top-accts-title{font-size:1rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:7px;}
-.top-accts-range{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2);}
-.top-accts-list{display:flex;flex-direction:column;gap:6px;flex:1;}
-.ta-row{display:flex;align-items:center;gap:14px;padding:0 12px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);transition:background .2s;flex:1;}
-.ta-row:hover{background:rgba(201,162,39,.07);}
-.ta-medal{font-size:1.45rem;width:32px;text-align:center;flex-shrink:0;}
-.ta-info{flex:1;min-width:0;}
-.ta-name{font-size:1.1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--cream);}
-.ta-sub{font-size:.88rem;color:var(--cream2);margin-top:3px;}
-.ta-rep-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;}
-.ta-right{display:flex;align-items:center;gap:22px;flex-shrink:0;}
-.ta-rx{font-size:.9rem;color:var(--cream2);min-width:56px;text-align:right;}
-.ta-rev{font-size:1.3rem;font-weight:900;color:var(--gold);min-width:80px;text-align:right;}
+.acct-name{font-size:.8rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.acct-sub{font-size:.63rem;color:var(--cream2);margin-top:2px;}
+.acct-rev{font-size:.92rem;font-weight:900;color:var(--gold);white-space:nowrap;}
+.acct-rx{font-size:.65rem;color:var(--cream2);}
 
 /* ── NEW ACCOUNTS ─────────────────────────────── */
 .new-wrap{flex:1;padding:16px 40px;display:flex;flex-direction:column;gap:16px;}
 .new-hero{text-align:center;padding:16px 0;}
 .new-hero-num{font-size:5rem;font-weight:900;color:var(--gold);line-height:1;}
-@keyframes newAcctFlash{0%{color:#fff;text-shadow:0 0 30px var(--gold),0 0 70px var(--gold),0 0 120px #fff;transform:scale(1.12);}60%{color:var(--gold);text-shadow:0 0 20px var(--gold),0 0 50px var(--gold);transform:scale(1.05);}100%{color:var(--gold);text-shadow:none;transform:scale(1);}}
-.new-hero-num.flash{animation:newAcctFlash 0.8s ease-out forwards;}
-@keyframes cuGlow{0%{text-shadow:0 0 10px #fff,0 0 30px var(--gold),0 0 70px var(--gold),0 0 120px rgba(201,162,39,.7);filter:brightness(2.5);transform:scale(1.08);}50%{text-shadow:0 0 20px var(--gold),0 0 50px var(--gold);filter:brightness(1.5);transform:scale(1.03);}100%{text-shadow:none;filter:brightness(1);transform:scale(1);}}
-.cu-glow{animation:cuGlow 1.2s ease-out forwards;}
-.new-hero-lbl{font-size:1rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cream2);margin-top:6px;}
+.new-hero-lbl{font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream2);margin-top:6px;}
 .new-grid{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-content:start;}
 .new-card{background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;}
-.new-card-name{font-size:.95rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.new-card-rep{font-size:.82rem;font-weight:700;}
-.new-card-sub{font-size:.8rem;color:var(--cream2);}
-.new-card-rev{font-size:1rem;font-weight:900;color:var(--up);margin-top:4px;}
+.new-card-name{font-size:.78rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.new-card-rep{font-size:.63rem;font-weight:700;}
+.new-card-sub{font-size:.63rem;color:var(--cream2);}
+.new-card-rev{font-size:.85rem;font-weight:900;color:var(--up);margin-top:4px;}
 
 /* ── NAV DOTS ─────────────────────────────────── */
 #navDots{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:100;}
@@ -354,26 +228,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 #themeToggle.visible{display:flex;}
 #themeToggle:hover{border-color:var(--gold);color:var(--gold);}
 #slideProgress{position:fixed;bottom:0;left:0;height:2px;background:var(--gold);z-index:200;transition:width linear;}
-
-/* ── CLINICS AT RISK SLIDE ───────────────────────────────────── */
-.risk-wrap{display:flex;flex-direction:column;gap:6px;padding:10px 32px 60px;height:100%;width:100%;}
-.risk-summary{display:flex;gap:24px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,100,80,.15);flex-shrink:0;}
-.risk-stat{display:flex;flex-direction:column;gap:2px;}
-.risk-stat-lbl{font-size:.88rem;color:var(--cream2);letter-spacing:.08em;}
-.risk-stat-val{font-size:1.8rem;font-weight:900;}
-.risk-hdr{display:grid;grid-template-columns:48px 2fr 1fr 1.2fr .8fr 1fr;gap:0;padding:6px 16px;font-size:.88rem;font-weight:700;color:var(--cream2);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid rgba(255,100,80,.15);flex-shrink:0;width:100%;}
-.risk-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px;width:100%;}
-.risk-row{display:grid;grid-template-columns:48px 2fr 1fr 1.2fr .8fr 1fr;gap:0;padding:8px 16px;border-radius:4px;border-left:4px solid rgba(255,140,58,.5);background:rgba(255,100,50,.04);width:100%;}
-.risk-row.critical{border-left:4px solid rgba(255,80,80,.7);background:rgba(255,80,80,.06);}
-.risk-row.warning{border-left:4px solid rgba(255,140,58,.7);}
-.risk-rank{font-size:1rem;font-weight:700;color:var(--cream2);}
-.risk-name{font-size:1.05rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.risk-rep{font-size:1rem;font-weight:700;}
-.risk-rev{font-size:1.1rem;font-weight:900;color:rgba(255,120,80,.9);text-align:right;}
-.risk-days{font-size:1.05rem;font-weight:700;text-align:right;}
-.risk-last{font-size:.95rem;color:var(--cream2);text-align:right;}
-#lastUpdated{position:fixed;bottom:10px;left:18px;z-index:9999;font-size:.95rem;font-weight:700;color:rgba(210,185,130,.82);letter-spacing:.06em;pointer-events:none;}
-body.light #lastUpdated{color:rgba(80,50,0,.75);}
 </style>
 </head>
 <body>
@@ -381,34 +235,37 @@ body.light #lastUpdated{color:rgba(80,50,0,.75);}
 <!-- GATE -->
 <div id="gate">
   <div class="gate-left">
-    <div class="gate-grid"></div>
-    <div class="gate-orb"></div>
-    <div class="gate-brand">
-      <img class="gate-brand-logo" src="https://cdn.prod.website-files.com/68d553d945b367b6adf77a64/68d5544ae05fe350f582b87b_BOOMRx-LogoOriginal.svg" alt="BoomRx" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <div style="display:none;font-size:2.6rem;font-weight:900;letter-spacing:.04em;color:#fff;">BOOM<span style="color:#ff6a1e;">RX</span></div>
-      <div class="gate-brand-divider"></div>
-      <div class="gate-brand-tagline">Sales Intelligence Platform</div>
-      <div class="gate-brand-pill">
-        <div class="gate-brand-pill-dot"></div>
-        <span>JMS Team · Live Dashboard</span>
-      </div>
-    </div>
+    <svg class="sunburst" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(160,160)" fill="none" stroke="#c9a227" stroke-width="1">
+        <circle r="60"/><circle r="90"/><circle r="120"/><circle r="150"/>
+        <script type="text/javascript">void 0;</script>
+      </g>
+      <!-- rays -->
+      <g transform="translate(160,160)" stroke="#c9a227" stroke-width="1">
+        <line x1="0" y1="-155" x2="0" y2="155"/>
+        <line x1="-155" y1="0" x2="155" y2="0"/>
+        <line x1="-110" y1="-110" x2="110" y2="110"/>
+        <line x1="110" y1="-110" x2="-110" y2="110"/>
+        <line x1="-60" y1="-145" x2="60" y2="145"/>
+        <line x1="145" y1="-60" x2="-145" y2="60"/>
+        <line x1="60" y1="-145" x2="-60" y2="145"/>
+        <line x1="145" y1="60" x2="-145" y2="-60"/>
+        <line x1="-30" y1="-152" x2="30" y2="152"/>
+        <line x1="152" y1="-30" x2="-152" y2="30"/>
+        <line x1="30" y1="-152" x2="-30" y2="152"/>
+        <line x1="152" y1="30" x2="-152" y2="-30"/>
+      </g>
+    </svg>
+    <div class="gate-logo">BOOM<span>RX</span></div>
   </div>
   <div class="gate-right">
-    <div class="gate-panel-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#ff6a1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-      </svg>
-    </div>
-    <div class="gate-title">Team Access</div>
-    <div class="gate-sub">Authorized personnel only</div>
+    <div class="gate-title">JMS Sales Command</div>
+    <div class="gate-sub">AUTHORIZED ACCESS ONLY</div>
     <div class="gate-input-wrap">
       <input id="pwInput" type="password" placeholder="Enter access code" autocomplete="off" maxlength="20">
     </div>
-    <button id="gateBtn">UNLOCK DASHBOARD</button>
+    <button id="gateBtn">ENTER</button>
     <div id="gateErr"></div>
-    <div class="gate-footer">BoomRx · JMS Sales Command</div>
   </div>
 </div>
 
@@ -416,7 +273,7 @@ body.light #lastUpdated{color:rgba(80,50,0,.75);}
 <div id="app">
   <!-- TICKER -->
   <div id="ticker">
-    
+    <div class="ticker-label">▶ LIVE</div>
     <div class="ticker-scroll">
       <div class="ticker-inner" id="tickerInner"></div>
     </div>
@@ -432,12 +289,11 @@ body.light #lastUpdated{color:rgba(80,50,0,.75);}
   <div id="pauseIndicator">⏸ PAUSED</div>
   <button id="themeToggle" class="visible">☀ LIGHT</button>
   <div id="slideProgress"></div>
-  <div id="lastUpdated"></div>
 </div>
 
 <script>
 // ── EMBEDDED DATA ──────────────────────────────────────────────────
-const DATA = {"generated":"2026-06-23","generated_ts":"2026-06-09T00:00:00","date_range":{"start":"2025-06-16","end":"2026-06-09"},"reps":[{"name":"Zachary Salazar","revenue":254628.15,"orders":1671,"clinics":12,"avg_order":144.1547875524,"new_ytd":39,"retention_pct":81.5,"retained":22,"prev_month_clinics":27,"topDrugs":[{"name":"Tirzepatide (Compound)","rev":49964.0},{"name":"Tirzepatide / B12","rev":35800.0},{"name":"Tirzepatide / Glycine","rev":25229.0},{"name":"BPC-157 / TB-500","rev":23340.0},{"name":"BPC-157 / GHK-Cu / KPV / TB-500","rev":11150.0}],"topDrugs30d":[{"name":"Tirzepatide / Glycine","rev":20625.0},{"name":"Tirzepatide / B12","rev":14250.0},{"name":"Semaglutide / Glycine","rev":6814.0},{"name":"Tirzepatide / Glycine / Methylcobalamin","rev":4504.0},{"name":"Tirzepatide / Glycine / B12","rev":3580.0}],"new7":[],"rev_mo":40162.45,"orders_mo":292,"avg_order_mo":137.54,"rev_30d":84803.65,"orders_30d":643,"avg_order_30d":131.3459334566,"clinics_30d":12,"new_accts_30d":3},{"name":"Dylan White","revenue":36871.6,"orders":237,"clinics":8,"avg_order":137.5814345992,"new_ytd":22,"retention_pct":76.5,"retained":13,"prev_month_clinics":17,"topDrugs":[{"name":"Tirzepatide / Glycine / Methylcobalamin","rev":7773.0},{"name":"Tirzepatide / Glycine","rev":5995.0},{"name":"Tirzepatide / B12","rev":3995.0},{"name":"Tirzepatide (Compound)","rev":2464.5},{"name":"Semaglutide / Glycine","rev":1810.0}],"topDrugs30d":[{"name":"Tirzepatide / Glycine / Methylcobalamin","rev":8377.0},{"name":"Tirzepatide / Glycine","rev":4110.0},{"name":"Tirzepatide / B12","rev":2640.0},{"name":"Semaglutide / Glycine","rev":1395.0},{"name":"Tirzepatide / L-Carnitine","rev":900.0}],"new7":[],"rev_mo":10802.5,"orders_mo":81,"avg_order_mo":133.36,"rev_30d":27449.4,"orders_30d":187,"avg_order_30d":147.672611465,"clinics_30d":8,"new_accts_30d":4},{"name":"Jonathan Izquierdo","revenue":14128.73,"orders":149,"clinics":7,"avg_order":77.2800671141,"new_ytd":7,"retention_pct":100.0,"retained":3,"prev_month_clinics":3,"topDrugs":[{"name":"Tirzepatide / Glycine","rev":1578.0},{"name":"GHK-Cu / Epithalon","rev":1500.0},{"name":"Testosterone Cypionate - MCT","rev":1050.0},{"name":"Tesamorelin","rev":720.0},{"name":"GHK-Cu","rev":480.0}],"topDrugs30d":[{"name":"Testosterone Cypionate - MCT","rev":1050.0},{"name":"CJC-1295 / Ipamorelin","rev":600.0},{"name":"Tirzepatide / Glycine","rev":415.0},{"name":"Tirzepatide / L-Carnitine","rev":280.0},{"name":"MOTS-c","rev":240.0}],"new7":[],"rev_mo":5241.7,"orders_mo":78,"avg_order_mo":67.2,"rev_30d":7335.73,"orders_30d":124,"avg_order_30d":46.7498019802,"clinics_30d":7,"new_accts_30d":9},{"name":"Darryl Fleming","revenue":6159.0,"orders":20,"clinics":3,"avg_order":243.85,"new_ytd":2,"retention_pct":100.0,"retained":1,"prev_month_clinics":0,"topDrugs":[{"name":"Semaglutide / Methylcobalamin / Glycine","rev":480.0}],"topDrugs30d":[{"name":"Semaglutide / Methylcobalamin / Glycine","rev":790.0},{"name":"Tirzepatide (30 Day)","rev":620.0},{"name":"Tirzepatide / Glycine / Methylcobalamin","rev":380.0},{"name":"Semaglutide (30 Day)","rev":280.0}],"new7":[],"rev_mo":6159.0,"orders_mo":32,"avg_order_mo":192.47,"rev_30d":6159.0,"orders_30d":32,"avg_order_30d":243.85,"clinics_30d":3,"new_accts_30d":4},{"name":"Valentin Zakar","revenue":1050.0,"orders":3,"clinics":2,"avg_order":350.0,"new_ytd":2,"retention_pct":100.0,"retained":0,"prev_month_clinics":0,"topDrugs":[],"topDrugs30d":[{"name":"Tirzepatide / L-Carnitine","rev":540.0},{"name":"GHK-Cu","rev":240.0},{"name":"CJC-1295 / Ipamorelin","rev":150.0},{"name":"BPC-157","rev":120.0}],"new7":[],"rev_mo":1050.0,"orders_mo":3,"avg_order_mo":350.0,"rev_30d":1050.0,"orders_30d":3,"avg_order_30d":350.0,"clinics_30d":2,"new_accts_30d":2}],"daily":[{"date":"2026-06-12","tot":1598.0},{"date":"2026-06-13","tot":357.0},{"date":"2026-06-14","tot":385.0},{"date":"2026-06-15","tot":4017.0},{"date":"2026-06-16","tot":2547.5},{"date":"2026-06-17","tot":2586.0},{"date":"2026-06-18","tot":3646.0},{"date":"2026-06-19","tot":1880.0},{"date":"2026-06-20","tot":1013.8},{"date":"2026-06-21","tot":809.0},{"date":"2026-06-22","tot":2075.5},{"date":"2026-06-23","tot":3331.5}],"dod":[{"rep":"Zachary Salazar","today":2467.5,"yday":855.5},{"rep":"Dylan White","today":304.0,"yday":350.0},{"rep":"Jonathan Izquierdo","today":295.0,"yday":425.0},{"rep":"Darryl Fleming","today":265.0,"yday":445.0},{"rep":"Valentin Zakar","today":0.0,"yday":0.0}],"wow":{"cur":5407.0,"prev":16499.3,"reps":[{"name":"Zachary Salazar","cur":3323.0,"prev":10422.5},{"name":"Dylan White","cur":654.0,"prev":3610.8},{"name":"Jonathan Izquierdo","cur":720.0,"prev":1894.0},{"name":"Darryl Fleming","cur":710.0,"prev":572.0},{"name":"Valentin Zakar","cur":0.0,"prev":0.0}]},"mom":{"cur":63415.65,"prev":1620.0,"reps":[{"rep":"Zachary Salazar","cur":40162.45,"prev":1145.0},{"rep":"Dylan White","cur":10802.5,"prev":160.0},{"rep":"Jonathan Izquierdo","cur":5241.7,"prev":315.0},{"rep":"Darryl Fleming","cur":6159.0,"prev":0.0},{"rep":"Valentin Zakar","cur":1050.0,"prev":0.0}]},"weekly":[{"week":"2025-06-09","tot":0.0,"Zachary Salazar":0.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-06-16","tot":0.0,"Zachary Salazar":0.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-06-23","tot":0.0,"Zachary Salazar":0.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-06-30","tot":0.0,"Zachary Salazar":0.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-07-07","tot":570.0,"Zachary Salazar":570.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-07-14","tot":14.0,"Zachary Salazar":14.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-07-21","tot":848.0,"Zachary Salazar":848.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-07-28","tot":1100.5,"Zachary Salazar":1100.5,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-08-04","tot":260.0,"Zachary Salazar":260.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-08-11","tot":210.0,"Zachary Salazar":210.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-08-18","tot":200.0,"Zachary Salazar":200.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-08-25","tot":550.0,"Zachary Salazar":550.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-09-01","tot":1171.0,"Zachary Salazar":1171.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-09-08","tot":2510.0,"Zachary Salazar":2510.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-09-15","tot":650.5,"Zachary Salazar":650.5,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-09-22","tot":1425.0,"Zachary Salazar":1425.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-09-29","tot":1000.0,"Zachary Salazar":1000.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-10-06","tot":2379.0,"Zachary Salazar":2379.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-10-13","tot":2628.0,"Zachary Salazar":2108.0,"Dylan White":0.0,"Jonathan Izquierdo":520.0},{"week":"2025-10-20","tot":1270.0,"Zachary Salazar":1270.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-10-27","tot":2816.0,"Zachary Salazar":2816.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-11-03","tot":1887.0,"Zachary Salazar":1707.0,"Dylan White":0.0,"Jonathan Izquierdo":180.0},{"week":"2025-11-10","tot":2318.0,"Zachary Salazar":2318.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-11-17","tot":4475.5,"Zachary Salazar":4325.5,"Dylan White":0.0,"Jonathan Izquierdo":150.0},{"week":"2025-11-24","tot":5663.6,"Zachary Salazar":5663.6,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-12-01","tot":2350.0,"Zachary Salazar":2350.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-12-08","tot":5270.9,"Zachary Salazar":5150.9,"Dylan White":0.0,"Jonathan Izquierdo":120.0},{"week":"2025-12-15","tot":2430.0,"Zachary Salazar":2430.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-12-22","tot":1266.0,"Zachary Salazar":1266.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-12-29","tot":2594.0,"Zachary Salazar":2474.0,"Dylan White":0.0,"Jonathan Izquierdo":120.0},{"week":"2026-01-05","tot":4285.5,"Zachary Salazar":3685.5,"Dylan White":0.0,"Jonathan Izquierdo":600.0},{"week":"2026-01-12","tot":2813.0,"Zachary Salazar":2600.0,"Dylan White":0.0,"Jonathan Izquierdo":213.0},{"week":"2026-01-19","tot":5481.0,"Zachary Salazar":5211.0,"Dylan White":0.0,"Jonathan Izquierdo":270.0},{"week":"2026-01-26","tot":4515.0,"Zachary Salazar":4515.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2026-02-02","tot":7907.98,"Zachary Salazar":7822.98,"Dylan White":0.0,"Jonathan Izquierdo":85.0},{"week":"2026-02-09","tot":6532.0,"Zachary Salazar":5842.0,"Dylan White":0.0,"Jonathan Izquierdo":690.0},{"week":"2026-02-16","tot":5376.0,"Zachary Salazar":5106.0,"Dylan White":0.0,"Jonathan Izquierdo":270.0},{"week":"2026-02-23","tot":6706.0,"Zachary Salazar":6276.0,"Dylan White":310.0,"Jonathan Izquierdo":120.0},{"week":"2026-03-02","tot":6139.0,"Zachary Salazar":5049.0,"Dylan White":850.0,"Jonathan Izquierdo":240.0},{"week":"2026-03-09","tot":5732.7,"Zachary Salazar":5237.7,"Dylan White":195.0,"Jonathan Izquierdo":300.0},{"week":"2026-03-16","tot":7908.6,"Zachary Salazar":7081.1,"Dylan White":677.5,"Jonathan Izquierdo":150.0},{"week":"2026-03-23","tot":10668.7,"Zachary Salazar":10128.7,"Dylan White":270.0,"Jonathan Izquierdo":270.0},{"week":"2026-03-30","tot":10413.0,"Zachary Salazar":10028.0,"Dylan White":265.0,"Jonathan Izquierdo":120.0},{"week":"2026-04-06","tot":13507.44,"Zachary Salazar":11177.94,"Dylan White":1889.5,"Jonathan Izquierdo":440.0},{"week":"2026-04-13","tot":17936.08,"Zachary Salazar":16395.08,"Dylan White":1191.0,"Jonathan Izquierdo":350.0},{"week":"2026-04-20","tot":13908.7,"Zachary Salazar":10921.5,"Dylan White":2137.2,"Jonathan Izquierdo":850.0},{"week":"2026-04-27","tot":8352.0,"Zachary Salazar":5980.0,"Dylan White":1637.0,"Jonathan Izquierdo":735.0},{"week":"2026-05-04","tot":19838.6,"Zachary Salazar":15047.2,"Dylan White":4514.0,"Jonathan Izquierdo":277.4},{"week":"2026-05-11","tot":11154.480000000001,"Zachary Salazar":6494.5,"Dylan White":3814.1,"Jonathan Izquierdo":845.88},{"week":"2026-05-18","tot":16772.2,"Zachary Salazar":12116.0,"Dylan White":4161.0,"Jonathan Izquierdo":495.2},{"week":"2026-05-25","tot":15616.849999999999,"Zachary Salazar":10983.5,"Dylan White":4157.8,"Jonathan Izquierdo":475.55},{"week":"2026-06-01","tot":19976.25,"Zachary Salazar":13797.75,"Dylan White":4164.0,"Jonathan Izquierdo":1704.5,"Darryl Fleming":310.0},{"week":"2026-06-08","tot":21533.1,"Zachary Salazar":12619.2,"Dylan White":2373.7,"Jonathan Izquierdo":923.2,"Darryl Fleming":4567.0,"Valentin Zakar":1050},{"week":"2026-06-15","tot":16499.3,"Zachary Salazar":10422.5,"Dylan White":3610.8,"Jonathan Izquierdo":1894.0,"Darryl Fleming":572.0,"Valentin Zakar":0.0},{"week":"2026-06-22","tot":5407.0,"Zachary Salazar":3323.0,"Dylan White":654.0,"Jonathan Izquierdo":720.0,"Darryl Fleming":710.0,"Valentin Zakar":0.0}],"monthly":[{"month":"2025-07","label":"Jul 25","tot":1932.5,"Zachary Salazar":1932.5,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"month":"2025-08","label":"Aug 25","tot":1820.0,"Zachary Salazar":1820.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"month":"2025-09","label":"Sep 25","tot":6356.5,"Zachary Salazar":6356.5,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"month":"2025-10","label":"Oct 25","tot":9458.0,"Zachary Salazar":8938.0,"Dylan White":0.0,"Jonathan Izquierdo":520.0},{"month":"2025-11","label":"Nov 25","tot":14379.1,"Zachary Salazar":14049.1,"Dylan White":0.0,"Jonathan Izquierdo":330.0},{"month":"2025-12","label":"Dec 25","tot":12828.9,"Zachary Salazar":12588.9,"Dylan White":0.0,"Jonathan Izquierdo":240.0},{"month":"2026-01","label":"Jan 26","tot":17861.5,"Zachary Salazar":16778.5,"Dylan White":0.0,"Jonathan Izquierdo":1083.0},{"month":"2026-02","label":"Feb 26","tot":26481.98,"Zachary Salazar":25006.98,"Dylan White":310.0,"Jonathan Izquierdo":1165.0},{"month":"2026-03","label":"Mar 26","tot":33466.5,"Zachary Salazar":30444.0,"Dylan White":2062.5,"Jonathan Izquierdo":960.0},{"month":"2026-04","label":"Apr 26","tot":59834.72,"Zachary Salazar":50765.020000000004,"Dylan White":6889.7,"Jonathan Izquierdo":2180.0},{"month":"2026-05","label":"May 26","tot":65002.130000000005,"Zachary Salazar":45786.2,"Dylan White":16806.9,"Jonathan Izquierdo":2409.03},{"month":"2026-06","label":"Jun 26","tot":63415.65,"Zachary Salazar":40162.45,"Dylan White":10802.5,"Jonathan Izquierdo":5241.7,"Darryl Fleming":6159.0,"Valentin Zakar":1050.0}],"spark_weeks":[{"week":"Mar 09","Zachary Salazar":5237.7,"Dylan White":195.0,"Jonathan Izquierdo":300.0},{"week":"Mar 16","Zachary Salazar":7081.1,"Dylan White":677.5,"Jonathan Izquierdo":150.0},{"week":"Mar 23","Zachary Salazar":10128.7,"Dylan White":270.0,"Jonathan Izquierdo":270.0},{"week":"Mar 30","Zachary Salazar":10028.0,"Dylan White":265.0,"Jonathan Izquierdo":120.0},{"week":"Apr 06","Zachary Salazar":11177.94,"Dylan White":1889.5,"Jonathan Izquierdo":440.0},{"week":"Apr 13","Zachary Salazar":16395.08,"Dylan White":1191.0,"Jonathan Izquierdo":350.0},{"week":"Apr 20","Zachary Salazar":10921.5,"Dylan White":2137.2,"Jonathan Izquierdo":850.0},{"week":"Apr 27","Zachary Salazar":5980.0,"Dylan White":1637.0,"Jonathan Izquierdo":735.0},{"week":"May 04","Zachary Salazar":15047.2,"Dylan White":4514.0,"Jonathan Izquierdo":277.4},{"week":"May 11","Zachary Salazar":6494.5,"Dylan White":3814.1,"Jonathan Izquierdo":845.88},{"week":"May 18","Zachary Salazar":12116.0,"Dylan White":4161.0,"Jonathan Izquierdo":495.2},{"week":"May 25","Zachary Salazar":10983.5,"Dylan White":4157.8,"Jonathan Izquierdo":475.55},{"week":"Jun 01","Zachary Salazar":13797.75,"Dylan White":4164.0,"Jonathan Izquierdo":1704.5,"Darryl Fleming":310.0,"tot":19976.25},{"week":"Jun 08","Zachary Salazar":12619.2,"Dylan White":2373.7,"Jonathan Izquierdo":923.2,"Darryl Fleming":4567.0,"Valentin Zakar":1050},{"week":"Jun 15","Zachary Salazar":10422.5,"Dylan White":3610.8,"Jonathan Izquierdo":1894.0,"Darryl Fleming":572.0,"Valentin Zakar":0.0},{"week":"Jun 22","Zachary Salazar":3323.0,"Dylan White":654.0,"Jonathan Izquierdo":720.0,"Darryl Fleming":710.0,"Valentin Zakar":0.0}],"state_data":[{"state":"FL","revenue":86732.65},{"state":"CA","revenue":40763.0},{"state":"WV","revenue":37176.0},{"state":"OK","revenue":18341.88},{"state":"ME","revenue":15771.94},{"state":"IL","revenue":10203.6},{"state":"NV","revenue":8643.6},{"state":"NJ","revenue":8626.5},{"state":"MO","revenue":8136.0},{"state":"SC","revenue":7607.5},{"state":"HI","revenue":5487.0},{"state":"TX","revenue":3953.23},{"state":"NC","revenue":3908.48},{"state":"MI","revenue":3790.0},{"state":"AR","revenue":3790.0},{"state":"TN","revenue":3715.0},{"state":"LA","revenue":3284.0},{"state":"WI","revenue":3041.8},{"state":"GA","revenue":2437.0},{"state":"WA","revenue":1571.0},{"state":"PA","revenue":1420.0},{"state":"KY","revenue":1180.0},{"state":"NY","revenue":765.0},{"state":"ID","revenue":580.5},{"state":"OR","revenue":500.0},{"state":"AZ","revenue":120.0}],"state_data_mo":[{"state":"CA","revenue":11442.5},{"state":"ME","revenue":6667.5},{"state":"WV","revenue":6587.0},{"state":"FL","revenue":5765.25},{"state":"MO","revenue":4901.0},{"state":"OK","revenue":4867.5},{"state":"NC","revenue":4376.5},{"state":"GA","revenue":3710.0},{"state":"TX","revenue":2915.2},{"state":"NV","revenue":2778.7},{"state":"SC","revenue":1307.0},{"state":"PA","revenue":1285.0},{"state":"MI","revenue":1025.0},{"state":"IL","revenue":561.0},{"state":"ID","revenue":497.2},{"state":"IN","revenue":380.0},{"state":"HI","revenue":340.0},{"state":"AR","revenue":287.0},{"state":"KY","revenue":230.0},{"state":"WI","revenue":201.8},{"state":"TN","revenue":190.0},{"state":"MA","revenue":120.0},{"state":"NJ","revenue":110.0},{"state":"OR","revenue":90.0},{"state":"WA","revenue":75.0},{"state":"NY","revenue":70.0}],"prev_mo_state_count":22,"cur_mo_state_count":26,"top_clinics":[{"name":"Sunmed Health and Weight Management","state":"CA","rep":"Zachary Salazar","revenue":20593.0,"rx":227},{"name":"Maine Mobile Health and Virtual Care, PLLC","state":"ME","rep":"Zachary Salazar","revenue":7264.5,"rx":32},{"name":"Pure Medical Weight Loss","state":"MO","rep":"Dylan White","revenue":6117.0,"rx":42},{"name":"Center For Men","state":"OK","rep":"Zachary Salazar","revenue":5941.0,"rx":125},{"name":"Appalachian RevIVal","state":"WV","rep":"Zachary Salazar","revenue":5374.0,"rx":49},{"name":"Almost Heaven Mobile Hydration LLC","state":"WV","rep":"Zachary Salazar","revenue":4060.0,"rx":36},{"name":"George Carroll MD PA","state":"FL","rep":"Zachary Salazar","revenue":3700.0,"rx":10},{"name":"Optimal Wellness Group LLC","state":"FL","rep":"Zachary Salazar","revenue":3480.0,"rx":18},{"name":"NSPIRE PRIMARY CARE LLC","state":"NV","rep":"Dylan White","revenue":3086.0,"rx":27},{"name":"High Country Care Connect","state":"NC","rep":"Darryl Fleming","revenue":2814.0,"rx":83},{"name":"LIGHT Family Wellness","state":"SC","rep":"Dylan White","revenue":2685.0,"rx":29},{"name":"JUDY L JONES FAMILY NURSE PRACTITIONER LLC","state":"TN","rep":"Dylan White","revenue":2565.0,"rx":6},{"name":"timeless aesthetics.rn","state":"WI","rep":"Dylan White","revenue":2273.6,"rx":38},{"name":"806Aesthetics","state":"TX","rep":"Darryl Fleming","revenue":2260.0,"rx":7},{"name":"Healthier You Weight Loss and Wellness","state":"GA","rep":"Zachary Salazar","revenue":2255.0,"rx":14},{"name":"Life Medical SC","state":"IL","rep":"Zachary Salazar","revenue":2246.8,"rx":132},{"name":"Dana M Goldberg, MD","state":"FL","rep":"Jonathan Izquierdo","revenue":1714.0,"rx":14},{"name":"Revive Modern Health","state":"MI","rep":"Zachary Salazar","revenue":1525.0,"rx":11},{"name":"Bennett Integrative Health","state":"GA","rep":"Dylan White","revenue":1520.0,"rx":6},{"name":"Refine Vitality","state":"FL","rep":"Zachary Salazar","revenue":1434.0,"rx":223},{"name":"TrueVertex","state":"TX","rep":"Jonathan Izquierdo","revenue":1345.03,"rx":65},{"name":"Elevate Medical Group","state":"NV","rep":"Zachary Salazar","revenue":1326.9,"rx":35},{"name":"ACE Endocrinology Associates PC","state":"NJ","rep":"Zachary Salazar","revenue":1260.0,"rx":3},{"name":"PURELY NOURISHED SPA LLC","state":"PA","rep":"Dylan White","revenue":1120.0,"rx":4},{"name":"Vista Wellness","state":"FL","rep":"Zachary Salazar","revenue":1085.0,"rx":7},{"name":"Contoura MedSpa","state":"GA","rep":"Darryl Fleming","revenue":900.0,"rx":1},{"name":"Stillwater Infusion Company","state":"KY","rep":"Dylan White","revenue":820.0,"rx":10},{"name":"Evolution Health and Wellness Center","state":"MO","rep":"Zachary Salazar","revenue":690.0,"rx":5},{"name":"Vital Flow Hydration & Wellness","state":"WV","rep":"Jonathan Izquierdo","revenue":600.0,"rx":5},{"name":"Go Vita Shot","state":"SC","rep":"Zachary Salazar","revenue":565.0,"rx":2}],"new_accounts_7d":[],"new_accounts_30d":[{"clinic":"Sorrell MD PLLC","rep":"Zachary Salazar","state":"CA","date":"2026-06-05","revenue":100.0},{"clinic":"806Aesthetics","rep":"Darryl Fleming","state":"TX","date":"2026-06-06","revenue":310.0},{"clinic":"Resurgence Vitality LLC","rep":"Jonathan Izquierdo","state":"OK","date":"2026-06-06","revenue":52.5},{"clinic":"Trinity Naturopathic","rep":"Zachary Salazar","state":"TX","date":"2026-06-06","revenue":160.0},{"clinic":"High Country Care Connect","rep":"Darryl Fleming","state":"NC","date":"2026-06-09","revenue":1717.0},{"clinic":"Pure Bliss Aesthetics","rep":"Valentin Zakar","state":"MA","date":"2026-06-10","revenue":510.0},{"clinic":"Contoura MedSpa","rep":"Darryl Fleming","state":"GA","date":"2026-06-11","revenue":900.0},{"clinic":"Fanous MedSpa Medical NC PLLC","rep":"Valentin Zakar","state":"PA","date":"2026-06-11","revenue":540.0},{"clinic":"Entyre","rep":"Dylan White","state":"MA","date":"2026-06-11","revenue":20.0},{"clinic":"Balanced Wellness","rep":"Jonathan Izquierdo","state":"ID","date":"2026-06-18","revenue":450.0},{"clinic":"Gameday Men's Health South Charlotte","rep":"Jonathan Izquierdo","state":"NC","date":"2026-06-18","revenue":240.0},{"clinic":"Luxe Aesthetics and Wellness","rep":"Dylan White","state":"IN","date":"2026-06-19","revenue":380.0},{"clinic":"Optimal Wellness NP","rep":"Darryl Fleming","state":"SC","date":"2026-06-21","revenue":185.0}],"at_risk":[{"name":"Balance Point Total Body Wellness","rep":"Zachary","prior_rev":1050.0,"prior_orders":1,"days_silent":60,"last_order":"2026-04-10"},{"name":"Trim Fitt LLC","rep":"Dylan","prior_rev":587.5,"prior_orders":5,"days_silent":40,"last_order":"2026-04-30"},{"name":"Restore Regenerative & Sports Medicine","rep":"Zachary","prior_rev":570.0,"prior_orders":4,"days_silent":46,"last_order":"2026-04-24"},{"name":"Stillwater Infusion Company 2","rep":"Dylan","prior_rev":315.0,"prior_orders":4,"days_silent":44,"last_order":"2026-04-26"},{"name":"Sequoia Infusion & Aesthetics","rep":"Dylan","prior_rev":280.0,"prior_orders":2,"days_silent":62,"last_order":"2026-04-08"},{"name":"The Center for Functional Aesthetic and Anti Aging Medicine","rep":"Zachary","prior_rev":150.0,"prior_orders":1,"days_silent":52,"last_order":"2026-04-18"},{"name":"Journey To Success Weight Loss Clinic, LLC","rep":"Dylan","prior_rev":142.0,"prior_orders":1,"days_silent":63,"last_order":"2026-04-07"},{"name":"Rockland Wellness Center","rep":"Zachary","prior_rev":75.0,"prior_orders":1,"days_silent":53,"last_order":"2026-04-17"},{"name":"Bibianas's Medical Concierge & IV Lounge","rep":"Zachary","prior_rev":70.0,"prior_orders":1,"days_silent":60,"last_order":"2026-04-10"}],"totals":{"revenue":312837.48,"orders":2247,"accounts":72,"avg_order":139.870759615,"rev_mo":63415.65,"orders_mo":486,"prev_orders_mo":519}};
+const DATA = {"generated":"2026-06-24","generated_ts":"2026-06-24T00:00:00","date_range":{"start":"2025-06-16","end":"2026-06-24"},"reps":[{"name":"Zachary Salazar","revenue":222615.7,"orders":1537,"clinics":12,"avg_order":144.83780091086533,"new_ytd":37,"retention_pct":68.0,"retained":17,"prev_month_clinics":25,"topDrugs":[{"name":"Tirzepatide (Compound)","rev":49964.0},{"name":"Tirzepatide / B12","rev":35800.0},{"name":"BPC-157 / TB-500","rev":23580.0},{"name":"Tirzepatide / Glycine","rev":18569.0},{"name":"BPC-157 / GHK-Cu / KPV / TB-500","rev":11150.0}],"topDrugs30d":[{"name":"Tirzepatide / Glycine","rev":8250.0},{"name":"Semaglutide / Glycine","rev":3701.0},{"name":"Tirzepatide / Glycine / Methylcobalamin","rev":1330.0},{"name":"BPC-157 / KPV / TB-500","rev":900.0},{"name":"BPC-157 / TB-500","rev":660.0}],"new7":[],"rev_mo":8150.0,"orders_mo":56,"avg_order_mo":145.53571428571428,"rev_30d":18763.5,"orders_30d":149,"avg_order_30d":125.92953020134229,"clinics_30d":19,"new_accts_30d":0},{"name":"Dylan White","revenue":29061.100000000002,"orders":202,"clinics":7,"avg_order":143.86683168316833,"new_ytd":21,"retention_pct":64.7,"retained":11,"prev_month_clinics":17,"topDrugs":[{"name":"Tirzepatide / Glycine / Methylcobalamin","rev":6525.0},{"name":"Tirzepatide / Glycine","rev":5835.0},{"name":"Tirzepatide / B12","rev":3995.0},{"name":"Tirzepatide (Compound)","rev":2464.5},{"name":"Semaglutide / Glycine","rev":1670.0}],"topDrugs30d":[{"name":"Tirzepatide / Glycine","rev":2330.0},{"name":"Tirzepatide / Glycine / Methylcobalamin","rev":1474.0},{"name":"Tirzepatide / Glycine / B12","rev":740.0},{"name":"Semaglutide / Glycine","rev":720.0},{"name":"Tirzepatide / L-Carnitine","rev":480.0}],"new7":[],"rev_mo":2992.0,"orders_mo":16,"avg_order_mo":187.0,"rev_30d":6800.8,"orders_30d":41,"avg_order_30d":165.87317073170732,"clinics_30d":11,"new_accts_30d":0},{"name":"Jonathan Izquierdo","revenue":9574.03,"orders":106,"clinics":3,"avg_order":90.32103773584906,"new_ytd":6,"retention_pct":50.0,"retained":3,"prev_month_clinics":6,"topDrugs":[{"name":"GHK-Cu / Epithalon","rev":1500.0},{"name":"Tirzepatide / Glycine","rev":1163.0},{"name":"Testosterone Cypionate - MCT","rev":875.0},{"name":"Tesamorelin","rev":720.0},{"name":"GHK-Cu","rev":480.0}],"topDrugs30d":[{"name":"Testosterone Cypionate - MCT","rev":280.0},{"name":"MOTS-c","rev":240.0},{"name":"Semaglutide / Glycine","rev":210.0},{"name":"NAD+","rev":180.0},{"name":"Tirzepatide / L-Carnitine","rev":140.0}],"new7":[],"rev_mo":687.0,"orders_mo":12,"avg_order_mo":57.25,"rev_30d":1162.55,"orders_30d":20,"avg_order_30d":58.1275,"clinics_30d":3,"new_accts_30d":0}],"daily":[{"date":"2026-06-22","tot":0.0},{"date":"2026-06-23","tot":0.0},{"date":"2026-06-24","tot":5085.0}],"dod":[{"rep":"Zachary Salazar","today":3543.0,"yday":0.0},{"rep":"Dylan White","today":1507.0,"yday":0.0},{"rep":"Jonathan Izquierdo","today":35.0,"yday":0.0}],"wow":{"cur":5085.0,"prev":0.0,"reps":[{"rep":"Zachary Salazar","cur":3543.0,"prev":0.0},{"rep":"Dylan White","cur":1507.0,"prev":0.0},{"rep":"Jonathan Izquierdo","cur":35.0,"prev":0.0}]},"mom":{"cur":11829.0,"prev":49385.28,"reps":[{"rep":"Zachary Salazar","cur":8150.0,"prev":34802.7},{"rep":"Dylan White","cur":2992.0,"prev":12649.1},{"rep":"Jonathan Izquierdo","cur":687.0,"prev":1933.48}]},"weekly":[{"week":"2025-06-30","tot":0.0,"Zachary Salazar":0.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-07-07","tot":570.0,"Zachary Salazar":570.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-07-14","tot":14.0,"Zachary Salazar":14.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-07-21","tot":848.0,"Zachary Salazar":848.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-07-28","tot":1100.5,"Zachary Salazar":1100.5,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-08-04","tot":260.0,"Zachary Salazar":260.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-08-11","tot":210.0,"Zachary Salazar":210.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-08-18","tot":200.0,"Zachary Salazar":200.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-08-25","tot":550.0,"Zachary Salazar":550.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-09-01","tot":1171.0,"Zachary Salazar":1171.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-09-08","tot":2510.0,"Zachary Salazar":2510.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-09-15","tot":650.5,"Zachary Salazar":650.5,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-09-22","tot":1425.0,"Zachary Salazar":1425.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-09-29","tot":1000.0,"Zachary Salazar":1000.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-10-06","tot":2379.0,"Zachary Salazar":2379.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-10-13","tot":2628.0,"Zachary Salazar":2108.0,"Dylan White":0.0,"Jonathan Izquierdo":520.0},{"week":"2025-10-20","tot":1270.0,"Zachary Salazar":1270.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-10-27","tot":2816.0,"Zachary Salazar":2816.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-11-03","tot":1887.0,"Zachary Salazar":1707.0,"Dylan White":0.0,"Jonathan Izquierdo":180.0},{"week":"2025-11-10","tot":2318.0,"Zachary Salazar":2318.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-11-17","tot":4475.5,"Zachary Salazar":4325.5,"Dylan White":0.0,"Jonathan Izquierdo":150.0},{"week":"2025-11-24","tot":5663.6,"Zachary Salazar":5663.6,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-12-01","tot":2350.0,"Zachary Salazar":2350.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-12-08","tot":5270.9,"Zachary Salazar":5150.9,"Dylan White":0.0,"Jonathan Izquierdo":120.0},{"week":"2025-12-15","tot":2430.0,"Zachary Salazar":2430.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-12-22","tot":1266.0,"Zachary Salazar":1266.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2025-12-29","tot":2594.0,"Zachary Salazar":2474.0,"Dylan White":0.0,"Jonathan Izquierdo":120.0},{"week":"2026-01-05","tot":4285.5,"Zachary Salazar":3685.5,"Dylan White":0.0,"Jonathan Izquierdo":600.0},{"week":"2026-01-12","tot":2813.0,"Zachary Salazar":2600.0,"Dylan White":0.0,"Jonathan Izquierdo":213.0},{"week":"2026-01-19","tot":5481.0,"Zachary Salazar":5211.0,"Dylan White":0.0,"Jonathan Izquierdo":270.0},{"week":"2026-01-26","tot":4515.0,"Zachary Salazar":4515.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2026-02-02","tot":7907.98,"Zachary Salazar":7822.98,"Dylan White":0.0,"Jonathan Izquierdo":85.0},{"week":"2026-02-09","tot":6532.0,"Zachary Salazar":5842.0,"Dylan White":0.0,"Jonathan Izquierdo":690.0},{"week":"2026-02-16","tot":5376.0,"Zachary Salazar":5106.0,"Dylan White":0.0,"Jonathan Izquierdo":270.0},{"week":"2026-02-23","tot":6706.0,"Zachary Salazar":6276.0,"Dylan White":310.0,"Jonathan Izquierdo":120.0},{"week":"2026-03-02","tot":6139.0,"Zachary Salazar":5049.0,"Dylan White":850.0,"Jonathan Izquierdo":240.0},{"week":"2026-03-09","tot":5732.7,"Zachary Salazar":5237.7,"Dylan White":195.0,"Jonathan Izquierdo":300.0},{"week":"2026-03-16","tot":7908.6,"Zachary Salazar":7081.1,"Dylan White":677.5,"Jonathan Izquierdo":150.0},{"week":"2026-03-23","tot":10668.7,"Zachary Salazar":10128.7,"Dylan White":270.0,"Jonathan Izquierdo":270.0},{"week":"2026-03-30","tot":10413.0,"Zachary Salazar":10028.0,"Dylan White":265.0,"Jonathan Izquierdo":120.0},{"week":"2026-04-06","tot":13507.44,"Zachary Salazar":11177.94,"Dylan White":1889.5,"Jonathan Izquierdo":440.0},{"week":"2026-04-13","tot":17936.08,"Zachary Salazar":16395.08,"Dylan White":1191.0,"Jonathan Izquierdo":350.0},{"week":"2026-04-20","tot":13908.7,"Zachary Salazar":10921.5,"Dylan White":2137.2,"Jonathan Izquierdo":850.0},{"week":"2026-04-27","tot":8352.0,"Zachary Salazar":5980.0,"Dylan White":1637.0,"Jonathan Izquierdo":735.0},{"week":"2026-05-04","tot":19838.6,"Zachary Salazar":15047.2,"Dylan White":4514.0,"Jonathan Izquierdo":277.4},{"week":"2026-05-11","tot":11154.48,"Zachary Salazar":6494.5,"Dylan White":3814.1,"Jonathan Izquierdo":845.8800000000001},{"week":"2026-05-18","tot":16772.2,"Zachary Salazar":12116.0,"Dylan White":4161.0,"Jonathan Izquierdo":495.20000000000005},{"week":"2026-05-25","tot":15616.85,"Zachary Salazar":10983.5,"Dylan White":4157.8,"Jonathan Izquierdo":475.55},{"week":"2026-06-01","tot":6744.0,"Zachary Salazar":4607.0,"Dylan White":1485.0,"Jonathan Izquierdo":652.0},{"week":"2026-06-08","tot":0.0,"Zachary Salazar":0.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2026-06-15","tot":0.0,"Zachary Salazar":0.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"2026-06-22","tot":5085.0,"Zachary Salazar":3543.0,"Dylan White":1507.0,"Jonathan Izquierdo":35.0}],"monthly":[{"month":"2025-07","label":"Jul 25","tot":1932.5,"Zachary Salazar":1932.5,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"month":"2025-08","label":"Aug 25","tot":1820.0,"Zachary Salazar":1820.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"month":"2025-09","label":"Sep 25","tot":6356.5,"Zachary Salazar":6356.5,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"month":"2025-10","label":"Oct 25","tot":9458.0,"Zachary Salazar":8938.0,"Dylan White":0.0,"Jonathan Izquierdo":520.0},{"month":"2025-11","label":"Nov 25","tot":14379.1,"Zachary Salazar":14049.1,"Dylan White":0.0,"Jonathan Izquierdo":330.0},{"month":"2025-12","label":"Dec 25","tot":12828.9,"Zachary Salazar":12588.9,"Dylan White":0.0,"Jonathan Izquierdo":240.0},{"month":"2026-01","label":"Jan 26","tot":17861.5,"Zachary Salazar":16778.5,"Dylan White":0.0,"Jonathan Izquierdo":1083.0},{"month":"2026-02","label":"Feb 26","tot":26481.98,"Zachary Salazar":25006.98,"Dylan White":310.0,"Jonathan Izquierdo":1165.0},{"month":"2026-03","label":"Mar 26","tot":33466.5,"Zachary Salazar":30444.0,"Dylan White":2062.5,"Jonathan Izquierdo":960.0},{"month":"2026-04","label":"Apr 26","tot":59834.72,"Zachary Salazar":50765.020000000004,"Dylan White":6889.7,"Jonathan Izquierdo":2180.0},{"month":"2026-05","label":"May 26","tot":65002.130000000005,"Zachary Salazar":45786.2,"Dylan White":16806.9,"Jonathan Izquierdo":2409.0299999999997},{"month":"2026-06","label":"Jun 26","tot":11829.0,"Zachary Salazar":8150.0,"Dylan White":2992.0,"Jonathan Izquierdo":687.0}],"spark_weeks":[{"week":"Mar 30","Zachary Salazar":10028.0,"Dylan White":265.0,"Jonathan Izquierdo":120.0},{"week":"Apr 06","Zachary Salazar":11177.94,"Dylan White":1889.5,"Jonathan Izquierdo":440.0},{"week":"Apr 13","Zachary Salazar":16395.08,"Dylan White":1191.0,"Jonathan Izquierdo":350.0},{"week":"Apr 20","Zachary Salazar":10921.5,"Dylan White":2137.2,"Jonathan Izquierdo":850.0},{"week":"Apr 27","Zachary Salazar":5980.0,"Dylan White":1637.0,"Jonathan Izquierdo":735.0},{"week":"May 04","Zachary Salazar":15047.2,"Dylan White":4514.0,"Jonathan Izquierdo":277.4},{"week":"May 11","Zachary Salazar":6494.5,"Dylan White":3814.1,"Jonathan Izquierdo":845.8800000000001},{"week":"May 18","Zachary Salazar":12116.0,"Dylan White":4161.0,"Jonathan Izquierdo":495.20000000000005},{"week":"May 25","Zachary Salazar":10983.5,"Dylan White":4157.8,"Jonathan Izquierdo":475.55},{"week":"Jun 01","Zachary Salazar":4607.0,"Dylan White":1485.0,"Jonathan Izquierdo":652.0},{"week":"Jun 08","Zachary Salazar":0.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"Jun 15","Zachary Salazar":0.0,"Dylan White":0.0,"Jonathan Izquierdo":0.0},{"week":"Jun 22","Zachary Salazar":3543.0,"Dylan White":1507.0,"Jonathan Izquierdo":35.0}],"state_data":[{"state":"FL","revenue":85556.4},{"state":"CA","revenue":36195.5},{"state":"WV","revenue":34794.0},{"state":"OK","revenue":16839.38},{"state":"ME","revenue":12581.94},{"state":"IL","revenue":10478.6},{"state":"NJ","revenue":8626.5},{"state":"NV","revenue":7968.4},{"state":"SC","revenue":7290.5},{"state":"MO","revenue":5551.0},{"state":"HI","revenue":5317.0},{"state":"TN","revenue":3675.0},{"state":"MI","revenue":3580.0},{"state":"AR","revenue":3503.0},{"state":"LA","revenue":3284.0},{"state":"WI","revenue":3226.8},{"state":"GA","revenue":2437.0},{"state":"TX","revenue":2360.03},{"state":"NC","revenue":1746.48},{"state":"WA","revenue":1571.0},{"state":"PA","revenue":1420.0},{"state":"KY","revenue":1330.0},{"state":"NY","revenue":765.0},{"state":"ID","revenue":533.3},{"state":"OR","revenue":500.0},{"state":"AZ","revenue":120.0}],"state_data_mo":[{"state":"FL","revenue":3562.0},{"state":"CA","revenue":2185.0},{"state":"WV","revenue":1070.0},{"state":"NV","revenue":980.0},{"state":"OK","revenue":930.0},{"state":"PA","revenue":610.0},{"state":"IL","revenue":545.0},{"state":"GA","revenue":405.0},{"state":"WI","revenue":370.0},{"state":"ME","revenue":365.0},{"state":"MO","revenue":240.0},{"state":"TX","revenue":177.0},{"state":"KY","revenue":150.0},{"state":"MI","revenue":140.0},{"state":"SC","revenue":100.0}],"prev_mo_state_count":22,"cur_mo_state_count":15,"top_clinics":[{"name":"Sunmed Health and Weight Management","state":"CA","rep":"Zachary Salazar","revenue":7380.0,"rx":75},{"name":"Center For Men","state":"OK","rep":"Zachary Salazar","revenue":2253.0,"rx":14},{"name":"George Carroll MD PA","state":"FL","rep":"Zachary Salazar","revenue":2220.0,"rx":6},{"name":"JUDY L JONES FAMILY NURSE PRACTITIONER LLC","state":"TN","rep":"Dylan White","revenue":1635.0,"rx":4},{"name":"Appalachian RevIVal","state":"WV","rep":"Zachary Salazar","revenue":1206.0,"rx":11},{"name":"Refine Vitality","state":"FL","rep":"Zachary Salazar","revenue":1014.0,"rx":8},{"name":"NSPIRE PRIMARY CARE LLC","state":"NV","rep":"Dylan White","revenue":1002.0,"rx":7},{"name":"Optimal Wellness Group LLC","state":"FL","rep":"Zachary Salazar","revenue":960.0,"rx":3},{"name":"Almost Heaven Mobile Hydration LLC","state":"WV","rep":"Zachary Salazar","revenue":930.0,"rx":7},{"name":"LIGHT Family Wellness","state":"SC","rep":"Dylan White","revenue":785.0,"rx":8},{"name":"Vista Wellness","state":"FL","rep":"Zachary Salazar","revenue":690.0,"rx":4},{"name":"A-NU Health","state":"IL","rep":"Dylan White","revenue":680.0,"rx":4},{"name":"Dana M Goldberg, MD","state":"FL","rep":"Jonathan Izquierdo","revenue":630.0,"rx":5},{"name":"PURELY NOURISHED SPA LLC","state":"PA","rep":"Dylan White","revenue":610.0,"rx":2},{"name":"Stillwater Infusion Company","state":"KY","rep":"Dylan White","revenue":520.0,"rx":6},{"name":"Pure Medical Weight Loss","state":"MO","rep":"Dylan White","revenue":507.0,"rx":4},{"name":"timeless aesthetics.rn","state":"WI","rep":"Dylan White","revenue":506.8,"rx":3},{"name":"Elevate Medical Group","state":"NV","rep":"Zachary Salazar","revenue":423.0,"rx":8},{"name":"Bennett Integrative Health","state":"GA","rep":"Dylan White","revenue":405.0,"rx":1},{"name":"Rainier Blossom Aesthetics","state":"WA","rep":"Zachary Salazar","revenue":370.0,"rx":1},{"name":"TrueVertex","state":"TX","rep":"Jonathan Izquierdo","revenue":322.55,"rx":14},{"name":"Life Medical SC","state":"IL","rep":"Zachary Salazar","revenue":300.0,"rx":1},{"name":"Evolution Health and Wellness Center","state":"MO","rep":"Zachary Salazar","revenue":240.0,"rx":2},{"name":"Maine Mobile Health and Virtual Care, PLLC","state":"ME","rep":"Zachary Salazar","revenue":210.0,"rx":2},{"name":"Vital Flow Hydration & Wellness","state":"WV","rep":"Jonathan Izquierdo","revenue":210.0,"rx":1},{"name":"North Star Holistic Medicine","state":"ME","rep":"Zachary Salazar","revenue":185.0,"rx":1},{"name":"Revive Modern Health","state":"MI","rep":"Zachary Salazar","revenue":140.0,"rx":1},{"name":"Bexar Longevity and Aesthetics","state":"TX","rep":"Zachary Salazar","revenue":135.0,"rx":1},{"name":"InReach Wellness LLC","state":"ID","rep":"Dylan White","revenue":80.0,"rx":1},{"name":"House of Health","state":"LA","rep":"Dylan White","revenue":70.0,"rx":1}],"new_accounts_7d":[],"new_accounts_30d":[],"at_risk":[{"name":"ACE Endocrinology Associates PC","rep":"Zachary","prior_rev":1940.0,"prior_orders":5,"days_silent":40,"last_order":"2026-05-15"},{"name":"Redefine ME Wellness and Aesthetics LLC","rep":"Dylan","prior_rev":705.0,"prior_orders":2,"days_silent":44,"last_order":"2026-05-11"},{"name":"Unbound Weight Loss & Medical Clinic, PLLC","rep":"Zachary","prior_rev":635.0,"prior_orders":7,"days_silent":32,"last_order":"2026-05-23"},{"name":"Island Medical Group LLC","rep":"Zachary","prior_rev":610.0,"prior_orders":4,"days_silent":48,"last_order":"2026-05-07"},{"name":"Go Vita Shot","rep":"Zachary","prior_rev":565.0,"prior_orders":2,"days_silent":37,"last_order":"2026-05-18"},{"name":"The Aesthetics Lounge and Spa","rep":"Dylan","prior_rev":555.0,"prior_orders":1,"days_silent":33,"last_order":"2026-05-22"},{"name":"Neria Medical and Wellness","rep":"Dylan","prior_rev":495.0,"prior_orders":3,"days_silent":35,"last_order":"2026-05-20"},{"name":"Vivid Cosmetic Studio","rep":"Jonathan","prior_rev":365.0,"prior_orders":5,"days_silent":31,"last_order":"2026-05-24"},{"name":"North Idaho Regenerative Medicine","rep":"Jonathan","prior_rev":300.0,"prior_orders":1,"days_silent":41,"last_order":"2026-05-14"},{"name":"Omar Health","rep":"Zachary","prior_rev":285.0,"prior_orders":2,"days_silent":47,"last_order":"2026-05-08"},{"name":"Stairway To Health Urgent Care","rep":"Zachary","prior_rev":270.0,"prior_orders":2,"days_silent":36,"last_order":"2026-05-19"},{"name":"Trim Fitt LLC","rep":"Dylan","prior_rev":240.0,"prior_orders":2,"days_silent":55,"last_order":"2026-04-30"},{"name":"CMH Wellness","rep":"Zachary","prior_rev":120.0,"prior_orders":1,"days_silent":46,"last_order":"2026-05-09"},{"name":"Mindful Over Matter","rep":"Dylan","prior_rev":90.0,"prior_orders":1,"days_silent":48,"last_order":"2026-05-07"},{"name":"Earth Remedies of Florida, LLC","rep":"Jonathan","prior_rev":81.0,"prior_orders":1,"days_silent":35,"last_order":"2026-05-20"}],"totals":{"revenue":261250.83,"orders":1845,"accounts":64,"avg_order":141.59936585365853,"rev_mo":11829.0,"orders_mo":84,"prev_orders_mo":519}};
 
 // ── HELPERS ────────────────────────────────────────────────────────
 const fmt  = v => '$' + (v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(1)+'K':v.toFixed(0));
@@ -457,24 +313,23 @@ const chgBadge = (cur,prev) => {
 
 // Rep config
 const REPS = [
-  {name:'Zachary Salazar',    short:'Zach',   rank:'🥇', theme:0, col:'#c9a227'},
-  {name:'Dylan White',        short:'Dylan',  rank:'🥈', theme:1, col:'#4a9eca'},
-  {name:'Jonathan Izquierdo', short:'Jon',    rank:'🥉', theme:2, col:'#3dba6d'},
-  {name:'Darryl Fleming',     short:'Darryl', rank:'4',  theme:3, col:'#c47a3e'},
-  {name:'Valentin Zakar',     short:'Val',    rank:'5',  theme:4, col:'#8b5cf6'},
+  {name:'Erin Ryan Snyder',   short:'Erin',  rank:'🥇', theme:0, col:'#c9a227'},
+  {name:'Zachary Salazar',    short:'Zach',  rank:'🥈', theme:1, col:'#4a9eca'},
+  {name:'Dylan White',        short:'Dylan', rank:'🥉', theme:2, col:'#3dba6d'},
+  {name:'Jonathan Izquierdo', short:'Jon',   rank:'4️⃣',  theme:3, col:'#c47a3e'},
 ];
 
 // ── SLIDE DEFINITIONS ──────────────────────────────────────────────
 const SLIDE_NAMES = [
   'Overview','Momentum Board','Leaderboard',
-  'Zachary Salazar','Dylan White','Jonathan Izquierdo','Darryl Fleming','Valentin Zakar',
-  'Clinics at Risk','MoM Trajectory','Territory Map','Top Accounts','New Accounts'
+  'Erin Ryan Snyder','Zachary Salazar','Dylan White','Jonathan Izquierdo',
+  'Weekly Trend','MoM Trajectory','Territory Map','Top Accounts','New Accounts'
 ];
 
 let currentSlide = 0;
 let showTimer = null;
 let paused = false;
-let timerStart, timerDuration = 22000, timerRemaining = 22000;
+let timerStart, timerDuration = 15000, timerRemaining = 15000;
 let totalRevenue  = DATA.totals.revenue;
 let totalOrders   = DATA.totals.orders;
 let totalAccounts = DATA.totals.accounts;
@@ -489,35 +344,6 @@ let repDod  = DATA.dod;
 let topClinics = DATA.top_clinics;
 let newAccounts7d  = DATA.new_accounts_7d;
 let newAccounts30d = DATA.new_accounts_30d;
-
-// ── COMPOSITE REP RANKING ──────────────────────────────────────────
-(function(){
-  const curMo = DATA.generated.slice(0,7);
-  reps.forEach(r => {
-    const mRow = momData.reps.find(x=>x.rep===r.name)||{cur:0,prev:1};
-    r._mom_rev  = mRow.cur  || 0;
-    r._mom_pct  = mRow.prev > 0 ? (mRow.cur - mRow.prev) / mRow.prev * 100 : 0;
-    r._new_mo   = newAccounts30d.filter(a=>a.rep===r.name && a.date && a.date.slice(0,7)===curMo).length;
-    r._scores   = 0;
-  });
-  const rankOn = fn => {
-    [...reps].sort((a,b)=>fn(b)-fn(a)).forEach((r,i)=>{ r._scores += (4-i); });
-  };
-  rankOn(r => r._mom_rev);
-  rankOn(r => r.orders_mo   || 0);
-  rankOn(r => r.clinics      || 0);
-  rankOn(r => r.avg_order_mo || 0);
-  rankOn(r => r._new_mo);
-  rankOn(r => r._mom_pct);
-  reps.forEach(r => {
-    if(r._new_mo  >= 8) r._scores += 2;
-    if(r._mom_pct >  0) r._scores += 1;
-  });
-  reps.sort((a,b) => b._scores - a._scores);
-  const medals = ['🥇','🥈','🥉','4️⃣'];
-  reps.forEach((r,i) => { r.rank = medals[i] || String(i+1); });
-})();
-
 
 // ── TICKER ─────────────────────────────────────────────────────────
 function buildTicker(){
@@ -540,7 +366,7 @@ function buildTicker(){
     `<span class="ticker-item"><strong>TEAM YTD</strong> &nbsp;${fmtFull(totalRevenue)} &nbsp;·&nbsp; ${totalOrders.toLocaleString()} orders &nbsp;·&nbsp; ${totalAccounts} clinics</span>`,
   ];
   const clinicItems = topClinics.slice(0,8).map(c=>
-    `<span class="ticker-item"><strong>${c.name}</strong> &nbsp;<span style="color:#666">${c.state}</span>&nbsp; ${fmt(c.revenue)} &nbsp;·&nbsp; ${c.rx} Orders &nbsp;·&nbsp; <span style="color:#666">${c.rep.split(' ')[0]}</span></span>`
+    `<span class="ticker-item"><strong>${c.name}</strong> &nbsp;<span style="color:#666">${c.state}</span>&nbsp; ${fmt(c.revenue)} &nbsp;·&nbsp; ${c.rx} Rx &nbsp;·&nbsp; <span style="color:#666">${c.rep.split(' ')[0]}</span></span>`
   );
   const newItems = newAccounts7d.map(a=>
     `<span class="ticker-item" style="color:#3dba6d"><strong>★ NEW</strong> &nbsp;${a.clinic} &nbsp;<span style="color:#666">${a.state} · ${a.rep.split(' ')[0]}</span></span>`
@@ -580,43 +406,13 @@ function render(){
 function slideOverview(){
   const dodPct = pct(daily[daily.length-1].tot, daily[daily.length-2].tot);
   const wowPct = pct(wowData.cur, wowData.prev);
-  // Use the full prior month total (second-to-last entry in monthly array) for a true MoM comparison
-  const prevFullMo = (DATA.monthly && DATA.monthly.length >= 2) ? DATA.monthly[DATA.monthly.length-2].tot : momData.prev;
-  const momPct = pct(DATA.totals.rev_mo, prevFullMo);
+  const momPct = pct(momData.cur, momData.prev);
   const maxRev = Math.max(...reps.map(r=>r.revenue||0));
-
-  // Build top-5 accounts from last 30 days
-  const top5 = (DATA.top_clinics||[]).slice(0,5);
-  const medals30 = ['🥇','🥈','🥉','#4','#5'];
-  const genDate = new Date(DATA.generated+'T12:00:00');
-  const d30 = new Date(genDate); d30.setDate(d30.getDate()-30);
-  const fmtShort = d => d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-  const rangeLabel = `LAST 30 DAYS · ${fmtShort(d30)} – ${fmtShort(genDate)}`;
-  const repShortMap = {'Zachary Salazar':'Zach','Dylan White':'Dylan','Jonathan Izquierdo':'Jon','Darryl Fleming':'Darryl'};
-  const repColMap = Object.fromEntries(reps.map(r=>[r.name, r.col]));
-
-  const top5HTML = top5.map((c,i)=>{
-    const repShort = repShortMap[c.rep]||c.rep;
-    const repCol   = repColMap[c.rep]||'var(--cream)';
-    const revFmt   = c.revenue>=1000?'$'+(c.revenue/1000).toFixed(1)+'K':'$'+c.revenue.toFixed(0);
-    return `<div class="ta-row">
-      <div class="ta-medal">${medals30[i]}</div>
-      <div class="ta-info">
-        <div class="ta-name">${c.name}</div>
-        <div class="ta-sub">${c.state} &nbsp;·&nbsp; <span style="color:${repCol};font-weight:700">${repShort}</span></div>
-      </div>
-      <div class="ta-right">
-        <div class="ta-rx">${(c.rx||0).toLocaleString()} Orders</div>
-        <div class="ta-rev">${revFmt}</div>
-      </div>
-    </div>`;
-  }).join('');
-
   return `<div class="slide" id="slide-0">
     <div class="slide-hdr">
       <div class="slide-hdr-left">
         <div class="slide-title">JMS Sales Overview</div>
-        <div class="slide-badge">Monthly View</div>
+        <div class="slide-badge">YTD • ${DATA.date_range.start} → ${DATA.generated}</div>
       </div>
       <div class="slide-hdr-right">
         <span>Today <strong>${fmt(daily[daily.length-1].tot)}</strong></span>
@@ -627,45 +423,34 @@ function slideOverview(){
     <div class="slide-body">
       <div class="ov-wrap">
         <div class="ov-kpi-row">
-          <div class="ov-kpi"><div class="ov-kpi-lbl">Team MTD Revenue</div><div style="display:flex;align-items:baseline;justify-content:center;gap:10px;margin:4px 0 2px;"><span class="ov-kpi-val gold" style="font-size:1.25rem" data-cu="${DATA.totals.rev_mo}" data-cu-prefix="$" data-cu-k="1" data-cu-flash>${fmtFull(DATA.totals.rev_mo)}</span><span style="font-size:.85rem;color:var(--cream2);align-self:center">vs</span><span style="font-size:1.1rem;font-weight:700;color:var(--cream2)">${fmtFull(prevFullMo)}</span></div><div style="font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cream2);margin-bottom:4px">This Month &nbsp;·&nbsp; Prior Month</div><div class="ov-kpi-chg" style="color:${parseFloat(momPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(momPct)>=0?'▲':'▼'} ${Math.abs(momPct)}% vs last mo.</div></div>
-          <div class="ov-kpi"><div class="ov-kpi-lbl">Day over Day</div><div style="display:flex;align-items:baseline;justify-content:center;gap:10px;margin:4px 0 2px;"><span style="font-size:1.25rem;font-weight:900;color:var(--cream)">${fmt(daily[daily.length-1].tot)}</span><span style="font-size:.85rem;color:var(--cream2);align-self:center">vs</span><span style="font-size:1.1rem;font-weight:700;color:var(--cream2)">${fmt(daily[daily.length-2].tot)}</span></div><div style="font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cream2);margin-bottom:4px">Today &nbsp;·&nbsp; Yesterday</div><div class="ov-kpi-chg" style="color:${parseFloat(dodPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(dodPct)>=0?'▲':'▼'} ${Math.abs(dodPct)}% change</div></div>
-          <div class="ov-kpi"><div class="ov-kpi-lbl">Week over Week</div><div style="display:flex;align-items:baseline;justify-content:center;gap:10px;margin:4px 0 2px;"><span style="font-size:1.25rem;font-weight:900;color:var(--cream)">${fmt(wowData.cur)}</span><span style="font-size:.85rem;color:var(--cream2);align-self:center">vs</span><span style="font-size:1.1rem;font-weight:700;color:var(--cream2)">${fmt(wowData.prev)}</span></div><div style="font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cream2);margin-bottom:4px">This Week &nbsp;·&nbsp; Last Week</div><div class="ov-kpi-chg" style="color:${parseFloat(wowPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(wowPct)>=0?'▲':'▼'} ${Math.abs(wowPct)}% change</div></div>
-          <div class="ov-kpi"><div class="ov-kpi-lbl">Month over Month</div><div style="display:flex;align-items:baseline;justify-content:center;gap:10px;margin:4px 0 2px;"><span style="font-size:1.25rem;font-weight:900;color:var(--cream)">${fmt(DATA.totals.rev_mo)}</span><span style="font-size:.85rem;color:var(--cream2);align-self:center">vs</span><span style="font-size:1.1rem;font-weight:700;color:var(--cream2)">${fmt(prevFullMo)}</span></div><div style="font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cream2);margin-bottom:4px">This Month &nbsp;·&nbsp; Prior Month</div><div class="ov-kpi-chg" style="color:${parseFloat(momPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(momPct)>=0?'▲':'▼'} ${Math.abs(momPct)}% change</div></div>
-          ${(()=>{ const ordMo=reps.reduce((s,r)=>s+(r.orders_mo||0),0); const prevOrdMo=DATA.totals.prev_orders_mo||0; const ordPct=pct(ordMo,prevOrdMo||1); return `<div class="ov-kpi"><div class="ov-kpi-lbl">MTD Orders</div><div style="display:flex;align-items:baseline;justify-content:center;gap:10px;margin:4px 0 2px;"><span style="font-size:1.25rem;font-weight:900;color:var(--cream)" data-cu="${ordMo}" data-cu-plain="1">${ordMo.toLocaleString()}</span><span style="font-size:.85rem;color:var(--cream2);align-self:center">vs</span><span style="font-size:1.1rem;font-weight:700;color:var(--cream2)">${prevOrdMo.toLocaleString()}</span></div><div style="font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cream2);margin-bottom:4px">This Month &nbsp;·&nbsp; Prior Month</div><div class="ov-kpi-chg" style="color:${parseFloat(ordPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(ordPct)>=0?'▲':'▼'} ${Math.abs(ordPct)}% change</div></div>`; })()}
+          <div class="ov-kpi"><div class="ov-kpi-lbl">Team YTD Revenue</div><div class="ov-kpi-val gold" data-cu="${totalRevenue}" data-cu-prefix="$" data-cu-k="1">${fmtFull(totalRevenue)}</div></div>
+          <div class="ov-kpi"><div class="ov-kpi-lbl">Day over Day</div><div class="ov-kpi-val" style="color:${parseFloat(dodPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(dodPct)>=0?'▲':'▼'} ${Math.abs(dodPct)}%</div><div class="ov-kpi-chg" style="color:var(--cream2)">${fmt(daily[daily.length-1].tot)} today</div></div>
+          <div class="ov-kpi"><div class="ov-kpi-lbl">Week over Week</div><div class="ov-kpi-val" style="color:${parseFloat(wowPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(wowPct)>=0?'▲':'▼'} ${Math.abs(wowPct)}%</div><div class="ov-kpi-chg" style="color:var(--cream2)">${fmt(wowData.cur)} this week</div></div>
+          <div class="ov-kpi"><div class="ov-kpi-lbl">Month over Month</div><div class="ov-kpi-val" style="color:${parseFloat(momPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(momPct)>=0?'▲':'▼'} ${Math.abs(momPct)}%</div><div class="ov-kpi-chg" style="color:var(--cream2)">${fmt(momData.cur)} this month</div></div>
+          <div class="ov-kpi"><div class="ov-kpi-lbl">Total Orders</div><div class="ov-kpi-val" data-cu="${totalOrders}" data-cu-plain="1">${totalOrders.toLocaleString()}</div></div>
           <div class="ov-kpi"><div class="ov-kpi-lbl">Active Clinics</div><div class="ov-kpi-val" data-cu="${totalAccounts}" data-cu-plain="1">${totalAccounts}</div></div>
         </div>
-        <div class="top-accts-panel">
-          <div class="top-accts-hdr">
-            <div class="top-accts-title">🏆 Top Performing Accounts</div>
-            <div class="top-accts-range">${rangeLabel}</div>
-          </div>
-          <div class="top-accts-list">${top5HTML}</div>
-        </div>
         <div class="ov-reps-grid">
-          ${(()=>{
-            const totalRevMo = reps.reduce((s,r)=>s+(r.rev_mo||0),0)||1;
-            const maxRevMo   = Math.max(...reps.map(r=>r.rev_mo||0))||1;
-            return reps.map((r,i)=>{
-              const shareMo = ((r.rev_mo||0)/totalRevMo*100).toFixed(1);
-              const wRow    = wowData.reps.find(x=>x.rep===r.name)||{};
-              const mRow    = momData.reps.find(x=>x.rep===r.name)||{};
-              const wPct    = pct(wRow.cur||0, wRow.prev||1);
-              const mPct    = pct(mRow.cur||0, mRow.prev||1);
-              const barW    = ((r.rev_mo||0)/maxRevMo*100).toFixed(1);
-              return `<div class="ov-rep">
-                <div class="ov-rep-name" style="color:${r.col}">${r.rank} ${r.short}</div>
-                <div class="ov-rep-rev" style="color:${r.col}" data-cu="${r.rev_mo||0}" data-cu-prefix="$" data-cu-k="1" data-cu-flash>${fmtFull(r.rev_mo||0)}</div>
-                <div class="ov-bar-bg"><div class="ov-bar-fill" style="width:${barW}%;background:${r.col}" data-bar="${barW}"></div></div>
-                <div class="ov-share">${shareMo}% of team this month</div>
-                <div class="ov-rep-stats">
-                  <span><div style="font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2)">Orders</div><strong>${(r.orders_mo||0).toLocaleString()}</strong></span>
-                  <span><div style="font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2)">Clinics</div><strong>${r.clinics||0}</strong></span>
-                  <span><div style="font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2)">WoW</div><strong style="color:${parseFloat(wPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(wPct)>=0?'▲':'▼'}${Math.abs(wPct)}%</strong></span>
-                  <span><div style="font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2)">MoM</div><strong style="color:${parseFloat(mPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(mPct)>=0?'▲':'▼'}${Math.abs(mPct)}%</strong></span>
-                </div>
-              </div>`;
-            }).join('');
-          })()}
+          ${reps.map((r,i)=>{
+            const share = ((r.revenue||0)/totalRevenue*100).toFixed(1);
+            const wRow  = wowData.reps.find(x=>x.rep===r.name)||{};
+            const mRow  = momData.reps.find(x=>x.rep===r.name)||{};
+            const wPct  = pct(wRow.cur||0, wRow.prev||1);
+            const mPct  = pct(mRow.cur||0, mRow.prev||1);
+            const barW  = ((r.revenue||0)/maxRev*100).toFixed(1);
+            return `<div class="ov-rep">
+              <div class="ov-rep-name" style="color:${r.col}">${r.rank} ${r.short}</div>
+              <div class="ov-rep-rev" style="color:${r.col}" data-cu="${r.revenue||0}" data-cu-prefix="$" data-cu-k="1">${fmtFull(r.revenue||0)}</div>
+              <div class="ov-bar-bg"><div class="ov-bar-fill" style="width:${barW}%;background:${r.col}" data-bar="${barW}"></div></div>
+              <div class="ov-share">${share}% of team revenue</div>
+              <div class="ov-rep-stats">
+                <span><div style="font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2)">Orders</div><strong>${(r.orders||0).toLocaleString()}</strong></span>
+                <span><div style="font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2)">Clinics</div><strong>${r.clinics||0}</strong></span>
+                <span><div style="font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2)">WoW</div><strong style="color:${parseFloat(wPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(wPct)>=0?'▲':'▼'}${Math.abs(wPct)}%</strong></span>
+                <span><div style="font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2)">MoM</div><strong style="color:${parseFloat(mPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(mPct)>=0?'▲':'▼'}${Math.abs(mPct)}%</strong></span>
+              </div>
+            </div>`;
+          }).join('')}
         </div>
       </div>
     </div>
@@ -676,140 +461,37 @@ function slideOverview(){
 function slideMomentum(){
   const todayTot = daily[daily.length-1].tot;
   const ydayTot  = daily[daily.length-2].tot;
-  const dodPct   = pct(todayTot, ydayTot);
-  const wowPct   = pct(wowData.cur, wowData.prev);
-  // Full prior month totals
-  const prevFullMo    = (DATA.monthly && DATA.monthly.length >= 2) ? DATA.monthly[DATA.monthly.length-2].tot : momData.prev;
-  const prevFullMoLbl = (DATA.monthly && DATA.monthly.length >= 2) ? DATA.monthly[DATA.monthly.length-2].label : 'Prior';
-  const curMoLbl      = (DATA.monthly && DATA.monthly.length >= 1)
-    ? new Date(DATA.monthly[DATA.monthly.length-1].month+'-02').toLocaleString('en-US',{month:'short'}).toUpperCase()+' MTD'
-    : 'MTD';
-  const momPct = pct(momData.cur, prevFullMo);
+  const d2Tot    = daily[daily.length-3].tot;
+  const dodPct = pct(todayTot,ydayTot);
+  const wowPct = pct(wowData.cur,wowData.prev);
+  const momPct = pct(momData.cur,momData.prev);
 
-  // ── Team pulse strip ──
-  const tcCell = (lbl,val,chg,sub)=>`<div class="mb-team-cell">
-    <div class="mb-tc-lbl">${lbl}</div>
-    <div class="mb-tc-val">${val}</div>
-    <div class="mb-tc-chg ${parseFloat(chg)>=0?'up':'dn'}">${parseFloat(chg)>=0?'▲':'▼'} ${Math.abs(chg)}%</div>
-    <div class="mb-tc-sub">${sub}</div>
+  const cellH = (lbl,val,chg,sub='')=>`<div class="mb-cell">
+    <div class="mb-cell-lbl">${lbl}</div>
+    <div class="mb-cell-val">${val}</div>
+    <div class="mb-cell-chg ${parseFloat(chg)>=0?'up':'dn'}">${parseFloat(chg)>=0?'▲':'▼'} ${Math.abs(chg)}%</div>
+    ${sub?`<div style="font-size:.6rem;color:var(--cream2)">${sub}</div>`:''}
   </div>`;
 
-  // Team 6-week sparkline (gold)
-  const sparkWeeksEarly = DATA.spark_weeks || [];
-  // spark_weeks has no 'tot' — sum all rep values per week
-  const SPARK_REP_NAMES = REPS.map(r=>r.name);
-  const teamSpark6 = sparkWeeksEarly.slice(-6).map(w=>
-    SPARK_REP_NAMES.reduce((s,n)=>s+(w[n]||0), 0)
-  );
-  const teamSparkSVG = (()=>{
-    const vals = teamSpark6, w=220, h=40, pad=4;
-    const max = Math.max(...vals,1);
-    const pts = vals.map((v,i)=>{
-      const x=pad+(i/(vals.length-1))*(w-pad*2), y=h-pad-(v/max)*(h-pad*2);
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    });
-    const area=`${pad},${h-pad} `+pts.join(' ')+` ${w-pad},${h-pad}`;
-    const last=pts[pts.length-1];
-    const sc = document.body.classList.contains('light') ? '#7a5500' : '#c9a227';
-    return `<svg class="mb-team-spark-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
-      <defs><linearGradient id="tsg" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="${sc}" stop-opacity=".4"/>
-        <stop offset="100%" stop-color="${sc}" stop-opacity="0"/>
-      </linearGradient></defs>
-      <polygon points="${area}" fill="url(#tsg)"/>
-      <polyline points="${pts.join(' ')}" fill="none" stroke="${sc}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-      <circle cx="${last.split(',')[0]}" cy="${last.split(',')[1]}" r="3.5" fill="${sc}"/>
-    </svg>`;
-  })();
-
-  const teamStrip = `<div class="mb-team-strip">
-    <div class="mb-team-lbl">TEAM TOTAL</div>
-    ${tcCell('TODAY', fmt(todayTot), dodPct, `vs ${fmt(ydayTot)} yesterday`)}
-    ${tcCell('THIS WEEK', fmt(wowData.cur), wowPct, `vs ${fmt(wowData.prev)} last wk`)}
-    ${tcCell(curMoLbl+' vs '+prevFullMoLbl, fmt(momData.cur), momPct, `vs ${fmt(prevFullMo)} full ${prevFullMoLbl}`)}
-    <div class="mb-team-spark">
-      <div class="mb-team-spark-lbl">6-Week Team Trend</div>
-      ${teamSparkSVG}
-    </div>
+  const teamRow = `<div class="mb-row">
+    <div class="mb-name team">TEAM TOTAL</div>
+    ${cellH('TODAY',fmt(todayTot),dodPct,`vs ${fmt(ydayTot)} yday`)}
+    ${cellH('THIS WEEK',fmt(wowData.cur),wowPct,`vs ${fmt(wowData.prev)} last wk`)}
+    ${cellH('THIS MONTH',fmt(momData.cur),momPct,`vs ${fmt(momData.prev)} prior`)}
   </div>`;
 
-  // ── Sparkline helper (6 weeks) ──
-  const sparkSVG = (vals, color)=>{
-    const w=220, h=44, pad=4;
-    const max = Math.max(...vals,1);
-    const pts = vals.map((v,i)=>{
-      const x = pad + (i/(vals.length-1))*(w-pad*2);
-      const y = h - pad - (v/max)*(h-pad*2);
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    }).join(' ');
-    // Area fill
-    const first = vals.map((v,i)=>{
-      const x = pad+(i/(vals.length-1))*(w-pad*2);
-      const y = h-pad-(v/max)*(h-pad*2);
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    });
-    const area = `${pad},${h-pad} `+first.join(' ')+` ${w-pad},${h-pad}`;
-    return `<svg class="mb-spark-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
-      <defs><linearGradient id="sg_${color.replace('#','')}" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="${color}" stop-opacity=".35"/>
-        <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
-      </linearGradient></defs>
-      <polygon points="${area}" fill="url(#sg_${color.replace('#','')})" />
-      <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-      <circle cx="${first[first.length-1].split(',')[0]}" cy="${first[first.length-1].split(',')[1]}" r="3.5" fill="${color}"/>
-    </svg>`;
-  };
-
-  // ── Rep rows ──
-  const last6 = sparkWeeksEarly.slice(-6);
-
-  const rows = reps.map(r=>{
+  const repRows = reps.map(r=>{
     const dRow = repDod.find(d=>d.rep===r.name)||{today:0,yday:0};
     const wRow = wowData.reps.find(x=>x.rep===r.name)||{cur:0,prev:1};
     const mRow = momData.reps.find(x=>x.rep===r.name)||{cur:0,prev:1};
-    const repPrevFullMo = (DATA.monthly && DATA.monthly.length >= 2)
-      ? (DATA.monthly[DATA.monthly.length-2][r.name] || 0) : (mRow.prev || 0);
-
-    const dp = pct(dRow.today, dRow.yday)||'0.0';
-    const wp = pct(wRow.cur,   wRow.prev)||'0.0';
-    const mp = pct(mRow.cur,   repPrevFullMo)||'0.0';
-
-    const onFire = parseFloat(dp) > 0 && parseFloat(wp) > 0;
-
-    const progRaw = repPrevFullMo > 0 ? (mRow.cur / repPrevFullMo) * 100 : 0;
-    const progPct = Math.min(progRaw, 100);
-    const progLabel = repPrevFullMo > 0 ? `${progRaw.toFixed(0)}% of ${prevFullMoLbl} (${fmt(repPrevFullMo)})` : '';
-
-    const sparkVals = last6.map(w=>w[r.name]||0);
-
-    const metric = (lbl,val,chg,sub)=>`<div class="mb-metric">
-      <div class="mb-metric-lbl">${lbl}</div>
-      <div class="mb-metric-val">${val}</div>
-      <div class="mb-metric-chg ${parseFloat(chg)>=0?'up':'dn'}">${parseFloat(chg)>=0?'▲':'▼'} ${Math.abs(chg)}%</div>
-      <div class="mb-metric-sub">${sub}</div>
-    </div>`;
-
-    return `<div class="mb-row${onFire?' on-fire':''}">
-      <div class="mb-row-name">
-        <div class="mb-row-rep" style="color:${r.col}">${r.rank} ${r.name.split(' ')[0]} ${r.name.split(' ').slice(-1)[0]}</div>
-        ${onFire?'<div class="mb-fire-badge">🔥 ON FIRE</div>':''}
-      </div>
-      ${metric('Today', fmt(dRow.today), dp, `vs ${fmt(dRow.yday)} yesterday`)}
-      ${metric('This Week', fmt(wRow.cur), wp, `vs ${fmt(wRow.prev)} last wk`)}
-      ${metric(curMoLbl+' vs '+prevFullMoLbl, fmt(mRow.cur), mp, `vs ${fmt(repPrevFullMo)} full ${prevFullMoLbl}`)}
-      <div class="mb-spark-cell">
-        <div class="mb-spark-lbl">6-Week Trend</div>
-        ${sparkSVG(sparkVals, r.col)}
-        <div class="mb-prog-wrap">
-          <div class="mb-prog-lbl">
-            <span>MTD Pace</span>
-            <span style="color:${r.col};font-weight:700">${progLabel}</span>
-          </div>
-          <div class="mb-prog-track">
-            <div class="mb-prog-fill" style="width:${progPct.toFixed(1)}%;background:${r.col}"></div>
-          </div>
-        </div>
-      </div>
+    const dp = pct(dRow.today,dRow.yday)||'0.0';
+    const wp = pct(wRow.cur,wRow.prev)||'0.0';
+    const mp = pct(mRow.cur,mRow.prev)||'0.0';
+    return `<div class="mb-row">
+      <div class="mb-name" style="color:${r.col}">${r.rank} ${r.short}</div>
+      ${cellH('TODAY',fmt(dRow.today),dp,`vs ${fmt(dRow.yday)}`)}
+      ${cellH('THIS WEEK',fmt(wRow.cur),wp,`vs ${fmt(wRow.prev)}`)}
+      ${cellH('THIS MONTH',fmt(mRow.cur),mp,`vs ${fmt(mRow.prev)}`)}
     </div>`;
   }).join('');
 
@@ -819,12 +501,20 @@ function slideMomentum(){
         <div class="slide-title">Momentum Board</div>
         <div class="slide-badge">DoD · WoW · MoM</div>
       </div>
-      <div class="slide-hdr-right"></div>
+      <div class="slide-hdr-right">
+        <span>Last update: <strong>${DATA.generated}</strong></span>
+      </div>
     </div>
     <div class="slide-body">
       <div class="mb-wrap">
-        ${teamStrip}
-        <div class="mb-rows">${rows}</div>
+        <div class="mb-section">
+          <div class="mb-section-title">Team Pulse</div>
+          ${teamRow}
+        </div>
+        <div class="mb-section">
+          <div class="mb-section-title">Rep Breakdown</div>
+          ${repRows}
+        </div>
       </div>
     </div>
   </div>`;
@@ -832,48 +522,48 @@ function slideMomentum(){
 
 // ── SLIDE 3: LEADERBOARD ───────────────────────────────────────────
 function slideLeaderboard(){
-  const moName = new Date(DATA.generated+'T12:00:00').toLocaleString('en-US',{month:'long'});
-  const sorted = [...reps]; // already sorted by composite score
-  const maxRevMo = Math.max(...reps.map(r=>r.rev_mo||0))||1;
+  const maxRev = Math.max(...reps.map(r=>r.revenue||0));
+  const sorted = [...reps].sort((a,b)=>(b.revenue||0)-(a.revenue||0));
   const rows = sorted.map((r,i)=>{
-    const mRow = momData.reps.find(x=>x.rep===r.name)||{cur:0,prev:1};
-    const mPct = pct(mRow.cur||0, mRow.prev||1);
-    const barW = ((r.rev_mo||0)/maxRevMo*100).toFixed(1);
+    const wRow = wowData.reps.find(x=>x.rep===r.name)||{cur:0,prev:1};
+    const wPct = pct(wRow.cur||0,wRow.prev||1);
+    const avgOrd = fmtFull((r.avg_order||0));
+    const barW = ((r.revenue||0)/maxRev*100).toFixed(1);
     return `<div class="lb-row">
       <div class="lb-cell lb-rank">${r.rank}</div>
       <div class="lb-cell lb-name">
         <div class="lb-name-main" style="color:${r.col}">${r.name}</div>
-        <div class="lb-name-sub">${r.clinics||0} active clinics &nbsp;·&nbsp; ${(r.orders_mo||0)} orders this mo.</div>
+        <div class="lb-name-sub">${r.clinics||0} clinics &nbsp;·&nbsp; ${(r.orders||0).toLocaleString()} orders</div>
       </div>
-      <div class="lb-cell lb-wow" style="color:${parseFloat(mPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(mPct)>=0?'▲':'▼'}${Math.abs(mPct)}%</div>
-      <div class="lb-cell lb-avg" style="color:var(--cream2)">$${Math.round(r.avg_order_mo||0).toLocaleString()}</div>
+      <div class="lb-cell lb-wow" style="color:${parseFloat(wPct)>=0?'var(--up)':'var(--dn)'}">${parseFloat(wPct)>=0?'▲':'▼'}${Math.abs(wPct)}%</div>
+      <div class="lb-cell lb-avg" style="color:var(--cream2)">$${Math.round(r.avg_order||0).toLocaleString()}</div>
       <div class="lb-bar-cell">
         <div class="lb-bar-bg"><div class="lb-bar-fill" style="width:${barW}%;background:${r.col}" data-bar="${barW}"></div></div>
       </div>
-      <div class="lb-cell lb-rev" style="color:${r.col}">${fmtFull(r.rev_mo||0)}</div>
-      <div class="lb-cell lb-ord" style="color:var(--cream2)">${(r.orders_mo||0)}</div>
+      <div class="lb-cell lb-rev" style="color:${r.col}">${fmtFull(r.revenue||0)}</div>
+      <div class="lb-cell lb-ord" style="color:var(--cream2)">${(r.orders||0).toLocaleString()}</div>
     </div>`;
   }).join('');
 
   const hdr = `<div class="lb-row header">
     <div class="lb-cell">#</div>
     <div class="lb-cell">REP</div>
-    <div class="lb-cell" style="text-align:right">MoM</div>
+    <div class="lb-cell" style="text-align:right">WoW</div>
     <div class="lb-cell" style="text-align:right">AVG ORDER</div>
     <div class="lb-cell">REVENUE SHARE</div>
-    <div class="lb-cell" style="text-align:right">${moName.toUpperCase()} REVENUE</div>
+    <div class="lb-cell" style="text-align:right">YTD REVENUE</div>
     <div class="lb-cell" style="text-align:right">ORDERS</div>
   </div>`;
 
   return `<div class="slide" id="slide-2">
     <div class="slide-hdr">
       <div class="slide-hdr-left">
-        <div class="slide-title">${moName} Leaderboard</div>
-        <div class="slide-badge">Composite Score</div>
+        <div class="slide-title">Leaderboard</div>
+        <div class="slide-badge">YTD Rankings</div>
       </div>
       <div class="slide-hdr-right">
-        <span>Team This Month: <strong>${fmtFull(momData.cur)}</strong></span>
-        <span>Avg Order: <strong>$${Math.round(momData.cur/Math.max(reps.reduce((s,r)=>s+(r.orders_mo||0),0),1)).toLocaleString()}</strong></span>
+        <span>Team YTD: <strong>${fmtFull(totalRevenue)}</strong></span>
+        <span>Avg Order: <strong>$${Math.round(DATA.totals.avg_order).toLocaleString()}</strong></span>
       </div>
     </div>
     <div class="slide-body">
@@ -888,198 +578,104 @@ function slideLeaderboard(){
 // ── SLIDE 4-7: REP SPOTLIGHT ───────────────────────────────────────
 function slideRep(r, idx){
   const slideIdx = 3 + idx;
-  const dRow  = repDod.find(d=>d.rep===r.name)||{today:0,yday:0};
-  const wRow  = wowData.reps.find(x=>x.rep===r.name)||{cur:0,prev:1};
-  const mRow  = momData.reps.find(x=>x.rep===r.name)||{cur:0,prev:1};
-  // Use full prior month from monthly array (same fix as Slide 1 team total)
-  const repPrevFullMo = (DATA.monthly && DATA.monthly.length >= 2)
-    ? (DATA.monthly[DATA.monthly.length-2][r.name] || 0)
-    : (mRow.prev || 0);
-  const dPct  = pct(dRow.today||0, dRow.yday||1);
-  const wPct  = pct(wRow.cur||0,   wRow.prev||1);
-  const mPct  = pct(mRow.cur||0,   repPrevFullMo||1);
-  const moLabel = new Date(DATA.generated+"T12:00:00").toLocaleString("en-US",{month:"short"}).toUpperCase();
+  const dRow = repDod.find(d=>d.rep===r.name)||{today:0,yday:0};
+  const wRow = wowData.reps.find(x=>x.rep===r.name)||{cur:0,prev:1};
+  const mRow = momData.reps.find(x=>x.rep===r.name)||{cur:0,prev:1};
+  const dPct = pct(dRow.today||0, dRow.yday||1);
+  const wPct = pct(wRow.cur||0,   wRow.prev||1);
+  const mPct = pct(mRow.cur||0,   mRow.prev||1);
 
-  // Spark data — all 13 weeks from spark_weeks
-  const sparkWeeks = DATA.spark_weeks; // exactly 13 entries
-  const sparkVals  = sparkWeeks.map(w=>w[r.name]||0);
-  const sparkMax   = Math.max(...sparkVals, 1);
+  // Spark data (13 weeks)
+  const sparkVals = DATA.spark_weeks.map(w=>w[r.name]||0);
+  const sparkMax  = Math.max(...sparkVals)||1;
 
-  // SVG dimensions — no left gutter (Y labels are HTML, not SVG text)
-  const svgW = 400, svgH = 100;
-  const padT = 4, padB = 4;
-  const chartH = svgH - padT - padB;
-  const nBars  = sparkWeeks.length; // 13
-  const bW     = svgW / nBars;
-
-  // Y-axis nice ticks
-  const niceMax = (v => {
-    if(v<=0) return 1000;
-    const mag = Math.pow(10, Math.floor(Math.log10(v)));
-    return Math.ceil(v/mag)*mag;
-  })(sparkMax);
-  const yTicks = [0, niceMax/3, (niceMax*2)/3, niceMax];
-  const fmtY = v => {
-    if(v===0) return '$0';
-    if(v>=1000) return '$'+(v/1000).toFixed(0)+'k';
-    return '$'+Math.round(v);
-  };
-
-  // Gridlines only (no text — labels rendered as HTML)
-  const gridLines = yTicks.map(tick=>{
-    const y = padT + chartH - (tick/niceMax)*chartH;
-    return `<line x1="0" y1="${y.toFixed(1)}" x2="${svgW}" y2="${y.toFixed(1)}" stroke="rgba(255,255,255,.08)" stroke-width="1"/>`;
-  }).join('');
-
-  const sparkBars = sparkVals.map((v,i)=>{
-    const h  = (v/niceMax)*chartH;
-    const x  = i*bW + bW*0.1;
-    const w  = bW*0.8;
-    const y  = padT + chartH - h;
-    const op = v>0 ? 0.85 : 0.15;
-    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(h,1.5).toFixed(1)}" fill="var(--ac)" opacity="${op}" rx="2"/>`;
-  }).join('');
-
-  // HTML Y-axis labels (positioned as % from bottom)
-  const yAxisHTML = yTicks.map(tick=>{
-    const btm = (tick/niceMax)*100;
-    return `<div style="position:absolute;left:0;bottom:calc(${btm.toFixed(1)}%);font-size:.82rem;font-weight:600;color:rgba(200,180,130,.75);white-space:nowrap;transform:translateY(50%);max-width:42px;overflow:hidden;text-overflow:ellipsis;">${fmtY(tick)}</div>`;
-  }).join('');
-
-  // X-axis labels
-  const xLabels = [sparkWeeks[0]?.week||'', sparkWeeks[6]?.week||'', sparkWeeks[12]?.week||''];
-
-  // Top drugs — use rolling 30-day, fall back to YTD if missing
-  const drugs = (r.topDrugs30d||r.topDrugs||[]).slice(0,5);
-
-  // New accounts this month for this rep
-  const moNew = newAccounts30d.filter(a=>a.rep===r.name&&a.date&&a.date.slice(0,7)===DATA.generated.slice(0,7)).length;
-  const goal  = 8;
-  const pipColor = moNew>=goal?'var(--up)':moNew>=5?'var(--ac)':'var(--cream)';
-  const goalMet = moNew >= goal;
-  const pips = Array.from({length:goal},(_,i)=>
-    i<moNew
-      ? `<span style="width:13px;height:13px;border-radius:50%;background:#27ae60;display:inline-block;box-shadow:0 0 7px rgba(39,174,96,.6);"></span>`
-      : goalMet
-        ? `<span style="width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(39,174,96,.4);background:rgba(39,174,96,.08);display:inline-block;"></span>`
-        : `<span style="width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(255,82,82,.45);background:rgba(255,82,82,.10);display:inline-block;"></span>`
-  ).join('');
-
-  // Account health values
-  const retCls  = (r.retention_pct||0)>=70?'up':'dn';
-  const newCls  = moNew>0?'up':'';
+  // Top drugs
+  const drugs = (r.topDrugs||[]).slice(0,5);
+  const drugMax = drugs.length?drugs[0].rev:1;
 
   return `<div class="slide theme-${r.theme}" id="slide-${slideIdx}">
     <div class="slide-hdr">
       <div class="slide-hdr-left">
-        <div class="slide-badge" style="font-size:.78rem;padding:5px 14px;">Rep Spotlight</div>
+        <div class="slide-title" style="color:var(--ac)">${r.rank} ${r.name}</div>
+        <div class="slide-badge">Rep Spotlight</div>
       </div>
       <div class="slide-hdr-right">
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;">
-          <div style="font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream2);">New Accounts · ${moLabel} Goal</div>
-          <div style="display:flex;align-items:center;gap:9px;">
-            <div style="display:flex;gap:4px;align-items:center;">${pips}</div>
-            <span style="font-size:1.35rem;font-weight:900;color:${pipColor};">${moNew}<span style="font-size:.82em;font-weight:400;color:var(--cream2);"> / 8</span></span>
-          </div>
-        </div>
+        <span>YTD: <strong style="color:var(--ac)">${fmtFull(r.revenue||0)}</strong></span>
+        <span>Rank: <strong>${r.rank}</strong></span>
       </div>
     </div>
     <div class="slide-body">
       <div class="rep-body">
-
-        <!-- Rep name + 4 stat boxes -->
-        <div class="rep-name-bar">
-          <div class="rep-name-left">
-            <span class="rep-rank-badge">${r.rank}</span>
-            <div class="rep-hero-name">${r.name}</div>
-          </div>
-          <div class="rep-name-stats">
-            <div class="rep-ns-box">
-              <div class="rep-ns-lbl">This Month</div>
-              <div class="rep-ns-val gold">${fmtFull(mRow.cur||0)}</div>
-            </div>
-            <div class="rep-ns-box">
-              <div class="rep-ns-lbl">Orders ${moLabel}</div>
-              <div class="rep-ns-val">${(r.orders_mo||0).toLocaleString()}</div>
-            </div>
-            <div class="rep-ns-box">
-              <div class="rep-ns-lbl">Clinics ${moLabel}</div>
-              <div class="rep-ns-val">${r.clinics||0}</div>
-            </div>
-            <div class="rep-ns-box">
-              <div class="rep-ns-lbl">Avg Order ${moLabel}</div>
-              <div class="rep-ns-val">$${Math.round(r.avg_order_mo||0).toLocaleString()}</div>
-            </div>
+        <div class="rep-hero">
+          <span class="rep-rank-badge">${r.rank}</span>
+          <div class="rep-hero-name">${r.name}</div>
+          <div class="rep-hero-stats">
+            <div class="rep-hero-stat"><div class="rep-hero-stat-lbl">YTD Revenue</div><div class="rep-hero-stat-val" style="color:var(--ac)">${fmtFull(r.revenue||0)}</div></div>
+            <div class="rep-hero-stat"><div class="rep-hero-stat-lbl">Orders</div><div class="rep-hero-stat-val">${(r.orders||0).toLocaleString()}</div></div>
+            <div class="rep-hero-stat"><div class="rep-hero-stat-lbl">Clinics</div><div class="rep-hero-stat-val">${r.clinics||0}</div></div>
+            <div class="rep-hero-stat"><div class="rep-hero-stat-lbl">Avg Order</div><div class="rep-hero-stat-val">$${Math.round(r.avg_order||0).toLocaleString()}</div></div>
           </div>
         </div>
-
-        <!-- 3 KPI cards -->
         <div class="rep-kpi-row">
           <div class="rep-kpi-card">
-            <div class="rep-kpi-lbl">📅 Today vs Yesterday</div>
-            <div class="rep-kpi-val" data-cu="${dRow.today||0}" data-cu-prefix="$" data-cu-flash>${fmt(dRow.today||0)}</div>
-            <div class="rep-kpi-chg ${parseFloat(dPct)>=0?'up':'dn'}">${parseFloat(dPct)>=0?'▲':'▼'} ${Math.abs(dPct)}% vs prior period</div>
+            <div class="rep-kpi-lbl">📅 Today (DoD)</div>
+            <div class="rep-kpi-val">${fmt(dRow.today||0)}</div>
+            ${chgBadge(dRow.today||0, dRow.yday||1)}
             <div class="rep-kpi-sub">Yesterday: ${fmt(dRow.yday||0)}</div>
           </div>
           <div class="rep-kpi-card">
-            <div class="rep-kpi-lbl">📈 This Week vs Last</div>
-            <div class="rep-kpi-val" data-cu="${wRow.cur||0}" data-cu-prefix="$" data-cu-flash>${fmt(wRow.cur||0)}</div>
-            <div class="rep-kpi-chg ${parseFloat(wPct)>=0?'up':'dn'}">${parseFloat(wPct)>=0?'▲':'▼'} ${Math.abs(wPct)}% vs prior period</div>
+            <div class="rep-kpi-lbl">📈 This Week (WoW)</div>
+            <div class="rep-kpi-val">${fmt(wRow.cur||0)}</div>
+            ${chgBadge(wRow.cur||0, wRow.prev||1)}
             <div class="rep-kpi-sub">Last week: ${fmt(wRow.prev||0)}</div>
           </div>
           <div class="rep-kpi-card">
-            <div class="rep-kpi-lbl">📊 This Month vs Prior</div>
-            <div class="rep-kpi-val" data-cu="${mRow.cur||0}" data-cu-prefix="$" data-cu-flash>${fmt(mRow.cur||0)}</div>
-            <div class="rep-kpi-chg ${parseFloat(mPct)>=0?'up':'dn'}">${parseFloat(mPct)>=0?'▲':'▼'} ${Math.abs(mPct)}% vs prior period</div>
-            <div class="rep-kpi-sub">Prior period: ${fmt(repPrevFullMo||0)}</div>
+            <div class="rep-kpi-lbl">📊 This Month (MoM)</div>
+            <div class="rep-kpi-val">${fmt(mRow.cur||0)}</div>
+            ${chgBadge(mRow.cur||0, mRow.prev||1)}
+            <div class="rep-kpi-sub">Prior period: ${fmt(mRow.prev||0)}</div>
           </div>
         </div>
-
-        <!-- Main 2-column body -->
-        <div class="rep-main">
-
-          <!-- LEFT: Chart -->
-          <div class="rep-chart-col">
-            <div class="rep-spark-title">13-Week Revenue</div>
-            <div style="flex:1;display:flex;flex-direction:column;min-height:0;padding-top:14px;gap:4px;">
-              <!-- SVG row: Y-axis + chart side by side -->
-              <div style="flex:1;display:flex;gap:6px;min-height:0;">
-                <!-- Y-axis label column — same height as SVG only -->
-                <div style="position:relative;width:44px;flex-shrink:0;">${yAxisHTML}</div>
-                <svg style="flex:1;width:100%;display:block;" viewBox="0 0 ${svgW} ${svgH}" preserveAspectRatio="none">${gridLines}${sparkBars}</svg>
-              </div>
-              <!-- X-axis labels below SVG, indented to align with chart -->
-              <div class="spark-xlabels" style="padding-left:50px;">
-                <span>${xLabels[0]}</span><span>${xLabels[1]}</span><span>${xLabels[2]}</span>
+        <div class="rep-details-row">
+          <div class="rep-spark-wrap">
+            <div class="rep-spark-title">13-Week Revenue Trend</div>
+            <svg class="spark-svg" id="spark-${idx}" viewBox="0 0 400 80" preserveAspectRatio="none">
+              ${sparkVals.map((v,i)=>{
+                const x = i*(400/12);
+                const h = (v/sparkMax)*68;
+                const y = 80-h;
+                const w = (400/12)-3;
+                return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="var(--ac)" opacity="0.75" rx="2"/>`;
+              }).join('')}
+            </svg>
+            <div style="display:flex;justify-content:space-between;font-size:.58rem;color:var(--cream2);padding:0 2px;">
+              <span>${DATA.spark_weeks[0]?DATA.spark_weeks[0].week.slice(5):''}</span>
+              <span>${DATA.spark_weeks[6]?DATA.spark_weeks[6].week.slice(5):''}</span>
+              <span>NOW</span>
+            </div>
+          </div>
+          <div>
+            <div class="rep-drugs">
+              <div style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream2);margin-bottom:6px;">Top Products</div>
+              ${drugs.map((d,i)=>`<div class="rep-drug">
+                <span class="rep-drug-rank">#${i+1}</span>
+                <div style="flex:1">
+                  <div class="rep-drug-name">${d.name}</div>
+                  <div class="rep-drug-bar-bg"><div class="rep-drug-bar-fill" style="width:${(d.rev/drugMax*100).toFixed(0)}%"></div></div>
+                </div>
+                <span class="rep-drug-rev">${fmt(d.rev)}</span>
+              </div>`).join('')}
+              <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px;">
+                <div style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream2);margin-bottom:8px;">Account Health</div>
+                <div class="rep-meta">
+                  <div class="rep-meta-item"><span class="rep-meta-lbl">30-Day Retention</span><span class="rep-meta-val ${(r.retention_pct||0)>=70?'good':'bad'}">${r.retention_pct||0}%</span></div>
+                  <div class="rep-meta-item"><span class="rep-meta-lbl">New Accounts YTD</span><span class="rep-meta-val good">${r.new_ytd||0}</span></div>
+                  <div class="rep-meta-item"><span class="rep-meta-lbl">Active Clinics</span><span class="rep-meta-val">${r.clinics||0}</span></div>
+                  <div class="rep-meta-item"><span class="rep-meta-lbl">Avg Order Value</span><span class="rep-meta-val">$${Math.round(r.avg_order||0).toLocaleString()}</span></div>
+                </div>
               </div>
             </div>
           </div>
-
-          <!-- RIGHT: Products + Health -->
-          <div class="rep-right-col">
-            <div class="rep-prod-section">
-              <div class="rep-prod-title">Top Products &nbsp;·&nbsp; 30 Day</div>
-              <div class="rep-prod-list">
-                ${drugs.map((d,i)=>`<div class="rep-prod-row">
-                  <span class="rep-prod-rank">#${i+1}</span>
-                  <span class="rep-prod-name">${d.name}</span>
-                  <span class="rep-prod-rev">${fmtFull(d.rev)}</span>
-                </div>`).join('')}
-              </div>
-            </div>
-            <div class="rep-health-section">
-              <div class="rep-health-title">Account Health &nbsp;·&nbsp; 30 Day</div>
-              <div class="rep-health-list">
-                <div class="rep-health-row"><span class="rep-health-lbl">Revenue</span><span class="rep-health-val gold">${fmtFull(r.rev_30d||0)}</span></div>
-                <div class="rep-health-row"><span class="rep-health-lbl">Orders</span><span class="rep-health-val">${(r.orders_30d||0).toLocaleString()}</span></div>
-                <div class="rep-health-row"><span class="rep-health-lbl">Retention</span><span class="rep-health-val ${retCls}">${r.retention_pct||0}%</span></div>
-                <div class="rep-health-row"><span class="rep-health-lbl">New Accounts</span><span class="rep-health-val ${(r.new_accts_30d||0)>0?'up':''}">${(r.new_accts_30d||0)>0?'+':''}${r.new_accts_30d||0}</span></div>
-                <div class="rep-health-row"><span class="rep-health-lbl">Active Clinics</span><span class="rep-health-val">${r.clinics_30d||0}</span></div>
-                <div class="rep-health-row"><span class="rep-health-lbl">Avg Order Value</span><span class="rep-health-val">$${Math.round(r.avg_order_30d||0).toLocaleString()}</span></div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
@@ -1087,66 +683,25 @@ function slideRep(r, idx){
 }
 
 // ── SLIDE 8: WEEKLY TREND ──────────────────────────────────────────
-function slideWeeklyTrend(){ return slideAtRisk(); }
-function slideAtRisk(){
-  const atRisk = DATA.at_risk || [];
-  const totalRev = atRisk.reduce((s,r)=>s+r.prior_rev,0);
-  const critical = atRisk.filter(r=>r.days_silent>=45).length;
-  const warning  = atRisk.filter(r=>r.days_silent>=30&&r.days_silent<45).length;
-
-  const rows = atRisk.length === 0
-    ? `<div style="text-align:center;padding:60px 0;color:var(--cream2);font-size:1.3rem;">✅ No clinics at risk — great retention!</div>`
-    : atRisk.map((r,i)=>{
-    const rep = REPS.find(x=>x.short===r.rep||x.name===r.rep)||{col:'var(--cream2)'};
-    const cls = r.days_silent>=45 ? 'critical' : 'warning';
-    const dayCol = r.days_silent>=45 ? 'rgba(255,80,80,.9)' : 'rgba(255,140,58,.9)';
-    const lastDate = r.last_order ? new Date(r.last_order+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
-    return `<div class="risk-row ${cls}">
-      <div class="risk-rank">${i+1}</div>
-      <div class="risk-name" title="${r.name}">${r.name}</div>
-      <div class="risk-rep" style="color:${rep.col}">${r.rep}</div>
-      <div class="risk-rev">$${Math.round(r.prior_rev).toLocaleString()}</div>
-      <div class="risk-days" style="color:${dayCol}">${r.days_silent}d</div>
-      <div class="risk-last">${lastDate}</div>
-    </div>`;
-  }).join('');
-
+function slideWeeklyTrend(){
   return `<div class="slide" id="slide-7">
     <div class="slide-hdr">
       <div class="slide-hdr-left">
-        <div class="slide-title">⚠️ Clinics at Risk</div>
-        <div class="slide-badge">30-Day Lapse</div>
+        <div class="slide-title">Weekly Revenue Trend</div>
+        <div class="slide-badge">52-Week History</div>
       </div>
       <div class="slide-hdr-right">
-        <span>At Risk: <strong style="color:rgba(255,100,80,.9)">${atRisk.length}</strong></span>
-        <span>Revenue Exposure: <strong style="color:rgba(255,140,58,.9)">$${Math.round(totalRev).toLocaleString()}</strong></span>
+        <span>Peak: <strong id="weekly-peak">—</strong></span>
+        <span>Avg/wk: <strong id="weekly-avg">—</strong></span>
       </div>
     </div>
-    <div class="slide-body" style="overflow:hidden;">
-      <div class="risk-wrap">
-        <div class="risk-summary">
-          <div class="risk-stat">
-            <div class="risk-stat-lbl">Critical <span style="font-size:.8em;color:rgba(255,80,80,.7);">45+ days</span></div>
-            <div class="risk-stat-val" style="color:rgba(255,80,80,.9)">${critical}</div>
-          </div>
-          <div class="risk-stat">
-            <div class="risk-stat-lbl">Warning <span style="font-size:.8em;color:rgba(255,140,58,.7);">30–44 days</span></div>
-            <div class="risk-stat-val" style="color:rgba(255,140,58,.9)">${warning}</div>
-          </div>
-          <div class="risk-stat" style="margin-left:auto;text-align:right;">
-            <div class="risk-stat-lbl">Revenue at Risk (Prior 30d)</div>
-            <div class="risk-stat-val" style="color:rgba(255,120,80,.85)">$${Math.round(totalRev).toLocaleString()}</div>
-          </div>
+    <div class="slide-body">
+      <div class="chart-wrap">
+        <div class="chart-legend">
+          ${REPS.map(r=>`<div class="chart-legend-item"><div class="chart-legend-dot" style="background:${r.col}"></div>${r.short}</div>`).join('')}
+          <div class="chart-legend-item"><div class="chart-legend-dot" style="background:rgba(200,170,100,.2)"></div>Total</div>
         </div>
-        <div class="risk-hdr">
-          <div class="risk-hdr-cell">#</div>
-          <div class="risk-hdr-cell">Clinic</div>
-          <div class="risk-hdr-cell">Rep</div>
-          <div class="risk-hdr-cell" style="text-align:right">Prior 30d Rev</div>
-          <div class="risk-hdr-cell" style="text-align:right">Silent</div>
-          <div class="risk-hdr-cell" style="text-align:right">Last Order</div>
-        </div>
-        <div class="risk-list">${rows}</div>
+        <svg id="weeklyChart" class="chart-svg" style="overflow:visible;"></svg>
       </div>
     </div>
   </div>`;
@@ -1154,58 +709,33 @@ function slideAtRisk(){
 
 // ── SLIDE 9: MoM ──────────────────────────────────────────────────
 function slideMoM(){
-  const months  = DATA.monthly;
-  const last3   = months.slice(-3);   // [2mo ago, last full mo, current MTD]
-  const bestMo  = months.reduce((a,b)=>b.tot>a.tot?b:a, months[0]);
-  const curMTD  = last3[last3.length-1];
-  const prevFull= last3[last3.length-2];
-  const paceRaw = prevFull.tot>0 ? (curMTD.tot/prevFull.tot*100).toFixed(0) : 0;
-
-  // ── Rep 3-month summary cards ──
-  const repCards = REPS.map(r=>{
-    const vals   = last3.map(m=>m[r.name]||0);
-    const maxRep = Math.max(...vals,1);
-    const cols   = last3.map((m,i)=>{
-      const v=vals[i], isCur=i===2;
-      const chg = i>0 && vals[i-1]>0 ? ((v-vals[i-1])/vals[i-1]*100) : null;
-      return `<div class="mom-rep-col">
-        <div class="mom-rc-lbl">${m.label}${isCur?' MTD':''}</div>
-        <div class="mom-rc-val" style="color:${isCur?r.col:'var(--cream)'}">${fmt(v)}</div>
-        ${chg!==null
-          ?`<div class="mom-rc-chg ${chg>=0?'up':'dn'}">${chg>=0?'▲':'▼'} ${Math.abs(chg).toFixed(1)}%</div>`
-          :'<div style="height:1rem"></div>'}
-        <div class="mom-rc-bar"><div class="mom-rc-fill" style="width:${(v/maxRep*100).toFixed(1)}%;background:${r.col};${isCur?'opacity:.65':''}"></div></div>
-      </div>`;
-    }).join('<div class="mom-rc-div"></div>');
-    return `<div class="mom-rep-card">
-      <div class="mom-rep-name" style="color:${r.col}">${r.rank} ${r.short}</div>
-      <div class="mom-rep-cols">${cols}</div>
-    </div>`;
-  }).join('');
-
-  // ── Legend ──
-  const legend = REPS.map(r=>`<div class="mom-legend-item">
-    <div class="mom-legend-dot" style="background:${r.col}"></div>${r.short}
-  </div>`).join('');
-
+  const months = DATA.monthly;
+  const maxMoM = Math.max(...months.map(m=>m.tot||0))||1;
   return `<div class="slide" id="slide-8">
     <div class="slide-hdr">
       <div class="slide-hdr-left">
         <div class="slide-title">Monthly Revenue Trajectory</div>
-        <div class="slide-badge">3-Month View</div>
+        <div class="slide-badge">12-Month View</div>
       </div>
       <div class="slide-hdr-right">
-        <span>Best Month: <strong>${fmt(bestMo.tot)} (${bestMo.label})</strong></span>
-        <span>MTD Pace: <strong class="gold-text">${paceRaw}% of ${prevFull.label}</strong></span>
+        <span>Best Month: <strong>${fmt(maxMoM)}</strong></span>
+        <span>This Month: <strong style="color:var(--gold)">${fmt(months[months.length-1].tot||0)}</strong></span>
       </div>
     </div>
     <div class="slide-body">
       <div class="mom-wrap">
-        <div class="mom-rep-strip">${repCards}</div>
-        <div class="mom-chart-area">
-          <svg id="momChart" class="mom-chart-svg" style="overflow:visible;"></svg>
-          <div class="mom-legend">${legend}</div>
+        <div class="mom-summary">
+          ${REPS.map(r=>{
+            const mRow = momData.reps.find(x=>x.rep===r.name)||{cur:0,prev:1};
+            const mp   = pct(mRow.cur||0,mRow.prev||1);
+            return `<div class="mom-kpi">
+              <div class="mom-kpi-lbl" style="color:${r.col}">${r.short}</div>
+              <div class="mom-kpi-val" style="color:${r.col}">${fmt(mRow.cur||0)}</div>
+              <div style="font-size:.7rem;color:${parseFloat(mp)>=0?'var(--up)':'var(--dn)'};margin-top:4px;">${parseFloat(mp)>=0?'▲':'▼'} ${Math.abs(mp)}% MoM</div>
+            </div>`;
+          }).join('')}
         </div>
+        <svg id="momChart" class="mom-chart-svg" style="overflow:visible;flex:1;"></svg>
       </div>
     </div>
   </div>`;
@@ -1213,9 +743,7 @@ function slideMoM(){
 
 // ── SLIDE 10: TERRITORY MAP ────────────────────────────────────────
 function slideStateMap(){
-  const moName = new Date(DATA.generated+'T12:00:00').toLocaleString('en-US',{month:'long'});
-  const mapData = DATA.state_data_mo||DATA.state_data;
-  const top10 = mapData.slice(0,10);
+  const top10 = DATA.state_data.slice(0,10);
   const sideRows = top10.map((s,i)=>`<div class="map-state-row">
     <span class="map-state-rank">#${i+1}</span>
     <span class="map-state-name">${s.state}</span>
@@ -1227,11 +755,11 @@ function slideStateMap(){
     <div class="slide-hdr">
       <div class="slide-hdr-left">
         <div class="slide-title">Territory Coverage</div>
-        <div class="slide-badge">${moName} · ${mapData.length} States Active</div>
+        <div class="slide-badge">${DATA.state_data.length} States Active</div>
       </div>
       <div class="slide-hdr-right">
-        <span>Top State: <strong>${mapData[0]?mapData[0].state:'—'}</strong></span>
-        <span><strong>${fmtFull(mapData[0]?mapData[0].revenue:0)}</strong></span>
+        <span>Top State: <strong>${DATA.state_data[0]?DATA.state_data[0].state:'—'}</strong></span>
+        <span><strong>${fmtFull(DATA.state_data[0]?DATA.state_data[0].revenue:0)}</strong></span>
       </div>
     </div>
     <div class="slide-body">
@@ -1258,7 +786,7 @@ function slideTopAccounts(){
     </div>
     <div style="text-align:right">
       <div class="acct-rev">${fmt(c.revenue)}</div>
-      <div class="acct-rx">${c.rx} Orders</div>
+      <div class="acct-rx">${c.rx} Rx</div>
     </div>
   </div>`).join('');
 
@@ -1272,7 +800,7 @@ function slideTopAccounts(){
         <span>Showing top <strong>${topClinics.length}</strong> clinics</span>
       </div>
     </div>
-    <div class="slide-body" style="overflow:hidden;">
+    <div class="slide-body">
       <div class="acct-wrap">${rows}</div>
     </div>
   </div>`;
@@ -1280,18 +808,14 @@ function slideTopAccounts(){
 
 // ── SLIDE 12: NEW ACCOUNTS ─────────────────────────────────────────
 function slideNewAccounts(){
-  const curMo = DATA.generated.slice(0,7);
-  const moName = new Date(DATA.generated+'T12:00:00').toLocaleString('en-US',{month:'long'});
-  const moAccounts = newAccounts30d.filter(a=>a.date&&a.date.slice(0,7)===curMo);
-  const count = moAccounts.length;
-  const repCounts = REPS.map(r=>({rep:r,n:moAccounts.filter(a=>a.rep===r.name).length})).sort((a,b)=>b.n-a.n);
-  const cards = count===0 ? '' : moAccounts.map(a=>{
+  const count = newAccounts30d.length;
+  const cards = newAccounts30d.map(a=>{
     const rep = REPS.find(r=>r.name===a.rep);
     return `<div class="new-card">
       <div class="new-card-name" title="${a.clinic}">${a.clinic}</div>
       <div class="new-card-rep" style="color:${rep?.col||'var(--cream2)'}">${a.rep.split(' ')[0]}</div>
-      <div class="new-card-sub">${a.state} &nbsp;·&nbsp; First Order: ${new Date(a.date+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
-      <div class="new-card-rev">Current ${moName} Rev: ${fmt(a.revenue)}</div>
+      <div class="new-card-sub">${a.state} &nbsp;·&nbsp; ${a.date}</div>
+      <div class="new-card-rev">${fmt(a.revenue)}</div>
     </div>`;
   }).join('');
 
@@ -1299,19 +823,19 @@ function slideNewAccounts(){
     <div class="slide-hdr">
       <div class="slide-hdr-left">
         <div class="slide-title">🎉 New Accounts</div>
-        <div class="slide-badge">Month of ${moName} · ${count} New</div>
+        <div class="slide-badge">Last 30 Days</div>
       </div>
       <div class="slide-hdr-right">
-        <span>${repCounts.map(({rep:r,n})=>`<strong style="color:${r.col}">${r.short}: ${n}</strong>`).join("  ")}</span>
+        <span>Total new clinics: <strong style="color:var(--up)">${count}</strong></span>
       </div>
     </div>
     <div class="slide-body">
       <div class="new-wrap">
         <div class="new-hero">
           <div class="new-hero-num" data-cu="${count}" data-cu-plain="1">${count}</div>
-          <div class="new-hero-lbl">New first time ordering accounts in ${moName}</div>
+          <div class="new-hero-lbl">New Clinics This Month 🚀</div>
         </div>
-        ${count===0?`<div style="text-align:center;padding:80px 0;font-size:1.3rem;color:var(--cream2);">📭 No new ordering accounts yet in ${moName}</div>`:`<div class="new-grid">${cards}</div>`}
+        <div class="new-grid">${cards}</div>
       </div>
     </div>
   </div>`;
@@ -1389,88 +913,43 @@ function drawWeeklyChart(){
 function drawMoMChart(){
   const svg = document.getElementById('momChart');
   if(!svg) return;
-  const isLight = document.body.classList.contains('light');
-  const goldCol  = isLight ? '#7a5500'              : '#c9a227';
-  const goldMuted= isLight ? 'rgba(100,60,0,.55)'  : 'rgba(220,200,160,.92)';
-  const goldDim  = isLight ? 'rgba(80,50,0,.5)'    : 'rgba(210,190,140,.82)';
-  const gridCol  = isLight ? 'rgba(80,50,0,.08)'   : 'rgba(200,170,100,.12)';
-  const yAxisCol = isLight ? 'rgba(80,50,0,.55)'   : 'rgba(210,185,120,.82)';
-  const outlineCol= isLight? 'rgba(100,60,0,.5)'   : 'rgba(201,162,39,.7)';
-  const W = svg.parentElement.clientWidth||900;
-  const H = svg.parentElement.clientHeight||240;
+  const W = svg.parentElement.clientWidth||900, H = svg.parentElement.clientHeight||160;
   svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  svg.setAttribute('width', W);
-  svg.setAttribute('height', H);
-
-  const months = DATA.monthly.slice(-3);   // only last 3
-  const n      = months.length;            // 3
-  const maxV   = Math.max(...months.map(m=>m.tot||0),1);
-  const pad    = {l:72,r:24,t:36,b:42};
-  const cW     = W-pad.l-pad.r;
-  const cH     = H-pad.t-pad.b;
-  const gap    = cW * 0.10;               // gap between bars
-  const bW     = (cW - gap*(n+1)) / n;    // bar width
-  const repKeys = REPS.map(r=>r.name);
-  const repCols = REPS.map(r=>r.col);
+  const months = DATA.monthly;
+  const n = months.length;
+  const maxV = Math.max(...months.map(m=>m.tot||0))||1;
+  const pad = {l:55,r:20,t:20,b:30};
+  const cW = W-pad.l-pad.r, cH = H-pad.t-pad.b;
+  const bW  = cW/n - 4;
   let html = '';
 
-  // Grid lines + Y-axis labels
+  // Grid
   for(let i=0;i<=4;i++){
     const y = pad.t + cH - (i/4)*cH;
-    html += `<line x1="${pad.l}" y1="${y.toFixed(1)}" x2="${W-pad.r}" y2="${y.toFixed(1)}" stroke="${gridCol}" stroke-width="1"/>`;
-    html += `<text x="${pad.l-10}" y="${(y+5).toFixed(1)}" text-anchor="end" font-size="15" font-weight="600" fill="${yAxisCol}">${fmt(maxV*(i/4))}</text>`;
+    html += `<line x1="${pad.l}" y1="${y}" x2="${W-pad.r}" y2="${y}" stroke="rgba(200,170,100,.07)" stroke-width="1"/>`;
+    html += `<text x="${pad.l-6}" y="${y+4}" text-anchor="end" font-size="9" fill="rgba(200,170,100,.4)">${fmt(maxV*(i/4))}</text>`;
   }
 
-  // Bars
+  // Stacked bars
+  const repKeys = ['Erin Ryan Snyder','Zachary Salazar','Dylan White','Jonathan Izquierdo'];
+  const repCols = ['#c9a227','#4a9eca','#3dba6d','#c47a3e'];
   months.forEach((m,i)=>{
-    const isCur = i === n-1;
-    const x     = pad.l + gap*(i+1) + bW*i;
-    let base    = 0;
-
-    // Stacked segments
+    const x = pad.l + i*(cW/n) + 2;
+    let base = 0;
     repKeys.forEach((k,ri)=>{
-      const v  = m[k]||0;
-      const bH = (v/maxV)*cH;
-      const y  = pad.t + cH - (base/maxV)*cH - bH;
-      if(bH > 0.5){
-        html += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bW.toFixed(1)}" height="${bH.toFixed(1)}"
-          fill="${repCols[ri]}" opacity="${isCur?0.72:0.88}" rx="3"/>`;
-      }
+      const v = m[k]||0;
+      const h = (v/maxV)*cH;
+      const y = pad.t + cH - base*(cH/maxV) - h;
+      if(h>0) html += `<rect x="${x}" y="${y}" width="${bW}" height="${h}" fill="${repCols[ri]}" opacity="0.8" rx="2"/>`;
       base += v;
     });
-
-    // Current month: dashed outline
-    if(isCur){
-      const totH = (m.tot/maxV)*cH;
-      const barY = pad.t + cH - totH;
-      html += `<rect x="${(x-1).toFixed(1)}" y="${(barY-1).toFixed(1)}" width="${(bW+2).toFixed(1)}" height="${(totH+1).toFixed(1)}"
-        fill="none" stroke="${outlineCol}" stroke-width="2" stroke-dasharray="5,3" rx="4"/>`;
-    }
-
-    // Total value label on top of bar
-    const totH2 = (m.tot/maxV)*cH;
+    // Label
+    html += `<text x="${x+bW/2}" y="${H-6}" text-anchor="middle" font-size="8" fill="rgba(200,170,100,.45)">${m.label}</text>`;
+    // Value on top
+    const totH = (m.tot/maxV)*cH;
     if(m.tot>0){
-      html += `<text x="${(x+bW/2).toFixed(1)}" y="${(pad.t+cH-totH2-10).toFixed(1)}"
-        text-anchor="middle" font-size="17" font-weight="900"
-        fill="${isCur?goldCol:goldMuted}">${fmt(m.tot)}</text>`;
+      html += `<text x="${x+bW/2}" y="${pad.t+cH-totH-4}" text-anchor="middle" font-size="8" fill="rgba(200,170,100,.7)">${fmt(m.tot)}</text>`;
     }
-
-    // % change vs prior month
-    if(i>0){
-      const prev  = months[i-1].tot||1;
-      const chgV  = ((m.tot-prev)/prev*100);
-      const chgTx = (chgV>=0?'▲ ':'▼ ')+Math.abs(chgV).toFixed(1)+'%';
-      const chgY  = pad.t + cH - totH2 - 30;
-      html += `<text x="${(x+bW/2).toFixed(1)}" y="${chgY.toFixed(1)}"
-        text-anchor="middle" font-size="13" font-weight="700"
-        fill="${chgV>=0?'#3dba6d':'#e05252'}">${chgTx}</text>`;
-    }
-
-    // Month label below bar
-    const lblY = pad.t + cH + 26;
-    html += `<text x="${(x+bW/2).toFixed(1)}" y="${lblY.toFixed(1)}"
-      text-anchor="middle" font-size="16" font-weight="${isCur?900:700}"
-      fill="${isCur?goldCol:goldDim}">${m.label.toUpperCase()}${isCur?' MTD':''}</text>`;
   });
 
   svg.innerHTML = html;
@@ -1489,7 +968,7 @@ function initMap(){
   if(mapLoaded) return;
 
   const stateRevMap = {};
-  (DATA.state_data_mo||DATA.state_data).forEach(s=>{ stateRevMap[s.state]=s.revenue; });
+  DATA.state_data.forEach(s=>{ stateRevMap[s.state]=s.revenue; });
   const maxRev = Math.max(...Object.values(stateRevMap))||1;
 
   // Load D3 + TopoJSON dynamically
@@ -1528,13 +1007,12 @@ function initMap(){
           .attr('fill', d=>{
             const abbr = stateNames[d.id.toString().padStart(2,'0')];
             const rev  = stateRevMap[abbr]||0;
-            const isDark = !document.body.classList.contains('light');
-            if(!rev) return isDark ? 'rgba(255,255,255,.09)' : 'rgba(80,60,20,.12)';
+            if(!rev) return 'rgba(255,255,255,.04)';
             const intens = rev/maxRev;
-            return `rgba(201,162,39,${0.25+intens*0.75})`;
+            return `rgba(201,162,39,${0.1+intens*0.85})`;
           })
-          .attr('stroke', document.body.classList.contains('light') ? 'rgba(80,60,10,.5)' : 'rgba(201,162,39,.45)')
-          .attr('stroke-width','1');
+          .attr('stroke','rgba(201,162,39,.2)')
+          .attr('stroke-width','0.5');
       }).catch(()=>{
         document.getElementById('map-svg').innerHTML = '<text x="480" y="300" text-anchor="middle" fill="rgba(201,162,39,.4)" font-size="16">Map data unavailable offline</text>';
       });
@@ -1556,15 +1034,7 @@ function countUp(){
       if(isPlain) el.textContent = Math.round(v).toLocaleString();
       else if(isK) el.textContent = prefix + (v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(1)+'K':v.toFixed(0));
       else el.textContent = prefix + Math.round(v).toLocaleString();
-      if(f>=frames){
-        clearInterval(iv);
-        if('cuFlash' in el.dataset){
-          el.classList.remove('cu-glow');
-          requestAnimationFrame(()=>requestAnimationFrame(()=>{
-            el.classList.add('cu-glow');
-          }));
-        }
-      }
+      if(f>=frames){ clearInterval(iv); }
     },1000/fps);
   });
 }
@@ -1594,29 +1064,6 @@ function goTo(idx){
   if(idx===7) setTimeout(drawWeeklyChart,80);
   if(idx===8) setTimeout(drawMoMChart,80);
   if(idx===9) setTimeout(initMap,80);
-  // Count-up + flash on New Accounts slide (last slide)
-  if(idx===SLIDE_NAMES.length-1){
-    setTimeout(()=>{
-      const hero = document.querySelector('#slide-11 .new-hero-num');
-      if(!hero) return;
-      const target = parseInt(hero.dataset.cu)||0;
-      hero.classList.remove('flash');
-      hero.textContent = '0';
-      const dur=1200, fps=60, frames=Math.round(dur/1000*fps);
-      let f=0;
-      const iv=setInterval(()=>{
-        f++;
-        hero.textContent = Math.round(target*(f/frames)).toLocaleString();
-        if(f>=frames){
-          clearInterval(iv);
-          hero.textContent = target.toLocaleString();
-          hero.classList.remove('flash');
-          void hero.offsetWidth; // force reflow to restart animation
-          hero.classList.add('flash');
-        }
-      },1000/fps);
-    },150);
-  }
 }
 
 function nextSlide(){
@@ -1673,10 +1120,6 @@ function unlockApp(){
   document.getElementById('themeToggle').classList.add('visible');
   buildTicker();
   render();
-  // Last Updated timestamp in EST
-  (function(){
-    document.getElementById('lastUpdated').textContent = 'Jun 24, 2026, 9:39 AM EST';
-  })();
   // Show first slide
   setTimeout(()=>{
     const slides = document.querySelectorAll('.slide');
