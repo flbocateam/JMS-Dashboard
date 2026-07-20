@@ -1,0 +1,9 @@
+{
+  "name": "jms-secure",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Password-gated backend for the JMS Sales Dashboard and Jack/Mark Transfer Tracker. Serverless functions on Vercel's free tier hold the data server-side and only release it after a signed session cookie is verified. No external dependencies -- uses only Node's built-in crypto/fs/path.",
+  "engines": {
+    "node": ">=18"
+  }
+}
