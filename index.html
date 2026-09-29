@@ -410,6 +410,16 @@ body.light #lastUpdated{color:rgba(80,50,0,.75);}
 </head>
 <body>
 
+<!-- KEEP-AWAKE: silent looping video. Some TV/set-top-box OSes only
+     suppress their screensaver/auto-sleep timer while media is actively
+     playing, so this keeps a media session alive at all times. This is a
+     best-effort layer, not a guarantee - see the chat response for the
+     device-level fix (ADB sleep_timeout) that's the actually reliable one
+     for Fire TV. -->
+<video id="keepAwakeVideo" autoplay loop muted playsinline
+  style="position:fixed;width:2px;height:2px;opacity:0;pointer-events:none;z-index:-1;"
+  src="data:video/webm;base64,GkXfo59ChoEBQveBAULygQRC84EIQoKEd2VibUKHgQJChYECGFOAZwEAAAAAAAJPEU2bdLpNu4tTq4QVSalmU6yBoU27i1OrhBZUrmtTrIHYTbuMU6uEElTDZ1OsggEeTbuMU6uEHFO7a1OsggI57AEAAAAAAABZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVSalmsirXsYMPQkBNgI1MYXZmNjAuMTYuMTAwV0GNTGF2ZjYwLjE2LjEwMESJiECncAAAAAAAFlSua8GuAQAAAAAAADjXgQFzxYgRko1bZ10XaZyBACK1nIN1bmSIgQCGhVZfVlA5g4EBI+ODhB3NZQDgibCBILqBIJqBAhJUw2dAgHNzoGPAgGfImkWjh0VOQ09ERVJEh41MYXZmNjAuMTYuMTAwc3PaY8CLY8WIEZKNW2ddF2lnyKVFo4dFTkNPREVSRIeYTGF2YzYwLjMxLjEwMiBsaWJ2cHgtdnA5Z8ihRaOIRFVSQVRJT05Eh5MwMDowMDowMy4wMDAwMDAwMDAAH0O2dUCP54EAo6GBAACAgkmDQgAB8AH2ADgkHBhKAAAwYAAAEN///VkVgACjk4EB9ACGAECSnABQAAADIAAAQ0Cjk4ED6ACGAECSnABO4AADIAAAQ0Cjk4EF3ACGAECSnABQAAADIAAAQ0Cjk4EH0ACGAECSnABNQAADIAAAQ0Cjk4EJxACGAECSnABQAAADIAAAQ0AcU7trkbuPs4EAt4r3gQHxggGk8IED"></video>
+
 <!-- GATE -->
 <div id="gate">
   <div class="gate-left">
@@ -1772,6 +1782,35 @@ function fitToScreen(){
 fitToScreen();
 window.addEventListener('resize', fitToScreen);
 window.addEventListener('orientationchange', fitToScreen);
+
+// ── KEEP AWAKE (best-effort; see chat for the reliable device-level fix) ──
+// Layer 1: Screen Wake Lock API. Supported in current Chrome/Safari/Firefox
+// on HTTPS; many embedded/TV browsers (Fire TV Silk, older Tizen/webOS)
+// either don't implement it or ignore it - fails silently either way.
+let wakeLock = null;
+async function requestWakeLock(){
+  try{
+    if('wakeLock' in navigator){
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    }
+  }catch(err){ /* unsupported or denied - ignore, video layer still runs */ }
+}
+document.addEventListener('visibilitychange', () => {
+  if(wakeLock === null && document.visibilityState === 'visible') requestWakeLock();
+});
+requestWakeLock();
+
+// Layer 2: keep the silent keep-awake video actually playing. Some browsers
+// pause background video elements under certain conditions - this nudges
+// it back to play if that ever happens, so the media session stays live.
+(function(){
+  const v = document.getElementById('keepAwakeVideo');
+  if(!v) return;
+  const nudge = () => { if(v.paused) v.play().catch(()=>{}); };
+  setInterval(nudge, 15000);
+  document.addEventListener('visibilitychange', nudge);
+})();
 </script>
 </body>
 </html>
